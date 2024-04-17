@@ -1,6 +1,6 @@
-<svelte:head>
-	<link rel="stylesheet" href="css/pico.blue.min.css" />
-</svelte:head>
+<script lang="ts">
+	import '@picocss/pico';
+</script>
 
 <body>
 	<main class="container">
