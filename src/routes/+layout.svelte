@@ -2,19 +2,23 @@
 	import '@picocss/pico';
 </script>
 
-<body>
-	<main class="container">
-		<h1>ייִדיקט</h1>
-		<hr />
+<body class="container" dir="rtl">
+	<header>
+		<h1 style="color: $blue-900;">ייִדיקט</h1>
 		<form id="searchbox">
 			<input type="search" name="search" placeholder="זוך" aria-label="זוך⸗פונקציע" />
 		</form>
-		<hr />
+	</header>
+	<main>
 		<slot />
 	</main>
 </body>
 
 <style lang="scss">
+	@use '@picocss/pico/scss/pico' with (
+		$theme-color: 'blue'
+	);
+
 	* {
 		font-family: Arial, sans-serif;
 	}
