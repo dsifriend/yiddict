@@ -1,2 +1,6 @@
-<h2>ייִדיקט</h2>
-<h3>דער װערטערבוך אַפּ</h3>
+<main style="text-align: center;">
+	<hgroup>
+		<h2>ייִדיקט</h2>
+		<p>דער װערטערבוך אַפּ</p>
+	</hgroup>
+</main>

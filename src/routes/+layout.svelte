@@ -24,9 +24,7 @@
 			</details>
 		</form>
 	</header>
-	<main>
-		<slot />
-	</main>
+	<slot />
 </body>
 
 <style lang="scss">
