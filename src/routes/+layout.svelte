@@ -15,9 +15,6 @@
 </body>
 
 <style lang="scss">
-	@use '@picocss/pico/scss/pico' with (
-		$theme-color: 'azure'
-	);
 	@use '@picocss/pico/scss/colors' as *;
 
 	* {
