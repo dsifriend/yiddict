@@ -1,6 +1,6 @@
 <main style="text-align: center;">
 	<hgroup>
-		<h2>ייִדיקט</h2>
+		<h1 style="font-family: Arial, sans-serif;">ייִדיקט</h1>
 		<p>דער װערטערבוך אַפּ</p>
 	</hgroup>
 </main>
