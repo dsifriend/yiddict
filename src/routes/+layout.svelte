@@ -4,11 +4,27 @@
 
 <body class="container" dir="rtl">
 	<header>
-		<h1 id="home">ייִדיקט</h1>
+		<nav>
+			<ul>
+				<li><h1 id="home">ייִדיקט</h1></li>
+			</ul>
+			<ul>
+				<li>
+					<details class="dropdown" dir="ltr">
+						<summary>אינפאָרמאַציע</summary>
+						<ul>
+							<li class="secondary"><a href="#">וועגן אונז</a></li>
+							<li class="secondary"><a href="#">הילף</a></li>
+							<li class="secondary"><a href="#">מחברים־רעכט</a></li>
+						</ul>
+					</details>
+				</li>
+			</ul>
+		</nav>
 		<form id="searchbox">
 			<input type="search" name="search" placeholder="זוך" aria-label="זוך⸗פונקציע" />
 			<!-- Advanced Options -->
-			<details>
+			<details style="max-width: fit-content;">
 				<summary>ברירות</summary>
 				<fieldset>
 					<label>
