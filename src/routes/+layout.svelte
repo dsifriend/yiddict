@@ -48,6 +48,7 @@
 
 	* {
 		font-family: Arial, sans-serif;
+		max-width: 54em;
 	}
 
 	#home {
