@@ -89,7 +89,110 @@
 				If you don't know or can't guess the pronunciation (or rather, the YIVO transcription), the
 				app provides the following custom ASCII-based encoding to help input לשינ־קודש if required:
 			</p>
-			<q></q>
+			<q>\#:א B:בֿ w:ו H:ח K:כּ x:כ e:ע c:צ S:ש Q:שׂ T:ת W:תּ</q>
+			<p>Don't distinguish final khof, mem, nun, fe, tsadi.</p>
+			<details>
+				<summary>Examples</summary>
+				<ul>
+					<li>Type <b>msKym</b> for <b>מסכּים</b></li>
+					<li>Type <b>Slwm</b> for <b>שלום</b></li>
+				</ul>
+			</details>
+			<p>
+				Internally, all לשינ־קודש words are encoded with enclosing <em>braces</em> (e.g.
+				<b>&lbrace;ym&rbrace;</b>), so a partial search for <b>ym&rbrace;</b> should find all
+				לשינ־קודש words ending in <b>ים</b>.
+			</p>
 		</details>
+	</section>
+	<section>
+		<h3>Other Information</h3>
+		<p>
+			The search function looks through <em>all text</em> in an entry for matches. This means that
+			supplementary data, such as that recorded by <strong>Raphael Finkel</strong>
+			in some of his entries may be returned by searching for categories like <b>clothing</b> or
+			<b>sound</b>.
+		</p>
+		<p>Grammar details such as <b>indeclinable</b> are also searchable.</p>
+		<p>Usage notes are often also available, e.g. <b>inadmissible</b> or <b>German</b>.</p>
+		<p>
+			Occasionally, sources for a word will be listed if not generally found in standard
+			dictionaries.
+		</p>
+		<details>
+			<summary>Examples</summary>
+			<ul>
+				<li>Forwards</li>
+				<li>Hoffman</li>
+				<li>Bergelson</li>
+				<li>note: V</li>
+			</ul>
+		</details>
+	</section>
+	<section>
+		<h3>Non-standard Spellings</h3>
+		<p>
+			If you are trying to find a word that uses other transliteration schemes than YIVO's (see the
+			<a href="https://en.wikipedia.org/wiki/Yiddish_orthography">Wikipedia article</a>
+			for some insight), consider making these adjustments:
+		</p>
+		<ol>
+			<li>
+				Don't use the prefix <i>be-</i>; use
+				<b>ba-</b>.
+			</li>
+			<li>
+				Don't use the prefix <i>er-</i>; use
+				<b>der-</b>.
+			</li>
+			<li>
+				Don't use the inseparable verb prefix <i>tsu-</i>; use
+				<b>tse-</b>.
+			</li>
+			<li>
+				Don't place an <i>h</i> after a vowel to lengthen it; write
+				<b>ey</b>
+				instead of
+				<i>eh</i>, for instance.
+			</li>
+			<li>
+				If the text doesn't distinguish a tsvey-yudn (<b>ײ</b>) from pasekh-tsvey-yudn (<b>ײַ</b>),
+				try both
+				<b>ay</b> and <b>ey</b>.
+			</li>
+			<li>
+				Similarly, if the text doesn't distinguish pe (<b>פּ</b>) from fe (<b>פֿ</b>), try both
+				<b>p</b> and <b>f</b>.
+			</li>
+			<li>
+				If the text has a word starting with alef-yud (such as <i>אינגל</i>), also search for it
+				with <b>yi</b>, as in
+				<b>yingl</b>.
+			</li>
+			<li>
+				If the text has a word ending in <i>-ig</i>, try
+				<b>-ik</b>.
+			</li>
+			<li>
+				The epenthetic ayin before a nun <i>en</i>
+				(<i>ענ</i>) is sometimes absent in modern spelling, leaving just the nun.
+			</li>
+			<li>
+				If the text has a double consonant, such as <i>tt</i>, search with a single consonant, such
+				as <b>t</b>.
+			</li>
+			<li>
+				If the text has an alef with a segol (<b>אֶ</b>), try
+				<b>e</b>.
+			</li>
+			<li>
+				Transliterate the khes (<b>ח</b>) as <b>kh</b>. Some books use the khes where standard
+				orthography uses the khof (<b>כ</b>).
+			</li>
+			<li>
+				If your text has a final khof with a dagesh (<b>ךּ</b>), just ignore the dagesh and use
+				<b>kh</b>.
+			</li>
+		</ol>
 	</section>
 </main>
