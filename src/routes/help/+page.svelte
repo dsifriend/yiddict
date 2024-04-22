@@ -1,3 +1,4 @@
+<!--TODO: Better highlight input suggestions with `mark`, `ins`, etc.-->
 <main dir="ltr">
 	<h1>הילף</h1>
 	<h2>Help</h2>
@@ -26,7 +27,7 @@
 			will try identifying this for you, but it's not perfect.
 		</p>
 		<details>
-			<summary>Examples</summary>
+			<summary class="secondary" role="button">Examples</summary>
 			<ul>
 				<li>Type <b>פּלימעניק</b>, not <i>פּלימעניקעס</i></li>
 				<li>
@@ -45,7 +46,7 @@
 			will try identifying this for you, but it's not perfect.
 		</p>
 		<details>
-			<summary>Examples</summary>
+			<summary class="secondary" role="button">Examples</summary>
 			<ul>
 				<li>Type <b>plimenik</b>, not <i>plimenikes</i></li>
 				<li>Type <b>sheyn</b>, not <i>sheyne</i></li>
@@ -53,19 +54,19 @@
 			</ul>
 		</details>
 		<details>
-			<summary>YIVO Alphabet</summary>
+			<summary class="secondary" role="button">YIVO Alphabet</summary>
 			<p>YIVO uses the following <strong>consonants </strong>for its transcriptions:</p>
-			<q
-				>ב:b ג:g ד:d ה:h װ:v ז:z כ:kh ט:t י:y ל:l מ:m נ:n ס:s פֿ:f פּ:p צ:ts ק:k ר:r ש:sh טש:tsh זש:zh
-				דזש:dj</q
-			>
+			<p style="text-align: center;">
+				ב:b ג:g ד:d ה:h װ:v ז:z כ:kh ט:t י:y ל:l מ:m נ:n ס:s פֿ:f פּ:p צ:ts ק:k ר:r ש:sh טש:tsh זש:zh
+				דזש:dj
+			</p>
 			<p>YIVO uses the following <strong>vowels</strong> for its transcriptions:</p>
-			<q>אַ:a ע:e י:i אָ:o ו:u ױ:oy ײַ:ay ײ:ey</q>
+			<p style="text-align: center;">אַ:a ע:e י:i אָ:o ו:u ױ:oy ײַ:ay ײ:ey</p>
 			<details>
-				<summary>Example</summary>
+				<summary class="secondary" role="button">Example</summary>
 				<p>The following sentence is correctly transliterated:</p>
-				<q>איך בינ געקומנ אַזױ װײַט צו שרײַבן אַ ביסל מאַמע־לשון!</q>
-				<q>ikh bin gekumen azoy vayt tsu shraybn a bisl mame-loshn!</q>
+				<p style="text-align: center;">איך בינ געקומנ אַזױ װײַט צו שרײַבן אַ ביסל מאַמע־לשון!</p>
+				<p style="text-align: center;">ikh bin gekumen azoy vayt tsu shraybn a bisl mame-loshn!</p>
 			</details>
 			<p>
 				Do not use German phonetic spelling. For instance, don't write <i>schpiel</i> to mean
@@ -84,15 +85,15 @@
 			should be spelled with an <b>e</b>, as in <b>borekh</b>, <b>bimkem</b>, and <b>maskem</b>.
 		</p>
 		<details>
-			<summary>ASCII encoding for לשינ־קודש</summary>
+			<summary class="secondary" role="button">ASCII encoding for לשינ־קודש</summary>
 			<p>
 				If you don't know or can't guess the pronunciation (or rather, the YIVO transcription), the
 				app provides the following custom ASCII-based encoding to help input לשינ־קודש if required:
 			</p>
-			<q>\#:א B:בֿ w:ו H:ח K:כּ x:כ e:ע c:צ S:ש Q:שׂ T:ת W:תּ</q>
+			<p style="text-align: center;">#:א B:בֿ w:ו H:ח K:כּ x:כ e:ע c:צ S:ש Q:שׂ T:ת W:תּ</p>
 			<p>Don't distinguish final khof, mem, nun, fe, tsadi.</p>
 			<details>
-				<summary>Examples</summary>
+				<summary class="secondary" role="button">Examples</summary>
 				<ul>
 					<li>Type <b>msKym</b> for <b>מסכּים</b></li>
 					<li>Type <b>Slwm</b> for <b>שלום</b></li>
@@ -120,7 +121,7 @@
 			dictionaries.
 		</p>
 		<details>
-			<summary>Examples</summary>
+			<summary class="secondary" role="button">Examples</summary>
 			<ul>
 				<li>Forwards</li>
 				<li>Hoffman</li>
@@ -196,3 +197,19 @@
 		</ol>
 	</section>
 </main>
+
+<style lang="scss">
+	details {
+		p {
+			margin-left: 2em;
+		}
+
+		details {
+			margin-left: 1em;
+		}
+	}
+
+	section {
+		padding-bottom: 3ex;
+	}
+</style>
