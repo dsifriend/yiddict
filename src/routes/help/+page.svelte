@@ -27,6 +27,7 @@
 			will try identifying this for you, but it's not perfect.
 		</p>
 		<details>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary class="secondary" role="button">Examples</summary>
 			<ul>
 				<li>Type <b>פּלימעניק</b>, not <i>פּלימעניקעס</i></li>
@@ -46,6 +47,7 @@
 			will try identifying this for you, but it's not perfect.
 		</p>
 		<details>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary class="secondary" role="button">Examples</summary>
 			<ul>
 				<li>Type <b>plimenik</b>, not <i>plimenikes</i></li>
@@ -54,6 +56,7 @@
 			</ul>
 		</details>
 		<details>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary class="secondary" role="button">YIVO Alphabet</summary>
 			<p>YIVO uses the following <strong>consonants </strong>for its transcriptions:</p>
 			<p style="text-align: center;">
@@ -63,6 +66,7 @@
 			<p>YIVO uses the following <strong>vowels</strong> for its transcriptions:</p>
 			<p style="text-align: center;">אַ:a ע:e י:i אָ:o ו:u ױ:oy ײַ:ay ײ:ey</p>
 			<details>
+				<!-- svelte-ignore a11y-no-redundant-roles -->
 				<summary class="secondary" role="button">Example</summary>
 				<p>The following sentence is correctly transliterated:</p>
 				<p style="text-align: center;">איך בינ געקומנ אַזױ װײַט צו שרײַבן אַ ביסל מאַמע־לשון!</p>
@@ -85,6 +89,7 @@
 			should be spelled with an <b>e</b>, as in <b>borekh</b>, <b>bimkem</b>, and <b>maskem</b>.
 		</p>
 		<details>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary class="secondary" role="button">ASCII encoding for לשינ־קודש</summary>
 			<p>
 				If you don't know or can't guess the pronunciation (or rather, the YIVO transcription), the
@@ -93,6 +98,7 @@
 			<p style="text-align: center;">#:א B:בֿ w:ו H:ח K:כּ x:כ e:ע c:צ S:ש Q:שׂ T:ת W:תּ</p>
 			<p>Don't distinguish final khof, mem, nun, fe, tsadi.</p>
 			<details>
+				<!-- svelte-ignore a11y-no-redundant-roles -->
 				<summary class="secondary" role="button">Examples</summary>
 				<ul>
 					<li>Type <b>msKym</b> for <b>מסכּים</b></li>
@@ -121,6 +127,7 @@
 			dictionaries.
 		</p>
 		<details>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary class="secondary" role="button">Examples</summary>
 			<ul>
 				<li>Forwards</li>
