@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '@picocss/pico';
-	import '$lib/Search.svelte';
 	import Search from '$lib/Search.svelte';
 </script>
 
