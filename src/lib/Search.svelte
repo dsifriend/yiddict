@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { redirect } from '@sveltejs/kit';
+	import * as cheerio from 'cheerio';
 
 	function search(q: FormData) {
 		// Only post a true search request from "/search", and redirect there otherwise.
@@ -15,7 +16,7 @@
 		}
 	}
 
-	// Post a query to Raphael Finkel's dictionary lookup and
+	// Post a query to Raphael Finkel's dictionary lookup.
 	function searchFinkel(q: FormData): HTMLElement {}
 </script>
 
