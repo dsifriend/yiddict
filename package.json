@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@picocss/pico": "^2.0.6"
+		"@picocss/pico": "^2.0.6",
+		"cheerio": "^1.0.0-rc.12"
 	}
 }
