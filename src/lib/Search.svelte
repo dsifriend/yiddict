@@ -17,7 +17,20 @@
 	}
 
 	// Post a query to Raphael Finkel's dictionary lookup.
-	function searchFinkel(q: FormData): HTMLElement {}
+	async function searchFinkel(q: FormData): HTMLElement {
+		// Construct `FormData` object compatible w/ external source.
+		const formdata = new FormData();
+		// Add the search term `search` to the corresponding field.
+		formdata.append(q.get('wordForm'), q.get('search'));
+		// Add preference for whole or substring matches.
+		if (q.has('wholeWord')) {
+			formdata.append('wholeWord', 'on');
+		}
+		const reponse = fetch('https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi', {
+			method: 'post',
+			body: formdata
+		});
+	}
 </script>
 
 <!-- A "Form Action" is not preferred here, as the goal is
