@@ -21,7 +21,7 @@
 		// Construct `FormData` object compatible w/ external source.
 		const formdata = new FormData();
 		// Add the search term `search` to the corresponding field.
-		formdata.append(q.get('wordForm'), q.get('search'));
+		formdata.append(q.get('wordForm') as string, q.get('search') as string);
 		// Add preference for whole or substring matches.
 		if (q.has('wholeWord')) {
 			formdata.append('wholeWord', 'on');
