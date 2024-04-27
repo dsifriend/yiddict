@@ -1,4 +1,27 @@
-<form id="searchbox">
+<script lang="ts">
+	import { redirect } from '@sveltejs/kit';
+
+	function search(q: FormData) {
+		// Only post a true search request from "/search", and redirect there otherwise.
+		if ('/search' != location.pathname) {
+			const suffix = new URLSearchParams(q as any).toString();
+			const searchAddress = `/search?${suffix}`;
+
+			redirect(303, searchAddress);
+		}
+		// Otherwise, assume search parameters have been passed correctly from the form or page load.
+		else {
+			document.querySelector('main')?.replaceWith(searchFinkel(q));
+		}
+	}
+
+	// Post a query to Raphael Finkel's dictionary lookup and
+	function searchFinkel(q: FormData): HTMLElement {}
+</script>
+
+<!-- A "Form Action" is not preferred here, as the goal is
+	to enable full offline functionality in the future. -->
+<form id="searchbox" on:submit={search}>
 	<input type="search" name="search" placeholder="זוך" aria-label="זוך⸗פונקציע" required />
 	<!-- Advanced Options -->
 	<details style="max-width: fit-content;">
