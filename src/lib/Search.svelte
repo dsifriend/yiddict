@@ -26,10 +26,14 @@
 		if (q.has('wholeWord')) {
 			formdata.append('wholeWord', 'on');
 		}
-		const reponse = fetch('https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi', {
+		// Make external POST request
+		const response = await fetch('https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi', {
 			method: 'post',
 			body: formdata
 		});
+
+		// Extracted unordered list of results from `response`.
+		//TODO
 	}
 </script>
 
