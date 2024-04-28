@@ -2,7 +2,7 @@
 	import { redirect } from '@sveltejs/kit';
 	import * as cheerio from 'cheerio';
 
-	function search(q: FormData) {
+	async function search(q: FormData) {
 		// Only post a true search request from "/search", and redirect there otherwise.
 		if ('/search' != location.pathname) {
 			const suffix = new URLSearchParams(q as any).toString();
@@ -12,12 +12,12 @@
 		}
 		// Otherwise, assume search parameters have been passed correctly from the form or page load.
 		else {
-			document.querySelector('main')?.replaceWith(searchFinkel(q));
+			document.querySelector('main')!.innerHTML = await searchFinkel(q);
 		}
 	}
 
 	// Post a query to Raphael Finkel's dictionary lookup.
-	async function searchFinkel(q: FormData): HTMLElement {
+	async function searchFinkel(q: FormData) {
 		// Construct `FormData` object compatible w/ external source.
 		const formdata = new FormData();
 		// Add the search term `search` to the corresponding field.
@@ -32,8 +32,11 @@
 			body: formdata
 		});
 
-		// Extracted unordered list of results from `response`.
-		//TODO
+		// Use CheerioJS to query for the search results within the `response`.
+		const $ = cheerio.load(response);
+		const results = $('ul').html();
+
+		return results ? results : '';
 	}
 </script>
 
