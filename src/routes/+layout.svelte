@@ -7,7 +7,7 @@
 	<header>
 		<nav>
 			<ul>
-				<li><h1 id="home">ייִדיקט</h1></li>
+				<li><a href="/"><h1 id="home">ייִדיקט</h1></a></li>
 			</ul>
 			<ul>
 				<li>
