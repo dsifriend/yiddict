@@ -45,7 +45,12 @@
 		$('.goodmatch').wrap('<ins></ins>');
 		$('.weakmatch').wrap('<mark></mark>');
 
-		const results = `<h2>רעזולטאַטן</h2><ul>${$('ul').html()}</ul>`;
+		const results = `<h2>רעזולטאַטן</h2><ul>${$('ul').html()}</ul>
+		<br>
+		<p style="text-align: end;">
+			Sourced from
+			<a href="https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi">רפֿאלס ייִדיש וועב–בלעטל</a>
+		</p>`;
 
 		return results ? results : '';
 	}
