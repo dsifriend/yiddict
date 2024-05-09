@@ -14,7 +14,7 @@
 					<details class="dropdown" dir="ltr">
 						<summary>אינפאָרמאַציע</summary>
 						<ul>
-							<li class="secondary"><a href="/about">וועגן אונז</a></li>
+							<li class="secondary"><a href="/about">וועגן אונדז</a></li>
 							<li class="secondary"><a href="/help">הילף</a></li>
 							<li class="secondary"><a href="/license">מחברים־רעכט</a></li>
 						</ul>
