@@ -1,5 +1,5 @@
 <main dir="ltr">
-	<h1>װעגן אונזד</h1>
+	<h1>װעגן אונדז</h1>
 	<h2>About Us</h2>
 	<p>
 		The <strong>yiddict.app</strong> project seeks to bring a convenient, easy-to-use dictionary app
