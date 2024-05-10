@@ -7,12 +7,14 @@
 	<header>
 		<nav>
 			<ul>
-				<li><a href="/"><h1 id="home">ייִדיקט</h1></a></li>
+				<li>
+					<a href="/"><h1 id="home">ייִדיקט</h1></a>
+				</li>
 			</ul>
 			<ul>
-				<li>
-					<details class="dropdown" dir="ltr">
-						<summary>אינפאָרמאַציע</summary>
+				<li style="padding: 0;">
+					<details class="dropdown">
+						<summary style="width: 8.25em; text-align: center;">אינפאָרמאַציע</summary>
 						<ul>
 							<li class="secondary"><a href="/about">וועגן אונדז</a></li>
 							<li class="secondary"><a href="/help">הילף</a></li>
@@ -32,7 +34,11 @@
 
 	* {
 		font-family: Arial, sans-serif;
-		max-width: 54em;
+		max-width: 48em;
+	}
+
+	body {
+		padding: 3mm;
 	}
 
 	#home {
