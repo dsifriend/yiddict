@@ -28,7 +28,7 @@
 		list-style: none;
 	}
 
-	main > ul > li {
+	:global(main > ul > li) {
 		margin-bottom: 3rem;
 	}
 </style>
