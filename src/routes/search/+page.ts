@@ -41,9 +41,9 @@ async function searchFinkel(q: FormData): Promise<string | null> {
 	// Wrap elements to apply our own styles.
 	$('.lexeme').wrap('<strong></strong>');
 	$('.grammar').wrap('<small></small>');
-	$('.goodmatch').wrap('<ins></ins>');
 	$('.goodmatch').wrap('<mark></mark>');
 	$('.weakmatch').wrap('<mark></mark>');
+	$('.goodmatch').wrap('<ins></ins>');
 
 	const results = $('ul').html();
 

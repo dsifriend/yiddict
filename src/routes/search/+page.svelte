@@ -8,7 +8,7 @@
 	{:then results}
 		<h2>רעזולטאַטן</h2>
 		<br />
-		<ul>{results}</ul>
+		<ul>{@html results}</ul>
 		<br />
 		<p style="text-align: end;">
 			Sourced from
