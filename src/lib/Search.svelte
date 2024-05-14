@@ -8,9 +8,6 @@
 
 		location.assign(searchAddress);
 	}
-
-	// If options were set from a previous search, set those here now too.
-	const previousSearch = new URLSearchParams(location.search);
 </script>
 
 <!-- A "Form Action" is not preferred here, as the goal is
@@ -22,10 +19,16 @@
 		<summary>ברירות</summary>
 		<fieldset>
 			<label>
-				גאַנצע־װערטער &nbsp;<input name="wholeWord" type="checkbox" role="switch" checked />
+				גאַנצע־װערטער &nbsp;<input
+					id="wholeWord"
+					name="wholeWord"
+					type="checkbox"
+					role="switch"
+					checked
+				/>
 			</label>
 		</fieldset>
-		<select name="wordForm" aria-label="בייגונג">
+		<select id="wordForm" name="wordForm" aria-label="בייגונג">
 			<option value="word" selected>אומגעבױגן</option>
 			<option value="base">געבױגן</option>
 		</select>
