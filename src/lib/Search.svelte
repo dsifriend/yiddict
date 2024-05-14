@@ -8,6 +8,9 @@
 
 		location.assign(searchAddress);
 	}
+
+	// If options were set from a previous search, set those here now too.
+	const previousSearch = new URLSearchParams(location.search);
 </script>
 
 <!-- A "Form Action" is not preferred here, as the goal is
