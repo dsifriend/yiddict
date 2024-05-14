@@ -31,4 +31,8 @@
 	:global(main > ul > li) {
 		margin-bottom: 3rem;
 	}
+
+	:global(mark) {
+		padding: 0;
+	}
 </style>
