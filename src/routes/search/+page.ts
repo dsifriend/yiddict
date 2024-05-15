@@ -30,7 +30,7 @@ async function searchFinkel(q: FormData): Promise<string | null> {
 		formdata.append('wholeWord', 'on');
 	}
 	// Make external POST request
-	const response = await fetch('https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi', {
+	const response = await fetch('https://yiddict.app/external', {
 		method: 'post',
 		body: formdata
 	}).then((t) => t.text());

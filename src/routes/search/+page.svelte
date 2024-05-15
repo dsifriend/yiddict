@@ -13,8 +13,9 @@
 			<br />
 			<p style="text-align: end;">
 				Sourced from
-				<a href="https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi">רפֿאלס ייִדיש וועב–בלעטל</a
-				>
+				<a href="https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi">
+					רפֿאלס ייִדיש וועב–בלעטל
+				</a>
 			</p>
 		{:else}
 			<h2>גאַרנישט געפֿונען</h2>

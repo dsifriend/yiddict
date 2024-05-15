@@ -1,0 +1,11 @@
+# Build command & directory
+[build]
+  command = "npm run build"
+  publish = "build"
+
+# CORS Proxy
+[[redirects]]
+  from = "/external"
+  to = "https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi"
+  force = true
+  headers = { "Access-Control-Allow-Origin" = "*"}
