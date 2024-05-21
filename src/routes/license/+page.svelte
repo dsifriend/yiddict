@@ -1,5 +1,5 @@
 <main dir="ltr">
-	<h1>מחברים־רעכט*</h1>
+	<h1>מחברים־רעכט</h1>
 	<h2>License & Copyright</h2>
 	<p>
 		<em>Yiddict.App</em> is built on <a href="https://svelte.dev">Svelte</a> and styled with
@@ -7,9 +7,8 @@
 		<a href="https://opensource.org/license/mit">MIT Software License</a>.
 	</p>
 	<p>
-		Dictionary entries are sourced from the <a
-			href="https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi">dictionary lookup page</a
-		>
+		Dictionary entries are sourced from the
+		<a href="https://www.cs.uky.edu/~raphael/yiddish/dictionary.cgi">dictionary lookup page</a>
 		at <em>Refoyls Yidish Veb-Bletl</em> by <strong>Raphael Finkel</strong>. Permission to use this
 		content is governed by the
 		<a href="https://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>
