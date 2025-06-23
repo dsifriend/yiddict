@@ -13,6 +13,10 @@ importers:
         version: 5.8.3
 
   packages/unifier:
+    dependencies:
+      typescript-parsec:
+        specifier: ^0.3.4
+        version: 0.3.4
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -413,6 +417,9 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  typescript-parsec@0.3.4:
+    resolution: {integrity: sha512-6RD4xOxp26BTZLopNbqT2iErqNhQZZWb5m5F07/UwGhldGvOAKOl41pZ3fxsFp04bNL+PbgMjNfb6IvJAC/uYQ==}
+
   typescript@5.8.3:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
@@ -756,6 +763,8 @@ snapshots:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  typescript-parsec@0.3.4: {}
 
   typescript@5.8.3: {}
 
