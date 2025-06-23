@@ -1,15 +1,15 @@
 {
-    "name": "yiddict",
-    "private": true,
-    "version": "2.0.0"
-    "scripts": {
-        "dev": "pnpm --parallel dev"
-    },
-    "devDependencies": {
-        "typescript": "^5.0.0"
-    }
-    "pnpm": {
-        "workspaces": ["tools/*", "packages/*"]
-    }
+  "name": "yiddict",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "dev": "pnpm --parallel dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "workspaces": [
+    "tools/*",
+    "packages/*"
+  ]
 }
-
