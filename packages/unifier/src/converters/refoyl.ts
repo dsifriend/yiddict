@@ -67,6 +67,13 @@ const FormBaseStr = `${FormCharacters}+`;
 const FormPatternStr = `${FormBaseStr}(?:\s*\{${FormBaseStr}\})?`;
 /** Forms to be captured only occur after whitespace outside of brackets. */
 const FormPattern = RegExp(`(?<=^|\\s)${unbracketed(FormPatternStr)}`, "g");
+/**
+ * Forms require an extra pattern in order to capture
+ * transliterations and spellings in separate groups.
+ * */
+const FormCapturePattern = RegExp(
+  `^(${FormBaseStr})(?:\\s*\\{(${FormBaseStr})\\})?`
+);
 
 /**
  * Refoyl defines a set of so-called "codes" that are used to encode
@@ -114,6 +121,13 @@ const MacroSymbolCharacters = "[ABCDEGHIKLNPSTVX-]";
 const MacroPattern = RegExp(
   `/${MacroSymbolCharacters}(?:${FormPatternStr})?`,
   "g"
+);
+/**
+ * Macros also require an extra pattern
+ * for capturing optional arguments separately.
+ * */
+const MacroCapturePattern = RegExp(
+  `^(/${MacroSymbolCharacters})(${FormPatternStr})`
 );
 
 /**
