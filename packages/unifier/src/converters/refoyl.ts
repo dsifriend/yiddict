@@ -220,5 +220,5 @@ const EntryTokenizer = buildLexer([
   [true, MacroPattern, EntryComponent.Symbol],
   // Bracketed data has different internal syntax, but the syntax to use
   // can always be identified by the first word it contains.
-  [true, /\[\]/g, EntryComponent.BracketedData],
+  [true, /\[[^\[\]]+\]/g, EntryComponent.BracketedData],
 ]);
