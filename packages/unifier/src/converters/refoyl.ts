@@ -66,7 +66,7 @@ const FormBaseStr = `${FormCharacters}+`;
  */
 const FormPatternStr = `${FormBaseStr}(?:\s*\{${FormBaseStr}\})?`;
 /** Forms to be captured only occur after whitespace outside of brackets. */
-const FormPattern = RegExp(`(?<=^|\s)${unbracketed(FormPatternStr)}`, "g");
+const FormPattern = RegExp(`(?<=^|\\s)${unbracketed(FormPatternStr)}`, "g");
 
 /**
  * Refoyl defines a set of so-called "codes" that are used to encode
