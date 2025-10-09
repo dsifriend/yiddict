@@ -238,3 +238,63 @@ const EntryTokenizer = buildLexer([
   // Comments begin with a % and continue until the end of line.
   [true, /%.*$/, EntryComponent.Comment],
 ]);
+
+interface ParsedForm {
+  text: string;
+  spellingHint?: string;
+}
+
+interface ParsedMacro {
+  symbol: MacroSymbol;
+  argument?: string;
+}
+
+/**
+ * The "raw" form of bracketed data may be necessary during conversion.
+ */
+interface ParsedBracketedData {
+  type: BracketedDataType;
+  content: string;
+  raw: string;
+}
+
+/**
+ * The "raw" form of an entry may be useful during debugging.
+ * Likewise its linenumber within the source file.
+ */
+interface ParsedEntry {
+  headword?: ParsedForm;
+  macros: ParsedMacro[];
+  bracketedData: ParsedBracketedData[];
+  comment?: string;
+  raw: string;
+  linenumber: number;
+}
+
+/**
+ * Greatest unit of separation within the source file.
+ *
+ * Entries aren't converted until the block they belong to
+ * have been correctly parsed in their entirety.
+ */
+interface EntryBlock {
+  mainEntry: string;
+  subEntries: string[];
+  startLine: number;
+  endLine: number;
+}
+
+/**
+ * Because not all entries are necessarily well formed in the source file,
+ * they're reggurgitated in order to be manually inspected, corrected,
+ * and finally parsed during a new pass.
+ */
+interface ProcessingResult {
+  wellFormed: ParsedEntry[];
+  malformed: {
+    block: string;
+    startLine: number;
+    endLine: number;
+    error: string;
+  }[];
+}
