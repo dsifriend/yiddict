@@ -235,4 +235,6 @@ const EntryTokenizer = buildLexer([
   // Bracketed data has different internal syntax, but the syntax to use
   // can always be identified by the first word it contains.
   [true, /\[[^\[\]]+\]/g, EntryComponent.BracketedData],
+  // Comments begin with a % and continue until the end of line.
+  [true, /%.*$/, EntryComponent.Comment],
 ]);
