@@ -185,7 +185,7 @@ const BracketedDataTokenizer = buildLexer([
   [true, /pronoun.*/, BracketedDataType.Pronoun],
   [true, /verb/, BracketedDataType.Verb],
   // Other Grammar
-  [true, /[mfn][mfn|]*/, BracketedDataType.GenderMarker],
+  [true, /[mfn][mfn|/]*/, BracketedDataType.GenderMarker],
   // Morphology
   [true, /prefix/, BracketedDataType.Prefix],
   // Phonetics
