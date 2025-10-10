@@ -205,6 +205,42 @@ const GrammarNoteCapturePattern = new RegExp(`^grammar:\\s*(.+)$`);
 const UsageNoteCapturePattern = new RegExp(`^(?:usage|note):\\s*(.+)$`);
 
 /**
+ * Categorization of `BracketedDataType` based on applicability to preceding form.
+ *
+ * Compare to `LOCAL_DATA_TYPES`.
+ */
+const SHARED_DATA_TYPES = new Set([
+  BracketedDataType.Definition,
+  BracketedDataType.Origin,
+  BracketedDataType.UsageNote,
+]);
+
+/**
+ * Categorization of `BracketedDataType` based on applicability to preceding form.
+ *
+ * Compare to `LOCAL_DATA_TYPES`.
+ */
+const LOCAL_DATA_TYPES = new Set([
+  BracketedDataType.Article,
+  BracketedDataType.Adjective,
+  BracketedDataType.Adverb,
+  BracketedDataType.Conjunction,
+  BracketedDataType.Interjection,
+  BracketedDataType.Numeral,
+  BracketedDataType.Participle,
+  BracketedDataType.Preposition,
+  BracketedDataType.Pronoun,
+  BracketedDataType.Verb,
+  BracketedDataType.GenderMarker,
+  BracketedDataType.Pronunciation,
+  BracketedDataType.Prefix,
+  BracketedDataType.Clause,
+  BracketedDataType.Connotations,
+  BracketedDataType.Idiom,
+  BracketedDataType.GrammarNote,
+]);
+
+/**
  * Entries in Refoyl's source files are composed of three main parts:
  * 1. The `Form` for an entry, possibly including some spelling annotation.
  * 2. Any `MacroSymbol`s and their arguments, and
@@ -302,3 +338,111 @@ interface ProcessingResult {
     error: string;
   }[];
 }
+
+/** Extracts form text and optional spelling hint from a form token. */
+function parseForm(formText: string): ParsedForm {
+  const match = formText.match(FormCapturePattern);
+  if (!match) {
+    return { text: formText };
+  }
+  return {
+    text: match[1].trim(),
+    spellingHint: match[2],
+  };
+}
+
+/** Parses a macro symbol and its optional argument. */
+function parseMacro(macroText: string): ParsedMacro | null {
+  const match = macroText.match(MacroCapturePattern);
+  if (!match) return null;
+
+  const symbol = match[1] as MacroSymbol;
+  const argument = match[2].trim() || undefined;
+
+  return { symbol, argument };
+}
+
+/** Parses bracketed data by tokenizing its content. */
+function parseBracketedData(bracketedText: string): ParsedBracketedData | null {
+  // Remove brackets
+  const content = bracketedText.slice(1, -1);
+
+  // Tokenize the content
+  const tokens = BracketedDataTokenizer.parse(content);
+  if (!tokens) {
+    return null;
+  }
+
+  return {
+    type: tokens.kind,
+    content: content,
+    raw: bracketedText,
+  };
+}
+
+/**
+ * Parser for a Form token
+ */
+const formParser: Parser<EntryComponent, ParsedForm> = apply(
+  tok(EntryComponent.Form),
+  (token) => parseForm(token.text)
+);
+
+/**
+ * Parser for a MacroSymbol token
+ */
+const macroParser: Parser<EntryComponent, ParsedMacro> = apply(
+  tok(EntryComponent.Symbol),
+  (token) => {
+    const macro = parseMacro(token.text);
+    if (!macro) {
+      throw new Error(`Invalid macro: ${token.text}`);
+    }
+    return macro;
+  }
+);
+
+/**
+ * Parser for BracketedData token
+ */
+const bracketedParser: Parser<EntryComponent, ParsedBracketedData> = apply(
+  tok(EntryComponent.BracketedData),
+  (token) => {
+    const parsed = parseBracketedData(token.text);
+    if (!parsed) {
+      throw new Error(`Invalid bracketed data: ${token.text}`);
+    }
+    return parsed;
+  }
+);
+
+// TODO: reprogram to parse origin comments as "Origin" etc.
+/**
+ * Parser for optional comment at end of line
+ */
+const commentParser: Parser<EntryComponent, string> = apply(
+  tok(EntryComponent.Comment),
+  (token) => token.text.slice(1).trim() // Remove leading %
+);
+
+/**
+ * Main entry parser
+ * Structure: [Form] [Macro*] [BracketedData*] [Comment?]
+ */
+const entryParser: Parser<
+  EntryComponent,
+  Omit<ParsedEntry, "raw" | "linenumber">
+> = apply(
+  seq(
+    opt_sc(formParser),
+    opt_sc(rep_sc(macroParser)),
+    opt_sc(rep_sc(bracketedParser)),
+    opt_sc(commentParser)
+  ),
+  ([headword, macros, bracketedData, comment]) => ({
+    headword: headword || undefined,
+    macros: macros || [],
+    bracketedData: bracketedData || [],
+    comment: comment || undefined,
+  })
+);
