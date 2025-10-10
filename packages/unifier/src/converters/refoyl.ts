@@ -168,9 +168,10 @@ enum BracketedDataType {
   // Usage
   Clause,
   Connotations,
+  GrammarNote,
   Idiom,
   Origin,
-  UsageNote, // Encoding is inconsistent between `grammar` and `usage`
+  UsageNote,
 }
 const BracketedDataTokenizer = buildLexer([
   // Word-Classes
@@ -195,10 +196,13 @@ const BracketedDataTokenizer = buildLexer([
   // Usage
   [true, /clause/, BracketedDataType.Clause],
   [true, /connotations: .+/, BracketedDataType.Connotations],
+  [true, /grammar: .+/, BracketedDataType.GrammarNote],
   [true, /idiom: .+/, BracketedDataType.Idiom],
   [true, /origin: .+/, BracketedDataType.Origin],
-  [true, /(note|usage|grammar): .+/, BracketedDataType.UsageNote],
+  [true, /(note|usage): .+/, BracketedDataType.UsageNote],
 ]);
+const GrammarNoteCapturePattern = new RegExp(`^grammar:\\s*(.+)$`);
+const UsageNoteCapturePattern = new RegExp(`^(?:usage|note):\\s*(.+)$`);
 
 /**
  * Entries in Refoyl's source files are composed of three main parts:
