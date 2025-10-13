@@ -23,6 +23,7 @@ import {
 } from "typescript-parsec";
 import * as fs from "fs";
 import * as path from "path";
+import { fileURLToPath } from "url";
 
 /**
  * Internal `Result` type for operations that can fail.
@@ -906,7 +907,7 @@ Examples:
     });
 }
 
-// Run CLI if this script is executed directly
-if (require.main === module) {
+const isMainModule = process.argv[1] === fileURLToPath(import.meta.url);
+if (isMainModule) {
   main();
 }
