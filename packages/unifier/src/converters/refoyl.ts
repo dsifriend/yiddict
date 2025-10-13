@@ -7,6 +7,9 @@ import {
   LexicalEntry,
   LexiconBuilder,
   LexicalEntryBuilder,
+  PartOfSpeech,
+  FormType,
+  Gender,
 } from "@yiddict/lexicon";
 import {
   seq,
@@ -18,6 +21,17 @@ import {
   Token,
   buildLexer,
 } from "typescript-parsec";
+import * as fs from "fs";
+import * as path from "path";
+
+/**
+ * Internal `Result` type for operations that can fail.
+ * Provides type-safe error handling without exceptions.
+ */
+type Result<T, E = string> = { ok: true; value: T } | { ok: false; error: E };
+
+const Ok = <T>(value: T): Result<T, never> => ({ ok: true, value });
+const Err = <E>(error: E): Result<never, E> => ({ ok: false, error });
 
 /**
  * Lines in Refoyl's source file can be categorized into four broad types:
@@ -279,6 +293,49 @@ const EntryTokenizer = buildLexer([
   [true, /%.*$/, EntryComponent.Comment],
 ]);
 
+/**
+ * Transcribes ASCII-encoded Yiddish text to proper Unicode characters.
+ *
+ * @param asciiText - The ASCII-encoded text from the source file
+ * @returns Result containing either the transcribed text or an error message
+ *
+ * @example
+ * ```typescript
+ * const result = transcribeToYiddish('shney');
+ * if (result.ok) {
+ *   console.log(result.value); // Should output: שנײ
+ * } else {
+ *   console.error(result.error);
+ * }
+ * ```
+ */
+function transcribeToYiddish(asciiText: string): Result<string> {
+  // TODO: Implement actual transcription logic
+  // This should map:
+  // - sh -> ש
+  // - n -> נ
+  // - ey -> יי
+  // etc.
+
+  // For now, return the input unchanged as a placeholder
+  // This allows the pipeline to work while transcription is being implemented
+  return Ok(asciiText);
+
+  // Future implementation should:
+  // 1. Parse the ASCII according to Refoyl's encoding scheme
+  // 2. Map each character/digraph to its Yiddish equivalent
+  // 3. Handle special cases (like | for alternative endings)
+  // 4. Return Err() if encoding is malformed
+}
+
+/**
+ * Represents the separate pronunciation and spelling components
+ * of a written word form.
+ *
+ * Despite the variable name "spellingHint", this contains
+ * the CANONICAL form (content in curly braces like `{Sny}`)
+ * while 'text' contains the ROMANIZATION (like `shney`).
+ */
 interface ParsedForm {
   text: string;
   spellingHint?: string;
@@ -446,3 +503,285 @@ const entryParser: Parser<
     comment: comment || undefined,
   })
 );
+
+/**
+ * Reads the source file and splits it into entry blocks
+ * Each block contains a main entry and its subentries
+ */
+function splitIntoBlocks(content: string): EntryBlock[] {
+  const lines = content.split("\n");
+  const blocks: EntryBlock[] = [];
+  let currentBlock: EntryBlock | null = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const lineNumber = i + 1;
+
+    // Tokenize the line to determine its category
+    const token = LineCategorizer.parse(line);
+
+    if (!token) {
+      // Empty or comment line - skip
+      continue;
+    }
+
+    if (token.kind === LineCategory.Entry) {
+      // Start a new block
+      if (currentBlock) {
+        blocks.push(currentBlock);
+      }
+
+      currentBlock = {
+        mainEntry: line,
+        subEntries: [],
+        startLine: lineNumber,
+        endLine: lineNumber,
+      };
+    } else if (token.kind === LineCategory.SubEntry && currentBlock) {
+      // Add to current block
+      currentBlock.subEntries.push(line);
+      currentBlock.endLine = lineNumber;
+    }
+  }
+
+  // Final block
+  if (currentBlock) {
+    blocks.push(currentBlock);
+  }
+
+  return blocks;
+}
+
+/**
+ * Attempts to parse a single entry line
+ * Returns ParsedEntry on success, or error message on failure
+ */
+function tryParseEntry(
+  entryLine: string,
+  lineNumber: number
+): { success: true; entry: ParsedEntry } | { success: false; error: string } {
+  try {
+    // Tokenize the entry line
+    const tokens = EntryTokenizer.parse(entryLine);
+
+    if (!tokens) {
+      return {
+        success: false,
+        error: "Failed to tokenize entry line",
+      };
+    }
+
+    // Parse using the entryParser combinator
+    const result = entryParser.parse(tokens);
+
+    if (!result.successful) {
+      return {
+        success: false,
+        error: `Parse failed at position ${result.error?.pos}: ${
+          result.error?.message || "Unknown error"
+        }`,
+      };
+    }
+
+    // Construct the full ParsedEntry with metadata
+    const parsedEntry: ParsedEntry = {
+      ...result.candidates[0].result,
+      raw: entryLine,
+      linenumber: lineNumber,
+    };
+
+    return { success: true, entry: parsedEntry };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+/**
+ * Processes main entries only (no subentries)
+ * Returns well-formed entries and malformed blocks for manual correction
+ */
+function processMainEntriesOnly(blocks: EntryBlock[]): ProcessingResult {
+  const wellFormed: ParsedEntry[] = [];
+  const malformed: ProcessingResult["malformed"] = [];
+
+  for (const block of blocks) {
+    // For now, only process blocks WITHOUT subentries
+    if (block.subEntries.length > 0) {
+      // Skip blocks with subentries - they'll be handled later
+      continue;
+    }
+
+    const parseResult = tryParseEntry(block.mainEntry, block.startLine);
+
+    if (parseResult.success) {
+      wellFormed.push(parseResult.entry);
+    } else {
+      malformed.push({
+        block: block.mainEntry,
+        startLine: block.startLine,
+        endLine: block.endLine,
+        error: parseResult.error,
+      });
+    }
+  }
+
+  return { wellFormed, malformed };
+}
+
+/**
+ * Writes malformed entries to a file for manual correction
+ */
+function writeMalformedEntries(
+  malformed: ProcessingResult["malformed"],
+  outputPath: string
+): void {
+  const lines = malformed.map((item) => {
+    return `% Line ${item.startLine}: ${item.error}\n${item.block}`;
+  });
+
+  fs.writeFileSync(outputPath, lines.join("\n\n"), "utf-8");
+  console.log(`Wrote ${malformed.length} malformed entries to ${outputPath}`);
+}
+
+/**
+ * Converts well-formed ParsedEntry objects to OntoLex format
+ * Uses the extended addTypedForm() method for proper form classification
+ */
+function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
+  const lexicalEntries: LexicalEntry[] = [];
+
+  for (const entry of entries) {
+    if (!entry.headword) {
+      // Skip entries without headwords (shouldn't happen if parser is correct)
+      continue;
+    }
+
+    // Determine part of speech from macros
+    let partOfSpeech: PartOfSpeech | undefined;
+    for (const macro of entry.macros) {
+      switch (macro.symbol) {
+        case MacroSymbol.Noun:
+        case MacroSymbol.NounS:
+        case MacroSymbol.NounX:
+        case MacroSymbol.NounProper:
+          partOfSpeech = PartOfSpeech.NOUN;
+          break;
+        case MacroSymbol.Verb:
+        case MacroSymbol.VerbT:
+        case MacroSymbol.VerbB:
+          partOfSpeech = PartOfSpeech.VERB;
+          break;
+        case MacroSymbol.Adjective:
+        case MacroSymbol.AdjectiveK:
+        case MacroSymbol.AdjectiveI:
+          partOfSpeech = PartOfSpeech.ADJECTIVE;
+          break;
+        case MacroSymbol.Preposition:
+          partOfSpeech = PartOfSpeech.PREPOSITION;
+          break;
+      }
+    }
+
+    // Determine forms:
+    // - spellingHint (in curly braces) is the canonical form if present
+    // - text (outside braces) is the phonetic representation or also canonical if they coincide
+    const canoncialSrc = entry.headword.spellingHint ?? entry.headword.text;
+    const phoneticSrc = entry.headword.spellingHint
+      ? entry.headword.text
+      : undefined;
+
+    // Transcribe both forms to Yiddish Unicode
+    const canonicalTranscription = transcribeToYiddish(canoncialSrc);
+    const phoneticTranscription = phoneticSrc
+      ? transcribeToYiddish(phoneticSrc)
+      : undefined;
+
+    if (!canonicalTranscription.ok) {
+      // If transcription fails, log error and skip this entry
+      console.error(
+        `Transcription error for "${canoncialSrc}": ${canonicalTranscription.error}`
+      );
+      continue;
+    }
+    if (phoneticTranscription && !phoneticTranscription.ok) {
+      // If transcription fails, log error and skip this entry
+      console.error(
+        `Transcription error for "${phoneticSrc}": ${phoneticTranscription.error}`
+      );
+      continue;
+    }
+
+    const canonicalRep = canonicalTranscription.value;
+    const phoneticRep = phoneticTranscription?.value;
+
+    // Create the lexical entry builder with the Yiddish canonical form
+    const builder = new LexicalEntryBuilder(
+      canonicalRep,
+      "yi", // Yiddish language code
+      partOfSpeech
+    );
+
+    // If we have a separate romanization, add it with proper type classification
+    if (phoneticSrc) {
+      // Add the romanized form with explicit FormType.ROMANIZATION
+      builder.addTypedForm(phoneticSrc, FormType.ROMANIZATION, undefined);
+      // Add the phonetic spelling as an orthographic variant, admissible in the USSR
+      if (phoneticRep) {
+        builder.addTypedForm(phoneticRep, FormType.PHONETIC, undefined);
+      }
+    }
+    // Otherwise pass through the untranscribed source
+    else {
+      builder.addTypedForm(canoncialSrc, FormType.ROMANIZATION, undefined);
+    }
+
+    // Process bracketed data
+    for (const data of entry.bracketedData) {
+      switch (data.type) {
+        case BracketedDataType.Definition:
+          // Extract definition text (remove "def: " prefix)
+          const defMatch = data.content.match(/^def:\s*(.+)$/);
+          if (defMatch) {
+            builder.addSense(defMatch[1], "en");
+          }
+          break;
+
+        case BracketedDataType.GenderMarker:
+          // Set PoS
+          partOfSpeech = PartOfSpeech.NOUN;
+          // Parse gender (m/f/n)
+          if (data.content === "m") {
+            builder.addMorphologicalFeatures({ gender: [Gender.MASCULINE] });
+          } else if (data.content === "f") {
+            builder.addMorphologicalFeatures({ gender: [Gender.FEMININE] });
+          } else if (data.content === "n") {
+            builder.addMorphologicalFeatures({ gender: [Gender.NEUTER] });
+          }
+          break;
+
+        case BracketedDataType.UsageNote:
+        case BracketedDataType.GrammarNote:
+          // Extract note text
+          const noteMatch = data.content.match(
+            /^(?:usage|note|grammar):\s*(.+)$/
+          );
+          if (noteMatch) {
+            builder.addComment(noteMatch[1], "en");
+          }
+          break;
+      }
+    }
+
+    // Add source comment if present
+    if (entry.comment) {
+      builder.addComment(`Source: ${entry.comment}`, "en");
+    }
+
+    lexicalEntries.push(builder.build());
+  }
+
+  return lexicalEntries;
+}
