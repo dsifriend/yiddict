@@ -4,7 +4,11 @@
  */
 
 import { URI, LangString, LanguageTag, NamespaceMap } from "../types/core";
-import { PartOfSpeech, MorphologicalPattern } from "../enums/linguistic";
+import {
+  PartOfSpeech,
+  MorphologicalPattern,
+  FormType,
+} from "../enums/linguistic";
 import {
   MorphologicalFeatures,
   Pronunciation,
@@ -30,8 +34,7 @@ export interface Translation {
 }
 
 /**
- * OntoLex Form - represents different written or spoken forms of a lexical entry
- * Forms include canonical forms, inflected forms, and variants
+ * Extended Form interface with form type classification
  */
 export interface Form {
   /** Unique identifier for this form */
@@ -46,6 +49,10 @@ export interface Form {
   morphologicalFeatures?: MorphologicalFeatures;
   /** Pronunciation information for this specific form */
   pronunciation?: Pronunciation;
+  /** Classification of what kind of form this is */
+  formType?: FormType;
+  /** Optional descriptive label for the form */
+  formLabel?: LangString[];
 }
 
 /**

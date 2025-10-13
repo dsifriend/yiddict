@@ -5,7 +5,11 @@
 
 import { v5 as uuidv5 } from "uuid";
 import { URI, LanguageTag, LangString } from "../types/core";
-import { PartOfSpeech, MorphologicalPattern } from "../enums/linguistic";
+import {
+  PartOfSpeech,
+  MorphologicalPattern,
+  FormType,
+} from "../enums/linguistic";
 import {
   MorphologicalFeatures,
   Etymology,
@@ -270,6 +274,60 @@ export class LexicalEntryBuilder {
 
     if (!this.entry.otherForms) this.entry.otherForms = [];
     this.entry.otherForms.push(form);
+    return this;
+  }
+
+  /**
+   * Adds an inflected or variant form with explicit type classification
+   * @param writtenRep - The written representation of the form
+   * @param formType - Classification of what kind of form this is
+   * @param features - Optional morphological features of this form
+   * @param label - Optional descriptive label
+   * @returns This builder instance for method chaining
+   *
+   * @example
+   * ```typescript
+   * builder.addTypedForm('shney', FormType.ROMANIZATION)
+   *        .addTypedForm('שנײ', FormType.CANONICAL);
+   * ```
+   */
+  addTypedForm(
+    writtenRep: string,
+    formType: FormType,
+    features?: MorphologicalFeatures,
+    label?: string
+  ): this {
+    const form: Form = {
+      id: `urn:uuid:${uuidv5(writtenRep + formType, this.entry.id)}`,
+      type: "ontolex:Form",
+      writtenRep: [{ value: writtenRep, lang: this.entry.language! }],
+      morphologicalFeatures: features,
+      formType,
+      formLabel: label ? [{ value: label, lang: "en" }] : undefined,
+    };
+
+    if (!this.entry.otherForms) this.entry.otherForms = [];
+    this.entry.otherForms.push(form);
+    return this;
+  }
+
+  /**
+   * Sets multiple written representations for the canonical form
+   * Useful for languages with multiple scripts or spelling conventions
+   *
+   * @param representations - Array of written representations with language tags
+   * @returns This builder instance for method chaining
+   *
+   * @example
+   * ```typescript
+   * builder.setCanonicalWrittenReps([
+   *   { value: 'שניי', lang: 'yi' },      // Yiddish script
+   *   { value: 'shney', lang: 'yi-Latn' } // Romanized Yiddish
+   * ]);
+   * ```
+   */
+  setCanonicalWrittenReps(representations: LangString[]): this {
+    this.entry.canonicalForm.writtenRep = representations;
     return this;
   }
 

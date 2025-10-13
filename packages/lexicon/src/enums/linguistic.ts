@@ -4,6 +4,25 @@
  */
 
 /**
+ * Form type classification for different representation purposes
+ * Based on OntoLex-Lemon best practices for multilingual lexicons
+ */
+export enum FormType {
+  /** The canonical/lemma form of the entry */
+  CANONICAL = "canonical",
+  /** An inflected grammatical form (plural, past tense, etc.) */
+  INFLECTED = "inflected",
+  /** Orthographic variant (alternative spelling in same script) */
+  ORTHOGRAPHIC_VARIANT = "orthographic_variant",
+  /** Romanization/transliteration to Latin script */
+  ROMANIZATION = "romanization",
+  /** Phonetic representation (not IPA, but phonemic spelling) */
+  PHONETIC = "phonetic",
+  /** Archaic or historical spelling */
+  ARCHAIC = "archaic",
+}
+
+/**
  * Part of speech categories following LexInfo ontology
  * Used to classify lexical entries by their grammatical function
  */

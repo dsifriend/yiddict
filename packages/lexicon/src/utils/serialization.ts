@@ -4,6 +4,7 @@
  */
 
 import { v5 as uuidv5 } from "uuid";
+import { FormType } from "../enums/linguistic";
 import { Lexicon, LexicalEntry } from "../interfaces/ontolex";
 
 /**
@@ -200,11 +201,12 @@ export class LexiconUtils {
       form_records.push({
         id: entry.canonicalForm.id,
         entry_id: entry.id,
-        form_type: "canonical",
+        form_type: entry.canonicalForm.formType || FormType.CANONICAL,
         written_rep: entry.canonicalForm.writtenRep[0].value,
         language: entry.language,
         phonetic_rep: entry.canonicalForm.phoneticRep?.[0],
         morphological_features: entry.canonicalForm.morphologicalFeatures,
+        form_label: entry.canonicalForm.formLabel?.[0]?.value,
         data: entry.canonicalForm,
       });
 
@@ -213,11 +215,12 @@ export class LexiconUtils {
         form_records.push({
           id: form.id,
           entry_id: entry.id,
-          form_type: "inflected",
+          form_type: form.formType || FormType.INFLECTED,
           written_rep: form.writtenRep[0].value,
           language: entry.language,
           phonetic_rep: form.phoneticRep?.[0],
           morphological_features: form.morphologicalFeatures,
+          form_label: form.formLabel?.[0]?.value,
           data: form,
         });
       });

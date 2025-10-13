@@ -18,6 +18,7 @@ export {
 export {
   PartOfSpeech,
   MorphologicalPattern,
+  FormType,
   Gender,
   Number,
   Case,
