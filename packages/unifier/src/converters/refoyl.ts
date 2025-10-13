@@ -55,7 +55,7 @@ const LineCategorizer = buildLexer([
   [false, /^\s*$/gm, LineCategory.Empty],
   [false, /^\s*%.*$/gm, LineCategory.Comment],
   [true, /^\S.*$/gm, LineCategory.Entry],
-  [true, /^\t[^\s%].*$/gm, LineCategory.SubEntry],
+  [true, /^\t+[^\s%].*$/gm, LineCategory.SubEntry],
 ]);
 
 // Knowing whether a string is between brackets or not is crucial for picking
