@@ -60,9 +60,10 @@ const LineCategorizer = buildLexer([
 // Knowing whether a string is between brackets or not is crucial for picking
 // the right behavior for parsing an entry's syntax.
 /** Surrounds its input w/ regex such that it won't match if between brackets. */
-const unbracketed = (inner: string) => `(?<!\[[^\]]*)${inner}(?![^\[]*\])`;
+const unbracketed = (inner: string) =>
+  `(?<!\\[\\[^\\]]*)${inner}(?![^\\[]*\\])`;
 /** Surrounds its input w/ regex such that it will only match if between brackets. */
-const bracketed = (inner: string) => `(?<=\[)${inner}(?=\])`;
+const bracketed = (inner: string) => `(?<=\\[)${inner}(?=\\])`;
 
 /**
  * Refoyl uses a few characters outside the usual `A-Za-z` range
