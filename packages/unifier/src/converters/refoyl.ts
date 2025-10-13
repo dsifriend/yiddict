@@ -81,13 +81,13 @@ const FormBaseStr = `${FormCharacters}+`;
  */
 const FormPatternStr = `${FormBaseStr}(?:\s*\{${FormBaseStr}\})?`;
 /** Forms to be captured only occur after whitespace outside of brackets. */
-const FormPattern = RegExp(`(?<=^|\\s)${unbracketed(FormPatternStr)}`, "g");
+const FormPattern = RegExp(`\^(?<=^|\\s)${unbracketed(FormPatternStr)}`, "g");
 /**
  * Forms require an extra pattern in order to capture
  * transliterations and spellings in separate groups.
  * */
 const FormCapturePattern = RegExp(
-  `^(${FormBaseStr})(?:\\s*\\{(${FormBaseStr})\\})?`
+  `(${FormBaseStr})(?:\\s*\\{(${FormBaseStr})\\})?`
 );
 
 /**
@@ -134,7 +134,7 @@ const MacroSymbolCharacters = "[ABCDEGHIKLNPSTVX-]";
  * intended to take one, but in practice this is fine.
  */
 const MacroPattern = RegExp(
-  `/${MacroSymbolCharacters}(?:${FormPatternStr})?`,
+  `\^\/${MacroSymbolCharacters}(?:${FormPatternStr})?`,
   "g"
 );
 /**
@@ -142,7 +142,7 @@ const MacroPattern = RegExp(
  * for capturing optional arguments separately.
  * */
 const MacroCapturePattern = RegExp(
-  `^(/${MacroSymbolCharacters})(${FormPatternStr})`
+  `(/${MacroSymbolCharacters})(${FormPatternStr})`
 );
 
 /**
@@ -190,31 +190,31 @@ enum BracketedDataType {
 }
 const BracketedDataTokenizer = buildLexer([
   // Word-Classes
-  [true, /article/, BracketedDataType.Article],
-  [true, /adj.*/, BracketedDataType.Adjective],
-  [true, /adv.*/, BracketedDataType.Adverb],
-  [true, /conj.*/, BracketedDataType.Adverb],
-  [true, /interj/, BracketedDataType.UsageNote],
-  [true, /d/, BracketedDataType.Numeral],
-  [true, /participle/, BracketedDataType.Participle],
-  [true, /prep/, BracketedDataType.Preposition],
-  [true, /pronoun.*/, BracketedDataType.Pronoun],
-  [true, /verb/, BracketedDataType.Verb],
+  [true, /^article/g, BracketedDataType.Article],
+  [true, /^adj.*/g, BracketedDataType.Adjective],
+  [true, /^adv.*/g, BracketedDataType.Adverb],
+  [true, /^conj.*/g, BracketedDataType.Adverb],
+  [true, /^interj/g, BracketedDataType.UsageNote],
+  [true, /^d/g, BracketedDataType.Numeral],
+  [true, /^participle/g, BracketedDataType.Participle],
+  [true, /^prep/g, BracketedDataType.Preposition],
+  [true, /^pronoun.*/g, BracketedDataType.Pronoun],
+  [true, /^verb/g, BracketedDataType.Verb],
   // Other Grammar
-  [true, /[mfn][mfn|/]*/, BracketedDataType.GenderMarker],
+  [true, /^[mfn][mfn|/]*/g, BracketedDataType.GenderMarker],
   // Morphology
-  [true, /prefix/, BracketedDataType.Prefix],
+  [true, /^prefix/g, BracketedDataType.Prefix],
   // Phonetics
-  [true, /pronunciation: .+/, BracketedDataType.Pronunciation],
+  [true, /^pronunciation: .+/g, BracketedDataType.Pronunciation],
   // Semantics
-  [true, /def: .+/, BracketedDataType.Definition],
+  [true, /^def: .+/g, BracketedDataType.Definition],
   // Usage
-  [true, /clause/, BracketedDataType.Clause],
-  [true, /connotations: .+/, BracketedDataType.Connotations],
-  [true, /grammar: .+/, BracketedDataType.GrammarNote],
-  [true, /idiom: .+/, BracketedDataType.Idiom],
-  [true, /origin: .+/, BracketedDataType.Origin],
-  [true, /(note|usage): .+/, BracketedDataType.UsageNote],
+  [true, /^clause/g, BracketedDataType.Clause],
+  [true, /^connotations: .+/g, BracketedDataType.Connotations],
+  [true, /^grammar: .+/g, BracketedDataType.GrammarNote],
+  [true, /^idiom: .+/g, BracketedDataType.Idiom],
+  [true, /^origin: .+/g, BracketedDataType.Origin],
+  [true, /^(note|usage): .+/g, BracketedDataType.UsageNote],
 ]);
 const GrammarNoteCapturePattern = new RegExp(`^grammar:\\s*(.+)$`);
 const UsageNoteCapturePattern = new RegExp(`^(?:usage|note):\\s*(.+)$`);
@@ -289,9 +289,9 @@ const EntryTokenizer = buildLexer([
   [true, MacroPattern, EntryComponent.Symbol],
   // Bracketed data has different internal syntax, but the syntax to use
   // can always be identified by the first word it contains.
-  [true, /\[[^\[\]]+\]/g, EntryComponent.BracketedData],
+  [true, /^\[[^\[\]]+\]/g, EntryComponent.BracketedData],
   // Comments begin with a % and continue until the end of line.
-  [true, /%.*$/, EntryComponent.Comment],
+  [true, /^%.*$/g, EntryComponent.Comment],
 ]);
 
 /**
