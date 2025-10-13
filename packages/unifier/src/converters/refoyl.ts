@@ -785,3 +785,127 @@ function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
 
   return lexicalEntries;
 }
+
+/**
+ * Main processing function
+ * Reads `refoyl` and outputs JSON and malformed entries
+ */
+async function processRefoylFile(
+  inputPath: string,
+  outputJsonPath: string,
+  outputMalformedPath: string
+): Promise<void> {
+  console.log(`Reading ${inputPath}...`);
+  const content = fs.readFileSync(inputPath, "utf-8");
+
+  console.log("Splitting into entry blocks...");
+  const blocks = splitIntoBlocks(content);
+  console.log(`Found ${blocks.length} entry blocks`);
+
+  console.log("Processing main entries (no subentries)...");
+  const result = processMainEntriesOnly(blocks);
+  console.log(`✓ ${result.wellFormed.length} well-formed entries`);
+  console.log(`✗ ${result.malformed.length} malformed entries`);
+
+  // Write malformed entries for manual correction
+  if (result.malformed.length > 0) {
+    writeMalformedEntries(result.malformed, outputMalformedPath);
+  }
+
+  // Convert to OntoLex format
+  console.log("Converting to OntoLex format...");
+  const lexicalEntries = convertToOntoLex(result.wellFormed);
+
+  // Create lexicon
+  const lexicon = new LexiconBuilder("yi", "Raphael Finkel's Yiddish Lexicon")
+    .setCreator("Raphael Finkel")
+    .setLicense("https://creativecommons.org/licenses/by-nc/3.0/us/")
+    .build();
+
+  // Add entries to lexicon
+  for (const entry of lexicalEntries) {
+    lexicon.entries.push(entry);
+  }
+
+  // Write JSON output
+  fs.writeFileSync(outputJsonPath, JSON.stringify(lexicon, null, 2), "utf-8");
+  console.log(`✓ Wrote JSON to ${outputJsonPath}`);
+}
+
+/**
+ * Command-line interface for the parser
+ * Allows running from terminal with arguments
+ */
+function main() {
+  // process.argv contains: [node, script_path, ...user_args]
+  const args = process.argv.slice(2);
+
+  // Show help if no arguments or --help flag
+  if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
+    console.log(`
+Refoyl Parser - Convert Refoyl's Yiddish lexicon into OntoLex format
+
+Usage:
+  node refoyl.js <input_file> [output_json] [output_malformed]
+  ts-node refoyl.ts <input_file> [output_json] [output_malformed]
+
+Arguments:
+  input_file         Path to refoyl.txt (required)
+  output_json        Path for JSON output (default: ./output/lexicon.json)
+  output_malformed   Path for malformed entries (default: ./output/malformed.txt)
+
+Examples:
+  node refoyl.js ./refoyl.txt
+  node refoyl.js ./refoyl.txt ./my-lexicon.json
+  node refoyl.js ./refoyl.txt ./lexicon.json ./errors.txt
+  ts-node refoyl.ts ./data/refoyl.txt ./output/pass1.json ./output/malformed-pass1.txt
+    `);
+    process.exit(0);
+  }
+
+  // Parse arguments
+  const inputPath = args[0];
+  const outputJsonPath = args[1] || "./output/lexicon.json";
+  const outputMalformedPath = args[2] || "./output/malformed.txt";
+
+  // Validate input file exists
+  if (!fs.existsSync(inputPath)) {
+    console.error(`Error: Input file not found: ${inputPath}`);
+    process.exit(1);
+  }
+
+  // Ensure output directory exists
+  const outputDir = path.dirname(outputJsonPath);
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const malformedDir = path.dirname(outputMalformedPath);
+  if (!fs.existsSync(malformedDir)) {
+    fs.mkdirSync(malformedDir, { recursive: true });
+  }
+
+  // Run the processor
+  console.log("Starting Refoyl conversion...");
+  console.log(`Input: ${inputPath}`);
+  console.log(`Output JSON: ${outputJsonPath}`);
+  console.log(`Output Malformed: ${outputMalformedPath}`);
+  console.log("");
+
+  processRefoylFile(inputPath, outputJsonPath, outputMalformedPath)
+    .then(() => {
+      console.log("");
+      console.log("✓ Conversion complete!");
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error("");
+      console.error("✗ Conversion failed:", error.message);
+      process.exit(1);
+    });
+}
+
+// Run CLI if this script is executed directly
+if (require.main === module) {
+  main();
+}
