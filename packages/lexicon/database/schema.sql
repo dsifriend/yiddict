@@ -51,11 +51,19 @@ CREATE TABLE IF NOT EXISTS lexical_senses (
 CREATE TABLE IF NOT EXISTS forms (
     id TEXT PRIMARY KEY,
     entry_id TEXT NOT NULL REFERENCES lexical_entries(id) ON DELETE CASCADE,
-    form_type TEXT NOT NULL CHECK (form_type IN ('canonical', 'inflected')),
+    form_type TEXT CHECK (form_type IN (
+        'canonical', 
+        'inflected', 
+        'orthographic_variant', 
+        'romanization', 
+        'phonetic', 
+        'archaic'
+    )),
     written_rep TEXT NOT NULL,
     language TEXT NOT NULL,
     phonetic_rep TEXT,
     morphological_features JSONB,
+    form_label TEXT,
     data JSONB NOT NULL -- Full form JSON
 );
 
@@ -78,6 +86,7 @@ CREATE INDEX idx_senses_definition_trgm ON lexical_senses USING GIST (definition
 CREATE INDEX idx_forms_entry ON forms (entry_id);
 CREATE INDEX idx_forms_written ON forms (written_rep);
 CREATE INDEX idx_forms_type ON forms (form_type);
+CREATE INDEX idx_forms_label ON forms (form_label) WHERE form_label IS NOT NULL;
 
 -- Function for batch lexicon insertion
 CREATE OR REPLACE FUNCTION insert_lexicon_batch(lexicon_data JSONB)
@@ -161,15 +170,16 @@ BEGIN
         LOOP
             INSERT INTO forms (
                 id, entry_id, form_type, written_rep, language,
-                phonetic_rep, morphological_features, data
+                phonetic_rep, morphological_features, form_label, data
             ) VALUES (
                 form->>'id',
                 entry_id,
-                'inflected',
+                COALESCE(form->>'formType', 'inflected'),
                 form->'writtenRep'->0->>'value',
                 entry->>'language',
                 form->'phoneticRep'->0,
                 form->'morphologicalFeatures',
+                form->'formLabel'->0->>'value',
                 form
             );
         END LOOP;
