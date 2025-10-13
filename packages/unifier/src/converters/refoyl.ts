@@ -55,14 +55,11 @@ const LineCategorizer = buildLexer([
   [false, /^\s*$/gm, LineCategory.Empty],
   [false, /^\s*%.*$/gm, LineCategory.Comment],
   [true, /^\S.*$/gm, LineCategory.Entry],
-  [true, /^\t+[^\s%].*$/gm, LineCategory.SubEntry],
+  [true, /^\t+|\s+[^\s%].*$/gm, LineCategory.SubEntry],
 ]);
 
 // Knowing whether a string is between brackets or not is crucial for picking
 // the right behavior for parsing an entry's syntax.
-/** Surrounds its input w/ regex such that it won't match if between brackets. */
-const unbracketed = (inner: string) =>
-  `(?<!\\[\\[^\\]]*)${inner}(?![^\\[]*\\])`;
 /** Surrounds its input w/ regex such that it will only match if between brackets. */
 const bracketed = (inner: string) => `(?<=\\[)${inner}(?=\\])`;
 
@@ -70,7 +67,7 @@ const bracketed = (inner: string) => `(?<=\\[)${inner}(?=\\])`;
  * Refoyl uses a few characters outside the usual `A-Za-z` range
  * to encode his transliterated forms.
  */
-const FormCharacters = `[\w'|#-]`;
+const FormCharacters = `[\\w'|#-]`;
 /**
  * Transliterated forms consist of a contiguous string of `FormCharacters`.
  */
@@ -80,9 +77,9 @@ const FormBaseStr = `${FormCharacters}+`;
  * by another such string between curly braces, rarely separated
  * by whitespace inbetween.
  */
-const FormPatternStr = `${FormBaseStr}(?:\s*\{${FormBaseStr}\})?`;
+const FormPatternStr = `${FormBaseStr}(?:\\s*\{${FormBaseStr}\})?`;
 /** Forms to be captured only occur after whitespace outside of brackets. */
-const FormPattern = RegExp(`\^(?<=^|\\s)${unbracketed(FormPatternStr)}`, "g");
+const FormPattern = RegExp(`^${FormPatternStr}`, "g");
 /**
  * Forms require an extra pattern in order to capture
  * transliterations and spellings in separate groups.
@@ -135,7 +132,7 @@ const MacroSymbolCharacters = "[ABCDEGHIKLNPSTVX-]";
  * intended to take one, but in practice this is fine.
  */
 const MacroPattern = RegExp(
-  `\^\/${MacroSymbolCharacters}(?:${FormPatternStr})?`,
+  `^\/${MacroSymbolCharacters}(?:${FormPatternStr})?`,
   "g"
 );
 /**
@@ -147,18 +144,12 @@ const MacroCapturePattern = RegExp(
 );
 
 /**
- * This pattern matches **anything** between unnested brackets.
- *
  * Refoyl encapsulates data that breaks with the Form and MacroSymbol syntax
  * between brackets. The type of data between brackets can be identified
- * by the first word used within the brackets.
- */
-const BracketedPattern = RegExp(bracketed(`[^\[\]]+`), "g");
-/**
- * These are the data types Refoyl encodes between brackets.
+ * by the first word used within the brackets. These are those data types.
  * They may be extended in the future.
  *
- * There's some overlap with data encoded using `MacroSymbols` some of these
+ * There's some overlap with data encoded using `MacroSymbols` as some of these
  * seem to have superceded their symbol versions over time.
  */
 enum BracketedDataType {
@@ -273,6 +264,7 @@ enum EntryComponent {
   Symbol,
   BracketedData,
   Comment,
+  Delimiter,
 }
 /**
  * The definitions for `EntryTokenizer` attempt to be as strict as possible,
@@ -283,6 +275,9 @@ enum EntryComponent {
  * without actually encoding them as new entries etc.
  */
 const EntryTokenizer = buildLexer([
+  // Whitespace before an entry must be skipped.
+  // Indentation levels for subentries are accounted for at the parser level.
+  [false, /^\s+/g, EntryComponent.Delimiter],
   // Headwords either begin an entry or are preceded by whitespace,
   // and crucially are not surrounded by brackets.
   [true, FormPattern, EntryComponent.Form],
@@ -563,8 +558,13 @@ function tryParseEntry(
   lineNumber: number
 ): { success: true; entry: ParsedEntry } | { success: false; error: string } {
   try {
-    // Tokenize the entry line
-    const tokens = EntryTokenizer.parse(entryLine);
+    // Extract indentation level (for subentries)
+    const indentMatch = entryLine.match(/^(\s+)/);
+    const indent = indentMatch ? indentMatch[1].length : 0;
+
+    // Tokenize the cleaned line
+    const cleanLine = entryLine.trimStart();
+    const tokens = EntryTokenizer.parse(cleanLine);
 
     if (!tokens) {
       return {
