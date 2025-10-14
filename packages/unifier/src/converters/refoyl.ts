@@ -275,9 +275,9 @@ enum EntryComponent {
  * without actually encoding them as new entries etc.
  */
 const EntryTokenizer = buildLexer([
-  // Whitespace before an entry must be skipped.
+  // Whitespace before an entry must be skipped and treated as a delimeter.
   // Indentation levels for subentries are accounted for at the parser level.
-  [false, /^\s+/g, EntryComponent.Delimiter],
+  [false, /^[\s,]+/g, EntryComponent.Delimiter],
   // Headwords either begin an entry or are preceded by whitespace,
   // and crucially are not surrounded by brackets.
   [true, FormPattern, EntryComponent.Form],
