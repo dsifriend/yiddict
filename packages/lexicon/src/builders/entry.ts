@@ -200,7 +200,8 @@ export class LexicalEntryBuilder {
     language: LanguageTag,
     partOfSpeech?: PartOfSpeech
   ) {
-    const entryId = `urn:uuid:${uuidv5(canonicalForm, language)}`;
+    const languageNamespace = uuidv5(language, uuidv5.URL);
+    const entryId = `urn:uuid:${uuidv5(canonicalForm, languageNamespace)}`;
     const canonicalFormId = `urn:uuid:${uuidv5(canonicalForm, entryId)}`;
 
     this.entry = {

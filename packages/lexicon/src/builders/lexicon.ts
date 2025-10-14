@@ -31,8 +31,9 @@ export class LexiconBuilder {
    * ```
    */
   constructor(language: LanguageTag, title?: string) {
+    const languageNamespace = uuidv5(language, uuidv5.URL);
     this.lexicon = {
-      id: `urn:uuid:${uuidv5(title || language, language)}`,
+      id: `urn:uuid:${uuidv5(title || language, languageNamespace)}`,
       type: "lime:Lexicon",
       language: [language],
       entries: [],
