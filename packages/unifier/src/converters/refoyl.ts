@@ -140,7 +140,7 @@ const MacroPattern = RegExp(
  * for capturing optional arguments separately.
  * */
 const MacroCapturePattern = RegExp(
-  `(/${MacroSymbolCharacters})(${FormPatternStr})`
+  `(/${MacroSymbolCharacters})(${FormPatternStr})?`
 );
 
 /**
@@ -903,6 +903,7 @@ Examples:
     .catch((error) => {
       console.error("");
       console.error("✗ Conversion failed:", error.message);
+      console.error("Stack trace:", error.stack);
       process.exit(1);
     });
 }
