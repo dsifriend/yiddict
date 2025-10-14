@@ -27,11 +27,15 @@ import {
  * Provides a fluent API for adding examples, translations, and semantic relations
  */
 export class LexicalSenseBuilder {
+  private uuid: string;
+
   /**
    * Creates a new LexicalSenseBuilder
    * @param sense - The sense object being built
    */
-  constructor(private sense: LexicalSense) {}
+  constructor(private sense: LexicalSense) {
+    this.uuid = sense.id.replace("urn:uuid:", "");
+  }
 
   /**
    * Adds an example sentence demonstrating this sense
@@ -165,7 +169,7 @@ export class LexicalSenseBuilder {
     if (!this.sense.subsenses) this.sense.subsenses = [];
 
     const subsense: LexicalSense = {
-      id: `urn:uuid:${uuidv5(definition, this.sense.id)}`,
+      id: `urn:uuid:${uuidv5(definition, this.uuid)}`,
       type: "ontolex:LexicalSense",
       definition: [{ value: definition, lang: language || "en" }],
       examples: [],
@@ -183,6 +187,7 @@ export class LexicalSenseBuilder {
  */
 export class LexicalEntryBuilder {
   private entry: LexicalEntry;
+  private uuid: string; //
 
   /**
    * Creates a new LexicalEntryBuilder
@@ -201,8 +206,10 @@ export class LexicalEntryBuilder {
     partOfSpeech?: PartOfSpeech
   ) {
     const languageNamespace = uuidv5(language, uuidv5.URL);
-    const entryId = `urn:uuid:${uuidv5(canonicalForm, languageNamespace)}`;
-    const canonicalFormId = `urn:uuid:${uuidv5(canonicalForm, entryId)}`;
+
+    this.uuid = uuidv5(canonicalForm, languageNamespace);
+    const entryId = `urn:uuid:${this.uuid}`;
+    const canonicalFormId = `urn:uuid:${uuidv5(canonicalForm, this.uuid)}`;
 
     this.entry = {
       id: entryId,
@@ -235,7 +242,7 @@ export class LexicalEntryBuilder {
    */
   addSense(definition: string, language?: LanguageTag): LexicalSenseBuilder {
     const sense: LexicalSense = {
-      id: `urn:uuid:${uuidv5(definition, this.entry.id)}`,
+      id: `urn:uuid:${uuidv5(definition, this.uuid)}`,
       type: "ontolex:LexicalSense",
       definition: [
         { value: definition, lang: language || this.entry.language! },
@@ -267,7 +274,7 @@ export class LexicalEntryBuilder {
    */
   addForm(writtenRep: string, features?: MorphologicalFeatures): this {
     const form: Form = {
-      id: `urn:uuid:${uuidv5(writtenRep, this.entry.id)}`,
+      id: `urn:uuid:${uuidv5(writtenRep, this.uuid)}`,
       type: "ontolex:Form",
       writtenRep: [{ value: writtenRep, lang: this.entry.language! }],
       morphologicalFeatures: features,
@@ -299,7 +306,7 @@ export class LexicalEntryBuilder {
     label?: string
   ): this {
     const form: Form = {
-      id: `urn:uuid:${uuidv5(writtenRep + formType, this.entry.id)}`,
+      id: `urn:uuid:${uuidv5(writtenRep + formType, this.uuid)}`,
       type: "ontolex:Form",
       writtenRep: [{ value: writtenRep, lang: this.entry.language! }],
       morphologicalFeatures: features,
