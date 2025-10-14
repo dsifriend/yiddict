@@ -411,7 +411,7 @@ function parseMacro(macroText: string): ParsedMacro | null {
   if (!match) return null;
 
   const symbol = match[1] as MacroSymbol;
-  const argument = match[2].trim() || undefined;
+  const argument = match[2]?.trim() || undefined;
 
   return { symbol, argument };
 }
