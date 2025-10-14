@@ -1137,7 +1137,7 @@ bekas [m?] [def: snipe (bird, Scolopacidae)]
 beke/V/T [def: bleat (sound of a cow)] 
 be'keshe/S [f] [def: long jacket (Chassidic clothing)] 
 bekher/S/D [def: drinking cup, goblet (vessel)]
-	 be'kherl/Eekh [def: chanterelle mushroom, Cantharellus cibarius] % Forwards: Yoel Matveyev
+	be'kherl/Eekh [def: chanterelle mushroom, Cantharellus cibarius] % Forwards: Yoel Matveyev
 bekherem{bHrm} [adv] [def: under threat of excommunication]
 	[idiom: freg im bekherem{bHrm} = he has no idea whatsoever]
 bekhey'n{bxn} ubekhey'n{|wbxn} uvekhey'n{|wBxn} lekhey'n{lxn}/H [adv] [def: therefore]
@@ -1212,7 +1212,7 @@ bet/N/D [n/f] [def: bed (furniture)]
 	/Dtro'gbet [n] [def: stretcher] % Opatoshu
 	/Dvi'gbet [n] [def: hammock (furniture)]
 	bet/V/T /Goys [def: pad; make into a bed]
-		 /Gunter [def: use as a sheet; stuff; cushion]
+		/Gunter [def: use as a sheet; stuff; cushion]
 	oy'sbetekhts/N [n] [def: lining (clothing)]
 	[idiom: gelegn tsu bet = sick]
 bet/V/T [def: request] /Gon/Gtsu/Garoys/Gop % < Gothic bida "pray"
@@ -1777,7 +1777,7 @@ bol [m] [def: ball]
 bolbe/V/T bolbene/V/T [def: prattle, chatter] /Goys [def: tell tales]
 bo'lnitse/S [f] [def: hospital (Russian больница)]
 bolshevi'st/N [m] /Iish [def: Bolshevist]
-	 bolshevik/Ees [m] bolshevistke/S [f] [def: Bolshevist] 
+	bolshevik/Ees [m] bolshevistke/S [f] [def: Bolshevist] 
 boltay'/V [def: prate, babble] % Stutchkoff
 bom [n] [def: a nonsense syllable for singing]
 	bomke/V/T [def: sing nonsense syllables]
@@ -2093,7 +2093,7 @@ brike/V/T /Gavek brikeve/V/T tsebrikeve/V/Btsebrikevet [def: kick; refuse to beh
 	brik [m?] [def: kick]
 	tsebrike/V/Btsebriket [def: kick]
 bril/N [def: eyeglass (clothing)]
-	 -/Xzunbriln [def: sunglasses]
+	-/Xzunbriln [def: sunglasses]
 bril/V/T [def: roar (sound of a lion, bear, or slaughtered ox)] /Goyf
 brilyant/N [m] [def: diamond] /In /D barlyant/N [m] /In
 	brilya'nteve/V/Bbrilyantevet [def: sparkle (poetic)]
@@ -2686,7 +2686,7 @@ difere'nts/N [f] [def: difference]
 		diferentsirung/N [f] [def: differentiation] % D-H Katz
 difteri't/N difteri'ten [m] [def: diphtheria (disease)]
 digital/A/Iish [def: digital]
-	 digitizi'rt/A digitalizi'rt/A [def: digitized, digitalized] 
+	digitizi'rt/A digitalizi'rt/A [def: digitized, digitalized] 
 dik/K [def: broad; thick] /Ilekh
 dikdek{dykdwk}/Xdikdukem{dykdwkym}/H [m] [def: Hebrew grammar; detail]
 	medakdek{mdkdk}/Xmedakdeykem{mdkdkym}/H [m] [def: punctilious person]
@@ -3460,7 +3460,7 @@ ere/S [f] [def: honor (German)] [usage: inadmissible]
 	farerung/N [f] [def: honor, respect]
 	geert/K [def: honorable; honored]
 erekh{erx}/H [def: approximation]
-	 beerekh{berx} leerekh{lerx} [adv] [def: approximately, about]
+	beerekh{berx} leerekh{lerx} [adv] [def: approximately, about]
 erets{#rc}/Xarotses{arcwT}/H [f] [def: land]
 	erets_yisroel{#rc-yQr#l} [def: land of Israel] 
 	ortse{orch} [adv] [def: downwards; on the ground]
@@ -4873,8 +4873,8 @@ gal/N [f] [def: gall, bile; gall bladder]
 gala/S [f] [def: gala, party]
 galaga'n [m] [def: rooster (animal) (particular large variety)] /Isk
 galaksye/S [f] [def: galaxy]
-	 galaktik/N [f] [def: galaxy] [note: V] 
-	 galaktish/A
+	galaktik/N [f] [def: galaxy] [note: V] 
+	galaktish/A
 gala'nt/A [def: gallant, knightly; courteous]
 	galantkayt/N [f] [def: courtesy, politeness]
 	galanterye/S [f] galanteray'/N [f] [def: haberdashery; men's clothing store]
@@ -5132,7 +5132,7 @@ generator/N [m] [def: generator (electrical); creator]
 	generi'r/V/Bgeneri'rt [def: generate] % Forwards: Yoel Matveyev
 generatsye/S [f] [def: generation]
 ge'nets/V/Bgegenetst [def: yawn] /Gayn % BUG autogenerate gegenetst fails
-	 ge'nets/N [m] [def: yawn]
+	ge'nets/N [m] [def: yawn]
 gengster/S [m] [def: gangster] % Harduf 
 genezung/N [f] [def: cure, recovery]
 	genezn [participle] [def: recover, be healed (with "vern")]
@@ -5240,7 +5240,7 @@ gevoyn/V/Bgevoynt [def: accustom; become accustomed (with "zikh")] /Gtsu/Gop/Gay
 	oysergeveynlekh/A oysergeveyntlekh/A [def: extraordinary]
 	gevoyntshaft/N [f] gevoynhayt/N [f] [def: habit]
 gevoyr [def: become aware of, learn, discover (with "vern fun")]
-	 gevor gevoyre gevore % all four forms
+	gevor gevoyre gevore % all four forms
 gey/Vgeyn/Bgegangen [def: go; plan to (with infinitive)]
 	% limitation:
 	% infinitive forms are "geyn", irregular, but gerunds are "geyendik",
@@ -5351,7 +5351,7 @@ geze'l/N [m] geze'ln/X [def: apprentice; journeyman; partner]
 	gezelshaftlekhkayt/N [f] [def: society]
 gezikht/Eer [n] [def: face; countenance]
 gezint [n] [def: members; family members]
-	 hoyzgezint [n] [def: family members]
+	hoyzgezint [n] [def: family members]
 gezunt/A/Kgezint [def: healthy]
 	gezunt [n] gezunthayt/N [f] [def: health]
 	gezunterheyt [adv] [def: in good health; if you must]
@@ -6169,7 +6169,7 @@ halt/V/Bgehaltn [def: hold, contain; think; keep; stop (imperative)]
 			falhalter/N [m] [def: tackle (player in American football)] [note: V]
 		farhalter [m] [def: brake (equipment)]
 	inhalt/N [m] [def: contents]
-		 in'haltraykh/K [def: compendious]
+		in'haltraykh/K [def: compendious]
 	ayngehaltnkayt/N [f] [def: restraint, reserve] % Der Nister
 	oysgehaltnkayt/N [f] [def: survival]
 		nitoysgehaltnkayt [f] [def: extinction]
@@ -6859,7 +6859,7 @@ hotske/V/T [def: shake, bump (with "zikh")] /D
 hoyb/N [f] [def: bonnet; mitre (clothing)] /Dhayb
 	pikl-hoyb/N [f] [def: boiled leather helmet (German Pickelhaube) before 1916]
 hoyde/V/T [def: swing]
-	 hoyde/S [f] hoydlke/S [f] [def: swing]
+	hoyde/S [f] hoydlke/S [f] [def: swing]
 hoyer/V/T [def: hover; loom] /Garop
 hoyf/N/Xheyf /Iik [m] [def: yard; court] /Dheyf [def: patio] 
 	banhoyf [m] [def: train station]
@@ -7718,7 +7718,7 @@ katalonish/A [def: Catalan (language)]
 kata'r [def: cold, nose drip (disease)] farkatart/A % ?? accent
 katara'kt/N [m?] [def: cataract (disease)]
 katastrofe/S [f] [def: catastrophe]
-	 katastrofa'l/A katastrofish/A [def: catastrophic]
+	katastrofa'l/A katastrofish/A [def: catastrophic]
 katedra'l/N [f] [def: cathedral (Catholic)] katedre
 kategorye/S [f] [def: category] kategorish/A
 	[idiom: shtayer kategorye = tax bracket]
@@ -8384,7 +8384,7 @@ khorkhl/V/T [def: rattle, wheeze; snore; growl (like a dog)] /Gunter
 	kho'rkhlenish/N [n] [def: wheezing]
 khoser{Hsr} [adj predicative] [def: lacking, defective] 
 khoshev{HSwB}/H/K [def: important; respected]
-	 khshives{HSyBwT}/H [f] [def: importance; respect; cachet]
+	khshives{HSyBwT}/H [f] [def: importance; respect; cachet]
 khosn{HTn}/Xkhasonem{HTnym}/H [m] [def: bridegroom; engaged man] /Idik
 	/Dkhosnd{HTnd}
 	kha'sene{HTwnh}/Xkha'senes{HTwnwT}/H [f] [def: marriage, wedding]
@@ -9142,10 +9142,10 @@ komets{kmc}/H [def: a Hebrew punctuation mark, pronounced ɔ]
 komfort [m?] [def: comfort]
 komi [m?] [def: shop assistant]
 komisar/N [m] [def: commissar]
-	 komisarya't/N [m] [def: precinct station; commissariat] 
+	komisarya't/N [m] [def: precinct station; commissariat] 
 komish/K [def: comical]
 komisye/S [f] [def: commission (organization)]
-	 komisyone'r/N [m] [def: commissioner; seller on commission]
+	komisyone'r/N [m] [def: commissioner; seller on commission]
 komite't/N [m] [def: committee]
 komyug [m] [def: Young Communist movement (Soviet: Юные Коммунисты)]
 komod/N [m] komode/S [f] [def: dresser (furniture)]
@@ -9491,7 +9491,7 @@ kosmos/N [m] [def: cosmos]
 	kosmopoli't/N [def: cosmopolitan (person)] /Iish
 		kosmopoliti'zm/N [m] [def: cosmopolitanism]
 kost/V/T [def: cost] /Gop
-	 kost/N [m] [def: cost]
+	kost/N [m] [def: cost]
 kostard/N [m] [def: custard]
 kostre [f] [def: plant fiber; bast]
 kostyum/N [m] [def: suit; costume]
@@ -10532,7 +10532,7 @@ lesh/V/T [def: extinguish] /Goys/Gop
 	[idiom: fayer-lesher = fireman]
 leshtsh/N/Ees [m] lyeshtsh/N [def: silver bream (fish, Blicca bjoerkna)]
 lesnik/Ees [m] leshnik/Ees [m] [def: forest ranger]
-	 lesnitse/S [f] lesnitshe/S leshnitse/S [f] [def: wife of a forest ranger]
+	lesnitse/S [f] lesnitshe/S leshnitse/S [f] [def: wife of a forest ranger]
 lester/V/T [def: blaspheme] 
 	le'sterung/N [f] [def: blasphemy] 
 	le'sterer/S [m] [def: blasphemer] 
@@ -11520,7 +11520,7 @@ matronise{mtrwnyTo}/H [f] [def: noblewoman]
 matro's/N [m] [def: sailor] 
 	matro'z/N [m] [def: sailor] [def: usage: inadmissible]
 matrya'rkh/N [f?] [def: matriarch]
-	 matryarkhye/S [f] matryarkha't [f?] [def: matriarchy]
+	matryarkhye/S [f] matryarkha't [f?] [def: matriarchy]
 matse_{mch}/Xmatses{mcwT}/H [f] [def: matso bread (food); stone cut flat at widest spot (jewelers' argot)]
 matse/V/T [def: grope]
 matsel{mcyl}/H [verb] [def: rescue (with "zayn")] 
@@ -12410,7 +12410,7 @@ moves{mvT}/H [m] [def: death] /Lha{h} [noun] [m] [def: the death]
 	meymes{mmyT}/V/T [def: kill]
 	mise{myTh} [f] [def: death] 
 	eymes_moves{#ymT-mvT} [f] [def: deathly fear]
-    malakhamoves{ml#x-hmwT} [m] [def: angel of death]
+		malakhamoves{ml#x-hmwT} [m] [def: angel of death]
 	noyte_lomes{nwth-lmT}/N [m] [def: deathly ill person]
 moyd/N/Xmeydn [f] mad/N [f] [def: maid] /Dmeyd [n/f] [def: girl]
 	meydlish/A meydlsh/A [def: girl-like] 
@@ -12625,7 +12625,7 @@ muze/S [f] [def: Muse (Greek mythology)]
 muzey'/N [m] [def: museum] /Iish muzeum/S [def: museum] 
 	ontap-muzey/N [m] [def: hands-on museum] 
 muzhik/Ees [def: peasant (Russian мужик)]
-	 muzhitshke/S [f] [def: peasant woman] % Mendele
+	muzhitshke/S [f] [def: peasant woman] % Mendele
 muzi'k [f] [def: music] /Ial/Ialish [def: musical]
 	muzika'nt/N [m] [def: musician (low quality)] 
 	mu'ziker/S [m] [def: musician]
@@ -12785,7 +12785,7 @@ nay/K [def: new] nayes/N [def: news]
 	[idiom: oyf s'nay = oyf dos nay = anew]
 nayert [adv] [def: rather, but] 
 nayger [m?] [def: curiosity; eagerness] /Iik [def: eager; curious]
-	 naygerikayt/N [f] [def: eagerness]
+	naygerikayt/N [f] [def: eagerness]
 nayn [d] [def: 9] /It nayntl [n] [def: 1/9] nayntns [adv] [def: ninthly]
 	nayntsn [d] [def: 19] nayntsnt/A [def: 19th] nayntsntl [n] [def: 1/19] 
 	nayntsik [d] /A [def: 90] nayntsikst/A [def: 90th] nayntsikstl [n] [def: 1/90] 
@@ -14850,7 +14850,7 @@ prie/V/T praye/V/T preye/V/T [def: cook (covered, little water); steam; sweat; b
 prika'z/N [m] [def: command, order]
 	prikashtshik/Ees [m] prikaztshik/Ees [def: overseer; merchant's clerk]
 prikre/K [def: unpleasant]
-	 pri'krekayt/N [f] [def: unpleasantness; embarrassment]
+	pri'krekayt/N [f] [def: unpleasantness; embarrassment]
 prilishe/V/Bprilishet [def: astound, baffle]
 prima [adj predicative] [def: first-rate, prime]
 primadone/S [def: prima donna; lead actress]
@@ -15673,7 +15673,7 @@ revansh/N [m?] [def: revenge]
 reve/V/T [def: roar, howl] /Goys/Goyf
 	rev/N reve/S [m] gere'v/N [n] [def: howl]
 revekh{rvH}/Xrevokhem{rvHym}/H [m] reyvekh{ryvH}/Xrevokhem_{ryvHym} [m] [def: profit; increase]
-	 /Idik revokhemdik{rvHymdik}/A [def: profitable]
+	/Idik revokhemdik{rvHymdik}/A [def: profitable]
 revelatsye/S [f] [def: revelation] % Forwards: Yitskhok Luden
 revera'ns/N [m] [def: curtsey] 
 revere'nd/N [m] [def: Reverend]
@@ -16352,7 +16352,7 @@ sha [verb] [def: be quiet] [verb] shat shats [grammar: only imperative]
 	sha-shtil/A [def: silent] 
 	[idiom: zol zayn sha = quiet!]
 shabe [f] [def: cockroach (German die Schabe/n)] [grammar: I expect the plural form is absent]
-	 shvab/N [def: cockroach; Swabian; German (pejorative)] /Iish
+	shvab/N [def: cockroach; Swabian; German (pejorative)] /Iish
 shabes{SbT}/Xshabosem{SiTym}/H [m] [def: Sabbath] /Idik 
 	sha'besdikayt{SbTdikayt}/N [def: Sabbath characteristic]
 	shabes_hagodl{SbT-hgdwl} [m] [def: Sabbath before Passover]
@@ -18945,7 +18945,7 @@ sod/Xseder [m] [def: orchard] /Dsed [def: park]
 	sadovnik/Ees [m] [def: orchard tender]
 	se'dekhe/S [f] [def: fruit seller; vulgar woman]
 sod_{swd}/Xsoydes{swdwT}/H [m] [def: secret]
- 	soydesdik{swdwTdik}/A soydesful{swdwTful}/A [def: secret]
+	soydesdik{swdwTdik}/A soydesful{swdwTful}/A [def: secret]
 	beso'd{bswd} [def: in secret]
 		besodik{bswdik}/A [def: secret] 
 			bsodikayt{bswdikayt}/N [f] [def: secrecy; concealment] 
@@ -19215,7 +19215,7 @@ strempl/Eekh [n] [def: icicle]
 stri/N [m] [def: gist; arrangement]
 	[idiom: khapn dem stri = understand]
 stri'geve/V/T [def: baste (sewing)]
-	 /Giber/Gayn/Goys/Garoyf/Garayn/Gon/Gtsunoyf/Gtsu
+	/Giber/Gayn/Goys/Garoyf/Garayn/Gon/Gtsunoyf/Gtsu
 	farstri'geve/V/T [def: baste (sewing)] 
 		fastrige/S [f] [def: basting stitch]
 strikhe/S [f] strekhe/S [f] [def: rooftop, roof (part of building)]
@@ -20709,7 +20709,7 @@ tsheke/V/T [def: go out of the way to get something ??]
 tshekhol/N [m?] [def: furniture cover]
 tshelo/S [m] vyolontshe'l/N [m] [def: cello] 
 tshemoda'n/Ees /Dtshemodand [m] tshemodanke/S [f] [def: valise; suitcase]
-	 tshemodantshik/Ees [m] /D % Forwards: M-S Hoffman
+	tshemodantshik/Ees [m] /D % Forwards: M-S Hoffman
 tshempyon/N [m] [def: champion]
 	tshempyona't/N [m?] [def: championship contest] % Forwards: Boris Sandler
 tshepe/V/T [def: touch; bother (with "zikh")] /Gtsu 
@@ -21445,7 +21445,7 @@ vals/N [m] valets/N [m] [def: waltz (dance)]
 	valsi'r/V/Bvalsi'rt [def: waltz]
 valute/S [f] [def: currency (foreign) (money)] 
 valye/V/T [def: roll; spin (with "zikh")]
-	 /Garayn [def: toss in]
+	/Garayn [def: toss in]
 vamp/N [m] [def: tripe (food)] /Dvemp
 vampi'r/N [m] [def: vampire; bloodsucker]
 	-/Xvampiremlekh [def: little bloodsuckers] % Forwards: M-S Hoffman
@@ -22401,7 +22401,7 @@ vyo [interj] [def: gidyap (to a horse)]
 vyole/S [f] [def: viola (musical instrument)]
 vyolontshe'l/N [m] [def: cello, violoncello (musical instrument)]
 vyorst/N verst/N [m] [def: verst (about 0.66 miles) (Russian верста)]
-	 vyorstndik/A [def: verst-long] % Bergelson
+	vyorstndik/A [def: verst-long] % Bergelson
 yaades{yhdwT}/H [n] [def: Jewishness; Judaism] 
 	yandes{yndwT} [n] [def: conscience; lack of conscience]
 ya'bede/V/T ya'bedeve/V/T [def: gossip (Russian ябеда "sneak")]
@@ -23019,7 +23019,7 @@ zeltn/K [def: unusual, rare]
 	zeltnhayt/N zeltnkayt/N [f] [def: rarity] 
 zemer{zmr}/H/D [m] [def: song]
 	zmire{zmyrh}/Xzmires{zmyrwT}/H [def: Sabbath table song (usually plural)]
-     mizmer{myzmwr}/Xmizmorem{myzmwrym} [def: song]
+		mizmer{myzmwr}/Xmizmorem{myzmwrym} [def: song]
 zeml/X [m/f] [def: roll, bun (food)] /Dzem
 zemlyanke/S [f] [def: mud hut]
 zemstve/S [f] [def: ward-level administrative district (Russian земство "district council"); conclave]
@@ -23521,7 +23521,7 @@ zunder/V/T /Gop [def: separate]
 		bazunderkeyt/N [f] [def: separation] 
 zuntik/N [m] [def: Sunday] /Idik
 zup/N [f] [def: soup]
-	 /Dzupke [def: little soup] % Forwards: M-S Hoffman
+	/Dzupke [def: little soup] % Forwards: M-S Hoffman
 zup/V/T [def: slurp; sip] /Gop
 	farzup/V/Bfarzupt [def: slurp]
 	zup/N [m] [def: slurp] /D
@@ -23934,7 +23934,7 @@ shvedn [def: Sweden] shvedish/A [n] /A
 shveyts [def: Switzerland] shveytser/X
 shvya'tovid [def: Svetovid (Slavic deity)]
 sibir [def: Siberia] /Ier /Isk simbir
-	 simbirnik/Ees [def: someone returned from Siberian exile] % Sholem Aleykhem: Oreme un Freylekhe
+	simbirnik/Ees [def: someone returned from Siberian exile] % Sholem Aleykhem: Oreme un Freylekhe
 Sinay{syny}/H [def: Sinai (Egypt)] 
 	[idiom: zayn (toyras{WwrT} Moyshe{mwSh}) misinay{msyny} = carved in stone]
 singapur [def: Singapore] singapurer/X
@@ -24000,7 +24000,7 @@ ukrayn [def: Ukraine] ukraynish/A /A ukrayner/X
 	alukraynish/A [def: all-Ukrainian] 
 umen uman [def: Uman (Ukraine)] umaner/X
 ungarn ungern [def: Hungary] u'ngerish/A [n] unge'rishkayt/N [f]
-	 madzhar madzharish/A [def: Magyar, Hungary]
+	madzhar madzharish/A [def: Magyar, Hungary]
 uzbekistan [def: Uzbekistan] 
 vande [def: Princess Wanda (Polish), associated with the Vistula river]
 varshavski/C [def: Mark Markovitch Warshavsky] 
@@ -24024,7 +24024,7 @@ vinitse [def: Vinnitse]
 vlad{vld}/N [m] [def: fetus, embryo]
 volga [def: Volga (river)] 
 volekh volekhay' [def: Wallachia (southern Romania)] /Iish volkhish/A
-	 vo'lekh [m] [def: a lively Jewish dance] /D
+	vo'lekh [m] [def: a lively Jewish dance] /D
 voli'n [def: Volhynia (Ukraine)] voliner/X /Iish
 vorms [def: Worms (Germany)]
 vulgate [f] [def: Vulgate (Latin translation of the Bible)]
@@ -25306,4 +25306,4 @@ lezelke/S [f] [def: some sort of fruit]
 neyterke/S [f] [def: wife of some occupation]
 
 % See ~/.vim/syntax/words.vim for details.
- vim: filetype=words:nospell:textwidth=200
+% vim: filetype=words:nospell:textwidth=200
