@@ -55,7 +55,7 @@ const LineCategorizer = buildLexer([
   [false, /^\s*$/gm, LineCategory.Empty],
   [false, /^\s*%.*$/gm, LineCategory.Comment],
   [true, /^\S.*$/gm, LineCategory.Entry],
-  [true, /^\t+|\s+[^\s%].*$/gm, LineCategory.SubEntry],
+  [true, /^\t+[^\s%].*$/gm, LineCategory.SubEntry],
 ]);
 
 // Knowing whether a string is between brackets or not is crucial for picking
@@ -559,7 +559,7 @@ function tryParseEntry(
 ): { success: true; entry: ParsedEntry } | { success: false; error: string } {
   try {
     // Extract indentation level (for subentries)
-    const indentMatch = entryLine.match(/^(\s+)/);
+    const indentMatch = entryLine.match(/^(\t+)/);
     const indent = indentMatch ? indentMatch[1].length : 0;
 
     // Tokenize the cleaned line
