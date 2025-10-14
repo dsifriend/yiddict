@@ -67,7 +67,7 @@ const bracketed = (inner: string) => `(?<=\\[)${inner}(?=\\])`;
  * Refoyl uses a few characters outside the usual `A-Za-z` range
  * to encode his transliterated forms.
  */
-const FormCharacters = `[\\w'|#-″ʼ]`;
+const FormCharacters = `[\\w'|#-″ʼ_]`;
 /**
  * Transliterated forms consist of a contiguous string of `FormCharacters`.
  */
@@ -314,7 +314,9 @@ function transcribeToYiddish(asciiText: string): Result<string> {
   // - ey -> יי
   // etc.
 
-  // NOTE: not documented! Transcribe ʼ as a simple apostrophe: '
+  // NOTE: not documented…
+  // Transcribe ʼ as a simple apostrophe: '
+  // Transcribe _ as a simple space: ` `
 
   // For now, return the input unchanged as a placeholder
   // This allows the pipeline to work while transcription is being implemented
