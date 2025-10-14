@@ -193,7 +193,7 @@ const BracketedDataTokenizer = buildLexer([
   [true, /^pronoun.*/g, BracketedDataType.Pronoun],
   [true, /^verb/g, BracketedDataType.Verb],
   // Other Grammar
-  [true, /^[mfn][mfn|/]*/g, BracketedDataType.GenderMarker],
+  [true, /^[mfn?][mfn?|/]*/g, BracketedDataType.GenderMarker],
   // Morphology
   [true, /^prefix/g, BracketedDataType.Prefix],
   // Phonetics
@@ -755,13 +755,16 @@ function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
           // Set PoS
           partOfSpeech = PartOfSpeech.NOUN;
           // Parse gender (m/f/n)
-          if (data.content === "m") {
+          if (data.content.includes("m")) {
             builder.addMorphologicalFeatures({ gender: [Gender.MASCULINE] });
-          } else if (data.content === "f") {
+          }
+          if (data.content.includes("f")) {
             builder.addMorphologicalFeatures({ gender: [Gender.FEMININE] });
-          } else if (data.content === "n") {
+          }
+          if (data.content.includes("n")) {
             builder.addMorphologicalFeatures({ gender: [Gender.NEUTER] });
           }
+          // Unknown gender marked with `?` is ignored/left ambiguous.
           break;
 
         case BracketedDataType.UsageNote:
