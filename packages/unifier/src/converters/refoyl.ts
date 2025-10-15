@@ -108,6 +108,7 @@ enum MacroSymbol {
   Noun = "/N", // Regular noun, plural in -n
   NounS = "/S", // Regular noun, plural in -s
   NounX = "/X", // Irregular noun, plural takes an alternative form as its argument
+  NounJ = "/J", // Regular noun, indicates the noun refers to a person, usually Jewish
   NounProper = "/C", // Proper noun, takes the dative form
   NounDiminutive = "/D", // Generates diminutive forms of a noun. Takes an optional argument for irregular stems.
   Verb = "/V", // Regular verb
@@ -125,7 +126,7 @@ enum MacroSymbol {
  * Although we define an individual token for every `MacroSymbol`,
  * it's still convenient to group these together at a higher level.
  */
-const MacroSymbolCharacters = "[ABCDEGHIKLNPSTVX-]";
+const MacroSymbolCharacters = "[ABCDEGHIJKLNPSTVX-]";
 /**
  * This pattern matches a `MacroSymbol` with an optional argument.
  * It could be refined to only check for an argument after symbols
