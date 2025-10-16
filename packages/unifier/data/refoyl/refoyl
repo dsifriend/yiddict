@@ -4385,7 +4385,7 @@ flink/K [def: quick]
 	flinkayt/N [f] [def: velocity]
 fli'rteve/V/T flirt/V/T [def: flirt] 
 	flirt/N [m] [def: flirtation] 
-flis/V/Bgeflosn [def: flow] /Gop/Gfundander
+flis/V/Bgeflosn [def: flow] /Gop/Gfunander
 	flisik/A [def: fluent] flisikayt/N [f] [def: fluency]
 	opflus/N [m] [def: overflow] tsuflus/N [m] [def: inflow]
 		moykhes{mwHwT}-opflus/N [m] [def: brain drain] [note: V] 
@@ -4408,7 +4408,7 @@ floy/Xfley [m] [def: flea]
 	[idiom: hobn fley in der noz = have a bee in one's bonnet; be prideful]
 floym/N [f] flom/N [f] [def: plum (fruit)]
 	[idiom: getriknte floymen = prunes]
-flukh/V/G [def: curse] [usage: not recommended]
+flukh/V [def: curse] [usage: not recommended]
 	farflukh/V/Bfarflukht [def: curse] [usage: not recommended]
 fluor [m] [def: fluorine (F)] 
 flyake/S [m] [def: Polish non-Jew (pejorative)]
@@ -4762,7 +4762,7 @@ frum/Kfrim [def: pious]
 	frumkayt/N [f] [def: piety]
 	frumak/Ees [def: over-pious person] /Iish [def: sanctimonious] 
 	farfrimt/K [def: pious]
-frustri'r/V/Gfrustri'rt [def: frustrate (emotional)]
+frustri'r/V/T [def: frustrate (emotional)]
 fuks/N/D [m] [def: fox] fu'ksikhe/S [def: vixen] /Dfiks fiksn/A
 	fuksl [m?] [def: fuschsia (plant, Fuchsia)]
 ful/A [def: full] fulkayt/N [f] [def: fullness]
@@ -10985,8 +10985,8 @@ loyf/V/Bgelofn [def: run]
 	/Gantkegn/Gtsunoyf/Gadurkh/Gtsuzamen/Goys/Garop/Gdurkh/Gnokh
 	/Gforoys/Gaheym/Gaher/Garoyf/Gop/Gariber/Giber
 	/Goyf [def: swell]
-	baloyf/V/Gbalofn [def: mount, cover, impregnate (animal); overflow]
-	derloyf/V/Gderlofn [def: run to a goal] % Itsik Kipnis
+	baloyf/V/Bbalofn [def: mount, cover, impregnate (animal); overflow]
+	derloyf/V/Bderlofn [def: run to a goal] % Itsik Kipnis
 	loyfl/V/T [def: jog] 
 	loyfndikerheyt [def: running]
 	loy'fenish/N [n] [def: diarrhea]
@@ -12125,7 +12125,7 @@ mist/N [n] [def: garbage, excrement]
 mister [def: Mister]
 misterye/S [f] [def: mystery] misterye'z/A [def: mysterious] 
 	mistifikatsye/S [f] [def: puzzle] 
-	mistifitsi'r/V/Gmistifitsi'rt [def: mystify]
+	mistifitsi'r/V/T [def: mystify]
 mistish/A [def: mystical] 
 	mistiker/S [def: mystic]
 	mistitsi'zm/N [m] [def: mysticism]
@@ -12647,7 +12647,7 @@ na nat [def: take] [grammar: only in imperative]
 nadn{ndn}/S/H [m] [def: dowry] 
 	[idiom: arayngegebn in nadn{ndn} = unexpected additional fact]
 nadye/V/T /Garayn [def: sneak in (with "zikh")]
-	farnadye/V/Gfarnadyet [def: trap, entice]
+	farnadye/V/T [def: trap, entice]
 nadziratel/Ees [m] [def: overseer, warden (Russian надзиратель)]
 nadzhe/V/T [def: lure; decoy] /Gayn [def: insinuate oneself (with "zikh")]
 nafke_{nfk#}/H/S [f] nafke/S [def: prostitute (vulgar)] 
@@ -14652,7 +14652,7 @@ posl{pswl}/H [def: unfit] /Idik
 	treyf-posl{tryf-pswl} [m] [def: nonreligious or heretical book (in Hebrew or Yiddish)]
 posma'keve/V/T [def: smack the lips] 
 	[idiom: posmakeven zikh mit epes = thoroughly enjoy something]
-pospe|ye/V/Gpospe|yet [def: be in time] % NY
+pospe|ye/V/T [def: be in time] % NY
 	uspeye/V/Buspeyet [def: succeed; be on time]
 pospishne/S [f] [def: gift upon departing] % Stutchkoff
 post/N [f/n] [def: mail] % MEYYED [f], Harduf [n]
@@ -14738,7 +14738,7 @@ poze/S [f] [def: pose]
 po'zemke/S [f] po'zhemke/S [f] [def: wild strawberry (food)]
 pozesiv/A [def: possessive (grammar)] 
 pozharne/A [def: fire station (Russian пожар)]
-pozhive/V/Gpozhivet [def: earn a living (with "zikh mit")]
+pozhive/V/T [def: earn a living (with "zikh mit")]
 pozitiv/K [def: positive]
 pozitsye/S [f] [def: position] 
 -/Xprakes [def: cabbage stuffed with rice and meat (food)] % only in plural
@@ -18058,7 +18058,7 @@ shtempl/V/T [def: stamp] /Gop/Goys/Gon
 	shtempl/N [m] [def: stamp] 
 	postshtempl/N [m] [def: postmark] 
 shtep/V/T [def: stitch; quilt; construct shoe uppers from leather] 
-	/Goys/Giber/Gon/Gop/Garum/Garayn/Gfundander/Gtsu
+	/Goys/Giber/Gon/Gop/Garum/Garayn/Gfunander/Gtsu
 	farshtep/V/Bfarshtept [def: stitch; quilt]
 	meysem_shtep{mTym-shtep} [m?] [def: shroud stitc shroud stitch]
 	shteper/S [m] [def: tradesman who sews]
@@ -18543,7 +18543,7 @@ shukh/Xshikh [m] [def: shoe (clothing)] /Dshikh
 	puent-shukh/Xpuent-shikh [m] [def: pointe shoes (ballet)] [note: V]
 	shuvaks [m] [def: shoe polish]
 	shukh/V/T [def: provide for shoes] 
-		bashukh/V/Gbashukht [def: shod]
+		bashukh/V/T [def: shod]
 shul/N [f] shule/S [f] shil/N [f] /Dshulkh /Dshilkh [def: school; synagogue]
 	mitlshul/N [f] [def: high school]
 		untermitlshul/N [f] [def: middle school]
@@ -18646,7 +18646,7 @@ shver/K [def: difficult; heavy] shverlekh [adv]
 	shverikayt/N [f] shverkayt/N [f] [def: difficulty] 
 	shverink/A [def: difficult; heavy (diminutive)]
 shver/V/Bgeshvorn [def: swear] /Gayn/Gop/Gtsu
-	/Ggeshvoyrn /Gayn/Gop % variant
+	/Bgeshvoyrn /Gayn/Gop % variant
 	bashver/V/Bbashvorn [def: cause to swear, exorcise] 
 		bashverung/N [f] [def: exorcism] 
 		bashverer/S [m] [def: exorcist] 
@@ -21125,7 +21125,7 @@ tsviyes{cByewT} [f] [def: hypocrisy] /Idik
 	tsvuatshe{cBwetshe}/V/T [def: be hypocritical; put on a pious front]
 tsvog/V/Bgetsvogn /Goys/Garum/Gop [def: wash (head)]
 tsvorekh [m] [def: cottage cheese] % no plural
-tu/Vton/Bgeton [def: do]
+tu/V ton/Bgeton [def: do]
 	/Gahin/Goyf/Gtsu/Garoyf
 	/Garayn [def: place inside]
 	/Gon [def: wear, get dressed (with "zikh")]
@@ -21429,7 +21429,7 @@ val/N [m] [def: roller (utensil); bulwark, rampart]
 		/Goys [def: roll out]
 		farvalger/V/Bfarvalgert [def: lie about]
 		tsevalger/V/Btsevalgert [def: spread out]
-	velger/V/T [def: roll out; smooth] /Goyg
+	velger/V/T [def: roll out; smooth] /Goyf
 	valts/V/T [m] [def: mill; roll]
 		valts/N [m] [def: roller (utensil)]
 			akervalts/N [m] [def: plow-wheel] % ?? Stutchkoff
