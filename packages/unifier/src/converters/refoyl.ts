@@ -368,6 +368,8 @@ interface ParsedEntry {
   comment?: string;
   raw: string;
   linenumber: number;
+  indentLevel: number;
+  subEntries?: ParsedEntry[];
 }
 
 /**
@@ -391,17 +393,16 @@ interface EntryBlock {
 interface ProcessingResult {
   wellFormed: ParsedEntry[];
   malformed: {
-    block: string;
-    startLine: number;
-    endLine: number;
+    entryLine: string;
+    lineNumber: number;
     error: string;
+    parentEntry?: string;
   }[];
   skipped: {
-    block: string;
-    startLine: number;
-    endLine: number;
-    subEntryCount: number;
+    entryLine: string;
+    lineNumber: number;
     reason: string;
+    parentEntry?: string;
   }[];
 }
 
@@ -497,7 +498,7 @@ const commentParser: Parser<EntryComponent, string> = apply(
  */
 const entryParser: Parser<
   EntryComponent,
-  Omit<ParsedEntry, "raw" | "linenumber">
+  Omit<ParsedEntry, "raw" | "linenumber" | "indentLevel" | "subEntries">
 > = apply(
   seq(
     opt_sc(formParser),
@@ -512,6 +513,105 @@ const entryParser: Parser<
     comment: comment || undefined,
   })
 );
+
+/**
+ * Builds tree structure from flat list of parsed subentries
+ * Returns root-level entries with nested children
+ */
+function buildSubentryTree(
+  flatSubentries: Array<{ entry: ParsedEntry; lineNumber: number }>
+): ParsedEntry[] {
+  if (flatSubentries.length === 0) return [];
+
+  const result: ParsedEntry[] = [];
+  const stack: ParsedEntry[] = [];
+
+  for (const { entry } of flatSubentries) {
+    // Pop stack until we find the appropriate parent level
+    while (
+      stack.length > 0 &&
+      stack[stack.length - 1].indentLevel >= entry.indentLevel
+    ) {
+      stack.pop();
+    }
+
+    if (stack.length === 0) {
+      // Root-level subentry (indent level 1)
+      result.push(entry);
+      stack.push(entry);
+    } else {
+      // Nested subentry - attach to parent
+      const parent = stack[stack.length - 1];
+      if (!parent.subEntries) parent.subEntries = [];
+      parent.subEntries.push(entry);
+      stack.push(entry);
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Determines if a subentry should become a separate LexicalEntry
+ * or an `otherForm` of the parent
+ */
+function shouldCreateSeparateEntry(subEntry: ParsedEntry): boolean {
+  // Check for POS change indicators
+  const hasPosChange = subEntry.macros.some((m) =>
+    [
+      MacroSymbol.Adjective,
+      MacroSymbol.AdjectiveI,
+      MacroSymbol.Verb,
+      MacroSymbol.Noun,
+      MacroSymbol.NounS,
+      MacroSymbol.NounX,
+    ].includes(m.symbol)
+  );
+
+  const hasPosInBrackets = subEntry.bracketedData.some((bd) =>
+    [BracketedDataType.Adjective, BracketedDataType.Verb].includes(bd.type)
+  );
+
+  // Check for semantic indicators of separate entries
+  const hasIdiom = subEntry.bracketedData.some(
+    (bd) => bd.type === BracketedDataType.Idiom
+  );
+
+  const hasClause = subEntry.bracketedData.some(
+    (bd) => bd.type === BracketedDataType.Clause
+  );
+
+  return hasPosChange || hasPosInBrackets || hasIdiom || hasClause;
+}
+
+/**
+ * Generates headword for subentries that lack explicit headword
+ * Uses parent headword + macro argument
+ */
+function generateSubentryHeadword(
+  subEntry: ParsedEntry,
+  parent: ParsedEntry
+): string | null {
+  // If subentry has explicit headword, use it
+  if (subEntry.headword) {
+    return subEntry.headword.text;
+  }
+
+  // Try to generate from parent + macro argument
+  const parentForm = parent.headword?.text;
+  if (!parentForm) return null;
+
+  // Look for macro with argument (like /Garoyf)
+  const macroWithArg = subEntry.macros.find((m) => m.argument);
+  if (macroWithArg?.argument) {
+    // PLACEHOLDER: Proper form generation logic needed
+    // For now, just concatenate with underscore
+    return `${parentForm}_${macroWithArg.argument}`;
+  }
+
+  // Can't generate - needs explicit headword
+  return null;
+}
 
 /**
  * Reads the source file and splits it into entry blocks
@@ -602,6 +702,7 @@ function tryParseEntry(
       ...result.candidates[0].result,
       raw: entryLine,
       linenumber: lineNumber,
+      indentLevel: indent,
     };
 
     return { success: true, entry: parsedEntry };
@@ -614,39 +715,63 @@ function tryParseEntry(
 }
 
 /**
- * Processes main entries only (no subentries)
- * Returns well-formed entries and malformed blocks for manual correction
+ * Processes all entries including subentries
+ * Returns well-formed entries with nested structure
  */
-function processMainEntriesOnly(blocks: EntryBlock[]): ProcessingResult {
+function processAllEntries(blocks: EntryBlock[]): ProcessingResult {
   const wellFormed: ParsedEntry[] = [];
   const malformed: ProcessingResult["malformed"] = [];
   const skipped: ProcessingResult["skipped"] = [];
 
   for (const block of blocks) {
-    if (block.subEntries.length > 0) {
-      // Track skipped blocks instead of silently ignoring
-      skipped.push({
-        block: block.mainEntry,
-        startLine: block.startLine,
-        endLine: block.endLine,
-        subEntryCount: block.subEntries.length,
-        reason: "Has subentries (not yet implemented)",
-      });
-      continue;
-    }
+    // Parse main entry
+    const mainParseResult = tryParseEntry(block.mainEntry, block.startLine);
 
-    const parseResult = tryParseEntry(block.mainEntry, block.startLine);
+    let mainEntry: ParsedEntry;
+    let parentCanonicalForm: string | undefined;
 
-    if (parseResult.success) {
-      wellFormed.push(parseResult.entry);
-    } else {
+    if (!mainParseResult.success) {
       malformed.push({
-        block: block.mainEntry,
-        startLine: block.startLine,
-        endLine: block.endLine,
-        error: parseResult.error,
+        entryLine: block.mainEntry,
+        lineNumber: block.startLine,
+        error: mainParseResult.error,
       });
+      continue; // Skip this entire block if main entry is malformed
     }
+
+    mainEntry = mainParseResult.entry;
+    parentCanonicalForm = mainEntry.headword?.text;
+
+    // Parse all subentries (flat)
+    const parsedSubentries: Array<{ entry: ParsedEntry; lineNumber: number }> =
+      [];
+
+    for (let i = 0; i < block.subEntries.length; i++) {
+      const subLine = block.subEntries[i];
+      const subLineNumber = block.startLine + i + 1;
+
+      const subParseResult = tryParseEntry(subLine, subLineNumber);
+
+      if (subParseResult.success) {
+        parsedSubentries.push({
+          entry: subParseResult.entry,
+          lineNumber: subLineNumber,
+        });
+      } else {
+        malformed.push({
+          entryLine: subLine,
+          lineNumber: subLineNumber,
+          error: subParseResult.error,
+          parentEntry: parentCanonicalForm,
+        });
+      }
+    }
+
+    // Build tree structure from flat subentries
+    mainEntry.subEntries = buildSubentryTree(parsedSubentries);
+
+    // Add to well-formed entries
+    wellFormed.push(mainEntry);
   }
 
   return { wellFormed, malformed, skipped };
@@ -660,25 +785,47 @@ function writeMalformedEntries(
   outputPath: string
 ): void {
   const lines = malformed.map((item) => {
-    return `% Line ${item.startLine}: ${item.error}\n${item.block}`;
+    const parent = item.parentEntry ? ` (parent: ${item.parentEntry})` : "";
+    return `% Line ${item.lineNumber}${parent}: ${item.error}\n${item.entryLine}`;
   });
-
   fs.writeFileSync(outputPath, lines.join("\n\n"), "utf-8");
   console.log(`Wrote ${malformed.length} malformed entries to ${outputPath}`);
 }
 
 /**
- * Converts well-formed ParsedEntry objects to OntoLex format
- * Uses the extended addTypedForm() method for proper form classification
+ * Recursively converts parsed entries to OntoLex format
+ * Handles both main entries and nested subentries
  */
-function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
-  const lexicalEntries: LexicalEntry[] = [];
+function convertEntryWithSubentries(
+  entry: ParsedEntry,
+  parentEntry?: LexicalEntry
+): LexicalEntry[] {
+  const results: LexicalEntry[] = [];
 
-  for (const entry of entries) {
-    if (!entry.headword) {
-      // Skip entries without headwords (shouldn't happen if parser is correct)
-      continue;
+  // Determine if this should be a separate entry or form
+  const shouldBeSeparate = parentEntry
+    ? shouldCreateSeparateEntry(entry)
+    : true; // Main entries are always separate
+
+  // Generate or get headword
+  const headwordText =
+    entry.headword?.text ||
+    (parentEntry ? generateSubentryHeadword(entry, entry) : null);
+
+  if (!headwordText) {
+    // Skip entries without headwords
+    // Still process nested subentries recursively
+    if (entry.subEntries) {
+      for (const subEntry of entry.subEntries) {
+        results.push(...convertEntryWithSubentries(subEntry, parentEntry));
+      }
     }
+    return results;
+  }
+
+  if (shouldBeSeparate || !parentEntry) {
+    // Create new LexicalEntry
+    const builder = new LexicalEntryBuilder(headwordText, "yi");
 
     // Determine part of speech from macros
     let partOfSpeech: PartOfSpeech | undefined;
@@ -706,64 +853,33 @@ function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
       }
     }
 
-    // Determine forms:
-    // - spellingHint (in curly braces) is the canonical form if present
-    // - text (outside braces) is the phonetic representation or also canonical if they coincide
-    const canoncialSrc = entry.headword.spellingHint ?? entry.headword.text;
-    const phoneticSrc = entry.headword.spellingHint
+    if (partOfSpeech) {
+      builder.addPartOfSpeech(partOfSpeech);
+    }
+
+    // Determine forms
+    const canonicalSrc =
+      entry.headword?.spellingHint ?? entry.headword?.text ?? headwordText;
+    const phoneticSrc = entry.headword?.spellingHint
       ? entry.headword.text
       : undefined;
 
-    // Transcribe both forms to Yiddish Unicode
-    const canonicalTranscription = transcribeToYiddish(canoncialSrc);
-    const phoneticTranscription = phoneticSrc
-      ? transcribeToYiddish(phoneticSrc)
-      : undefined;
-
-    if (!canonicalTranscription.ok) {
-      // If transcription fails, log error and skip this entry
-      console.error(
-        `Transcription error for "${canoncialSrc}": ${canonicalTranscription.error}`
-      );
-      continue;
-    }
-    if (phoneticTranscription && !phoneticTranscription.ok) {
-      // If transcription fails, log error and skip this entry
-      console.error(
-        `Transcription error for "${phoneticSrc}": ${phoneticTranscription.error}`
-      );
-      continue;
+    // Transcribe forms
+    const canonicalYiddish = transcribeToYiddish(canonicalSrc);
+    if (canonicalYiddish.ok) {
+      builder.setCanonicalWrittenReps([
+        { value: canonicalYiddish.value, lang: "yi" },
+      ]);
     }
 
-    const canonicalRep = canonicalTranscription.value;
-    const phoneticRep = phoneticTranscription?.value;
-
-    // Create the lexical entry builder with the Yiddish canonical form
-    const builder = new LexicalEntryBuilder(
-      canonicalRep,
-      "yi", // Yiddish language code
-      partOfSpeech
-    );
-
-    // If we have a separate romanization, add it with proper type classification
     if (phoneticSrc) {
-      // Add the romanized form with explicit FormType.ROMANIZATION
-      builder.addTypedForm(phoneticSrc, FormType.ROMANIZATION, undefined);
-      // Add the phonetic spelling as an orthographic variant, admissible in the USSR
-      if (phoneticRep) {
-        builder.addTypedForm(phoneticRep, FormType.PHONETIC, undefined);
-      }
-    }
-    // Otherwise pass through the untranscribed source
-    else {
-      builder.addTypedForm(canoncialSrc, FormType.ROMANIZATION, undefined);
+      builder.addTypedForm(phoneticSrc, FormType.ROMANIZATION);
     }
 
     // Process bracketed data
     for (const data of entry.bracketedData) {
       switch (data.type) {
         case BracketedDataType.Definition:
-          // Extract definition text (remove "def: " prefix)
           const defMatch = data.content.match(/^def:\s*(.+)$/);
           if (defMatch) {
             builder.addSense(defMatch[1], "en");
@@ -786,9 +902,22 @@ function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
           // Unknown gender marked with `?` is ignored/left ambiguous.
           break;
 
+        case BracketedDataType.Origin:
+          const originMatch = data.content.match(/^origin:\s*(.+)$/);
+          if (originMatch) {
+            builder.addEtymology(originMatch[1], "en");
+          }
+          break;
+
+        case BracketedDataType.Pronunciation:
+          const pronMatch = data.content.match(/^pronunciation:\s*(.+)$/);
+          if (pronMatch) {
+            builder.addTypedForm(pronMatch[1], FormType.PHONETIC);
+          }
+          break;
+
         case BracketedDataType.UsageNote:
         case BracketedDataType.GrammarNote:
-          // Extract note text
           const noteMatch = data.content.match(
             /^(?:usage|note|grammar):\s*(.+)$/
           );
@@ -804,7 +933,49 @@ function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
       builder.addComment(`Source: ${entry.comment}`, "en");
     }
 
-    lexicalEntries.push(builder.build());
+    // Add derivation note for subentries
+    if (parentEntry) {
+      builder.addComment(
+        `Derived from: ${parentEntry.canonicalForm.writtenRep[0].value}`,
+        "en"
+      );
+      // TODO: Add to etymology.derivedFrom when we have parent URI
+    }
+
+    const newEntry = builder.build();
+    results.push(newEntry);
+
+    // Process nested subentries recursively
+    if (entry.subEntries) {
+      for (const subEntry of entry.subEntries) {
+        results.push(...convertEntryWithSubentries(subEntry, newEntry));
+      }
+    }
+  } else {
+    // PLACEHOLDER: Should add as otherForm to parent
+    // TODO: Extract morphological features and add to parent's otherForms
+    // For now, skip - form generation will be implemented later
+
+    // Still process nested subentries
+    if (entry.subEntries) {
+      for (const subEntry of entry.subEntries) {
+        results.push(...convertEntryWithSubentries(subEntry, parentEntry));
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Converts well-formed ParsedEntry objects to OntoLex format
+ * Handles entries and all their subentries recursively
+ */
+function convertToOntoLex(entries: ParsedEntry[]): LexicalEntry[] {
+  const lexicalEntries: LexicalEntry[] = [];
+
+  for (const entry of entries) {
+    lexicalEntries.push(...convertEntryWithSubentries(entry));
   }
 
   return lexicalEntries;
@@ -826,24 +997,20 @@ async function processRefoylFile(
   const blocks = splitIntoBlocks(content);
   console.log(`Found ${blocks.length} entry blocks`);
 
-  console.log("Processing main entries (no subentries)...");
-  const result = processMainEntriesOnly(blocks);
-  console.log(`✓ ${result.wellFormed.length} well-formed entries`);
-  console.log(`✗ ${result.malformed.length} malformed entries`);
-  console.log(
-    `⊘ ${result.skipped.length} blocks skipped (w/ ${result.skipped.reduce(
-      (sum, s) => sum + s.subEntryCount,
-      0
-    )} subentries)`
-  );
-  console.log(
-    `  Total lines: ${
-      result.wellFormed.length +
-      result.malformed.length +
-      result.skipped.length +
-      result.skipped.reduce((sum, s) => sum + s.subEntryCount, 0)
-    }`
-  );
+  console.log("Processing all entries (including subentries)...");
+  const result = processAllEntries(blocks);
+
+  const totalSubentries = result.wellFormed.reduce((sum, entry) => {
+    const countAll = (e: ParsedEntry): number =>
+      (e.subEntries?.length || 0) +
+      (e.subEntries?.reduce((s, sub) => s + countAll(sub), 0) || 0);
+    return sum + countAll(entry);
+  }, 0);
+
+  console.log(`✓ ${result.wellFormed.length} well-formed main entries`);
+  console.log(`  └─ ${totalSubentries} subentries parsed`);
+  console.log(`✗ ${result.malformed.length} malformed entries/subentries`);
+  console.log(`⊘ ${result.skipped.length} skipped entries`);
 
   // Write malformed entries for manual correction
   if (result.malformed.length > 0) {
