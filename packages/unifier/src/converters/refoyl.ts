@@ -396,6 +396,13 @@ interface ProcessingResult {
     endLine: number;
     error: string;
   }[];
+  skipped: {
+    block: string;
+    startLine: number;
+    endLine: number;
+    subEntryCount: number;
+    reason: string;
+  }[];
 }
 
 /** Extracts form text and optional spelling hint from a form token. */
@@ -613,11 +620,18 @@ function tryParseEntry(
 function processMainEntriesOnly(blocks: EntryBlock[]): ProcessingResult {
   const wellFormed: ParsedEntry[] = [];
   const malformed: ProcessingResult["malformed"] = [];
+  const skipped: ProcessingResult["skipped"] = [];
 
   for (const block of blocks) {
-    // For now, only process blocks WITHOUT subentries
     if (block.subEntries.length > 0) {
-      // Skip blocks with subentries - they'll be handled later
+      // Track skipped blocks instead of silently ignoring
+      skipped.push({
+        block: block.mainEntry,
+        startLine: block.startLine,
+        endLine: block.endLine,
+        subEntryCount: block.subEntries.length,
+        reason: "Has subentries (not yet implemented)",
+      });
       continue;
     }
 
@@ -635,7 +649,7 @@ function processMainEntriesOnly(blocks: EntryBlock[]): ProcessingResult {
     }
   }
 
-  return { wellFormed, malformed };
+  return { wellFormed, malformed, skipped };
 }
 
 /**
@@ -816,6 +830,20 @@ async function processRefoylFile(
   const result = processMainEntriesOnly(blocks);
   console.log(`✓ ${result.wellFormed.length} well-formed entries`);
   console.log(`✗ ${result.malformed.length} malformed entries`);
+  console.log(
+    `⊘ ${result.skipped.length} blocks skipped (w/ ${result.skipped.reduce(
+      (sum, s) => sum + s.subEntryCount,
+      0
+    )} subentries)`
+  );
+  console.log(
+    `  Total lines: ${
+      result.wellFormed.length +
+      result.malformed.length +
+      result.skipped.length +
+      result.skipped.reduce((sum, s) => sum + s.subEntryCount, 0)
+    }`
+  );
 
   // Write malformed entries for manual correction
   if (result.malformed.length > 0) {
