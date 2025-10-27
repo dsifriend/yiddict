@@ -67,7 +67,7 @@ const bracketed = (inner: string) => `(?<=\\[)${inner}(?=\\])`;
  * Refoyl uses a few characters outside the usual `A-Za-z` range
  * to encode his transliterated forms.
  */
-const FormCharacters = `[\\w'|#-″ʼ_]`;
+const FormCharacters = `[\\w'#-″ʼ_]`;
 /**
  * Transliterated forms consist of a contiguous string of `FormCharacters`.
  */
@@ -292,6 +292,27 @@ const EntryTokenizer = buildLexer([
 ]);
 
 /**
+ * Refoyl provides a `wordlist.csv` file which is supposed to include
+ * all words with all relevant forms in Yiddish and their romanizations.
+ *
+ * It's referenced here in order to test `transcribeToYiddish`.
+ */
+let wordlist: string | undefined;
+try {
+  wordlist = fs.readFileSync("../../data/refoyl/wordlist.csv", "utf8");
+} catch (error) {
+  console.error(`The \`wordlist.csv\` file failed to load: ${error}`);
+  console.error("Proceeding without verifying transcriptions instead.");
+  wordlist = undefined;
+}
+/**
+ * This pattern matches a romanized form for an entry
+ * with its transcription within `wordlist`.
+ */
+const wordlistMatch = (romanization: string) =>
+  wordlist?.match(new RegExp(`^\\w+,(${romanization}),([^,]+),.*$`, "m"))?.[2];
+
+/**
  * Transcribes ASCII-encoded Yiddish text to proper Unicode characters.
  *
  * @param asciiText - The ASCII-encoded text from the source file
@@ -308,26 +329,73 @@ const EntryTokenizer = buildLexer([
  * ```
  */
 function transcribeToYiddish(asciiText: string): Result<string> {
-  // TODO: Implement actual transcription logic
-  // This should map:
-  // - sh -> ש
-  // - n -> נ
-  // - ey -> יי
-  // etc.
+  let yiddishEncoding: string | undefined;
 
-  // NOTE: not documented…
-  // Transcribe ʼ as a simple apostrophe: '
-  // Transcribe _ as a simple space: ` `
+  if (!FormPattern.test(asciiText)) {
+    return Err(`Unexpected character in source Form encoding: ${asciiText}`);
+  }
 
-  // For now, return the input unchanged as a placeholder
-  // This allows the pipeline to work while transcription is being implemented
-  return Ok(asciiText);
+  yiddishEncoding = "";
+  let remaining = asciiText;
 
-  // Future implementation should:
-  // 1. Parse the ASCII according to Refoyl's encoding scheme
-  // 2. Map each character/digraph to its Yiddish equivalent
-  // 3. Handle special cases (like | for alternative endings)
-  // 4. Return Err() if encoding is malformed
+  /**
+   * The `Grapheme` type defines string-based enum pairs,
+   * where they key contains a regex pattern that should
+   * be matched and the values contain the resulting
+   * yiddish encoding for the matched characters.
+   */
+  // prettier-ignore
+  enum Grapheme {
+      // Initial Vowel Digraphs
+      "^oy" = "אױ", "^ey" = "אײ", "^ay" = "אײַ", "^uv" = "אוּװ", "^yi" = "ייִ",
+      // Initial Vowels
+      "^u" = "או", "^i" = "אי",
+      // Final Forms
+      "kh$" = "ך", "m$" = "ם", "n$" = "ן", "f$" = "ף", "ts$" = "ץ",
+      // Trigraphs
+      "tsh" = "טש", "dzh" = "דזש",
+      // Digraphs and Diphthongs
+      "vu" = "װוּ", "uv" = "וּװ", "zh" = "זש", "oy" = "ױ", "ey" = "ײ", "ay" = "ײַ",
+      "kh" = "כ", "ts" = "צ", "sh" = "ש",
+      // Regular 1-* Mappings
+      "#" = "א", "a" = "אַ", "o" = "אָ", "b" = "ב", "B" = "בֿ", "g" = "ג",
+      "d" = "ד", "j" = "דזש", "h" = "ה", "w" = "װ", "v" = "װ", "z" = "ז",
+      "H" = "ח", "t" = "ט", "y" = "י", "i" = "י", "K" = "כּ", "l" = "ל",
+      "m" = "מ", "n" = "נ", "s" = "ס", "e" = "ע", "p" = "פּ", "f" = "פֿ",
+      "k" = "ק", "r" = "ר", "Q" = "שׂ", "W" = "תּ", "T" = "ת"
+    }
+
+  // Process the string by matching patterns in order
+  while (remaining.length > 0) {
+    let matched = false;
+
+    // Try each grapheme pattern in the defined order
+    for (const [pattern, yiddish] of Object.entries(Grapheme)) {
+      const regex = new RegExp(pattern);
+      if (regex.test(remaining)) {
+        yiddishEncoding += yiddish;
+        remaining = remaining.replace(regex, "");
+        matched = true;
+        break; // Move to next iteration with updated `remaining`
+      }
+    }
+
+    if (!matched) {
+      return Err(
+        `Unable to transcribe character sequence: "${remaining}" in "${asciiText}"`
+      );
+    }
+  }
+
+  // Check transcription against wordlist if available
+  const knownTranscription = wordlistMatch(asciiText);
+  if (knownTranscription && yiddishEncoding !== knownTranscription) {
+    return Err(
+      `Transcription mismatch: ${yiddishEncoding} vs. ${knownTranscription}`
+    );
+  }
+
+  return Ok(yiddishEncoding);
 }
 
 /**
