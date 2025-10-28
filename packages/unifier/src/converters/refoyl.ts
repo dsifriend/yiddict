@@ -903,11 +903,14 @@ function convertEntryWithSubentries(
         case MacroSymbol.NounS:
         case MacroSymbol.NounX:
         case MacroSymbol.NounProper:
+        case MacroSymbol.NounJ:
+        case MacroSymbol.NounDiminutive:
           partOfSpeech = PartOfSpeech.NOUN;
           break;
         case MacroSymbol.Verb:
         case MacroSymbol.VerbT:
         case MacroSymbol.VerbB:
+        case MacroSymbol.VerbComplement:
           partOfSpeech = PartOfSpeech.VERB;
           break;
         case MacroSymbol.Adjective:
