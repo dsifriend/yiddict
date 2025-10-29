@@ -1144,7 +1144,13 @@ function convertEntryWithSubentries(
     ): string[] => {
       const stem = irregularForm ?? base;
       // Only generates comparative and superlative forms.
-      return [`${stem}${stem.match(/e$/) != null ? "er" : "r"}`];
+      // prettier-ignore
+      return [
+        `${stem}${stem.match(/e$/) != null ? "er" : "r"}`,   // comparative m/n
+        `${stem}${stem.match(/e$/) != null ? "ere" : "re"}`, // comparative f
+        `${stem}${stem.match(/e$/) != null ? "est" : "st"}`,   // superlative m/n
+        `${stem}${stem.match(/e$/) != null ? "este" : "ste"}`, // superlative f
+      ];
     };
 
     const synthesizeAdjectiveFromSuffix = (
