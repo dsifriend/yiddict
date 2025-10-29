@@ -658,7 +658,7 @@ function shouldCreateSeparateEntry(subEntry: ParsedEntry): boolean {
  */
 function generateSubentryHeadword(
   subEntry: ParsedEntry,
-  parent: ParsedEntry
+  parent: ParsedEntry | LexicalEntry // Now accepts both types
 ): string | null {
   // If subentry has explicit headword, use it
   if (subEntry.headword) {
@@ -666,15 +666,58 @@ function generateSubentryHeadword(
   }
 
   // Try to generate from parent + macro argument
-  const parentForm = parent.headword?.text;
+  let parentForm: string | undefined;
+  if ("canonicalForm" in parent) {
+    // parent is LexicalEntry - extract from canonicalForm
+    parentForm = parent.canonicalForm.writtenRep[0]?.value;
+  } else {
+    // parent is ParsedEntry - extract from headword
+    parentForm = parent.headword?.text;
+  }
   if (!parentForm) return null;
 
-  // Look for macro with argument (like /Garoyf)
+  // Look for macro with argument
   const macroWithArg = subEntry.macros.find((m) => m.argument);
   if (macroWithArg?.argument) {
-    // PLACEHOLDER: Proper form generation logic needed
-    // For now, just concatenate with underscore
-    return `${parentForm}_${macroWithArg.argument}`;
+    const arg = macroWithArg.argument;
+
+    /**
+     * Different macros use their arguments differently:
+     *
+     * - Macros where argument IS the complete form:
+     *   /X (irregular plural) → argument is the plural form
+     *   /B (irregular participle) → argument is the participle
+     *
+     * - Macros where argument modifies the base:
+     *   /G (verb complement) → argument is adverbial complement, form is "complement + base"
+     *   /D (diminutive) → argument is stem override for diminutive generation
+     *   /I (adjective suffix) → argument is suffix, form is "base + suffix"
+     *   /L (prefix) → argument is prefix, form is "prefix + base"
+     *   /E (suffix) → argument is suffix, form is "base + suffix"
+     */
+
+    switch (macroWithArg.symbol) {
+      // Argument IS the complete form
+      case MacroSymbol.NounX:
+      case MacroSymbol.VerbB:
+        return arg;
+
+      case MacroSymbol.VerbComplement:
+      case MacroSymbol.Prefix:
+        return `${arg}${parentForm}`;
+
+      case MacroSymbol.Suffix:
+      case MacroSymbol.AdjectiveI:
+        return `${parentForm}${arg}`;
+
+      case MacroSymbol.NounDiminutive:
+        // Append -le if modified stem ends in -e
+        return `${arg}l${arg.match(/e$/) != null ? "e" : ""}`;
+
+      // Other or Unknown macro type - don't generate derived forms
+      default:
+        return null;
+    }
   }
 
   // Can't generate - needs explicit headword
@@ -878,7 +921,7 @@ function convertEntryWithSubentries(
   // Generate or get headword
   const headwordText =
     entry.headword?.text ||
-    (parentEntry ? generateSubentryHeadword(entry, entry) : null);
+    (parentEntry ? generateSubentryHeadword(entry, parentEntry) : null);
 
   if (!headwordText) {
     // Skip entries without headwords
@@ -886,6 +929,39 @@ function convertEntryWithSubentries(
     if (entry.subEntries) {
       for (const subEntry of entry.subEntries) {
         results.push(...convertEntryWithSubentries(subEntry, parentEntry));
+      }
+    }
+    return results;
+  }
+
+  // Check if this entry is spurious (exists only to organize subentries)
+  // A spurious parent has a /- macro that suppresses its own headword
+  const isSpuriousParent = entry.macros.some(
+    (macro) =>
+      macro.symbol === MacroSymbol.Spurious && macro.argument === headwordText
+  );
+
+  if (isSpuriousParent) {
+    /**
+     * This is a spurious parent entry - it exists only to organize subentries
+     * and should NOT create a lexical entry itself. The /- macro suppresses
+     * the parent's own headword.
+     *
+     * All subentries should be processed as top-level entries without
+     * any reference to this spurious parent.
+     *
+     * Example:
+     *   nonexistent/-nonexistent
+     *     /Ga [def: existing anonymously]
+     *     nonexistentatious [def: notoriously absent]
+     *
+     * Result: No entry for "nonexistent", but two independent entries
+     * for the subentries without "derived from" references.
+     */
+    if (entry.subEntries) {
+      for (const subEntry of entry.subEntries) {
+        // Process subentries as top-level (no parent)
+        results.push(...convertEntryWithSubentries(subEntry, undefined));
       }
     }
     return results;
@@ -934,6 +1010,266 @@ function convertEntryWithSubentries(
     const phoneticSrc = entry.headword?.spellingHint
       ? entry.headword.text
       : undefined;
+
+    // =========================================================================
+    // IMPLICIT FORM SYNTHESIS FROM MACROS
+    // =========================================================================
+    //
+    // Functions only return *new* forms, not base forms.
+
+    /**
+     * Track forms that should NOT be automatically generated (from Spurious macro).
+     *
+     * IMPORTANT SCOPING NOTE:
+     * This Set is LOCAL to this entry only. It prevents automatic form generation
+     * within THIS entry's macro processing, but does NOT prevent:
+     * 1. Explicit subentries with that form as a headword from being created
+     * 2. Subentries from having their own separate spurious forms
+     *
+     * Example edge case that IS handled correctly:
+     *   baseword /N /-pluralform
+     *       pluralform [def: different meaning as separate lexeme]
+     *
+     * Here, /-pluralform prevents auto-generating "pluralform" as the plural
+     * of "baseword", but the explicit subentry "pluralform" with its own
+     * definition still creates a separate LexicalEntry (because it has a headword
+     * and passes shouldCreateSeparateEntry check).
+     */
+    const suppressedForms = new Set<string>();
+
+    // First pass: collect spurious forms
+    for (const macro of entry.macros) {
+      if (macro.symbol === MacroSymbol.Spurious && macro.argument) {
+        /**
+         * The Spurious macro (/-) indicates that a form which would normally
+         * be generated automatically should NOT be generated. This is used to
+         * suppress overgeneralization when the regular rules would produce
+         * an incorrect form.
+         *
+         * The argument to /- is the form to suppress (transliteration).
+         */
+        suppressedForms.add(macro.argument);
+      }
+    }
+
+    /**
+     * Form synthesis lambda functions
+     *
+     * All return an array because some might generate multiple variants
+     */
+
+    const synthesizeRegularNounPlural = (base: string): string[] => {
+      return [`${base}${base.match(/[mn]$/) != null ? "e" : ""}n`];
+    };
+
+    const synthesizeNounPluralWithS = (base: string): string[] => {
+      return [`${base}s`];
+    };
+
+    const synthesizeIrregularNounPlural = (
+      base: string,
+      pluralForm: string
+    ): string[] => {
+      /**
+       * For irregular nouns (/X), the plural form is provided explicitly
+       * as an argument to the macro. We just use the provided form,
+       * no transformations needed.
+       */
+      return [pluralForm];
+    };
+
+    const synthesizeDiminutive = (
+      base: string,
+      stemOverride?: string
+    ): string[] => {
+      const stem = stemOverride ?? base;
+
+      // Append -le if modified stem ends in -e
+      const diminutive = `${stem}${stem.match(/e$/) != null ? "le" : "l"}`;
+
+      return [diminutive];
+    };
+
+    const synthesizeProperNounDative = (base: string): string[] => {
+      return [`${base}${base.match(/[mn]$/) != null ? "en" : "n"}`];
+    };
+
+    const synthesizeRegularVerb = (base: string): string[] => {
+      // prettier-ignore
+      return [
+        `${base}n`,  // infinitive and pres.1pl
+        `${base}st`, // pres.2sg
+        `${base}t`,  // pres.3sg
+        `ge${base}t`,   // participle
+      ];
+    };
+
+    const synthesizeVerbUnprefixedParticiple = (base: string): string[] => {
+      // prettier-ignore
+      return [
+        `${base}n`,  // infinitive and pres.1pl
+        `${base}st`, // pres.2sg
+        `${base}t`,  // pres.3sg and participle
+      ];
+    };
+
+    const synthesizeVerbIrregularParticiple = (
+      base: string,
+      participleForm: string
+    ): string[] => {
+      // prettier-ignore
+      return [
+        `${base}n`,  // infinitive and pres.1pl
+        `${base}st`, // pres.2sg
+        `${base}t`,  // pres.3sg
+        participleForm,
+      ];
+    };
+
+    const synthesizeVerbWithComplement = (
+      base: string,
+      complement: string
+    ): string[] => {
+      return [`${complement}${base}`];
+    };
+
+    const synthesizeRegularAdjective = (base: string): string[] => {
+      // Generates gendered female form if necessary.
+      return base.match(/e$/) != null ? [] : [`${base}e`];
+    };
+
+    const synthesizeGradableAdjective = (
+      base: string,
+      irregularForm?: string
+    ): string[] => {
+      const stem = irregularForm ?? base;
+      // Only generates comparative and superlative forms.
+      return [`${stem}${stem.match(/e$/) != null ? "er" : "r"}`];
+    };
+
+    const synthesizeAdjectiveFromSuffix = (
+      base: string,
+      suffix: string
+    ): string[] => {
+      // Generates base male/neutral and gendered female forms.
+      return suffix.match(/e$/) != null
+        ? [`${base}${suffix}`]
+        : [`${base}${suffix}`, `${base}${suffix}e`];
+    };
+
+    const synthesizeFormWithPrefix = (
+      base: string,
+      prefix: string
+    ): string[] => {
+      return [`${prefix}${base}`];
+    };
+
+    const synthesizeFormWithSuffix = (
+      base: string,
+      suffix: string
+    ): string[] => {
+      return [`${base}${suffix}`];
+    };
+
+    // Second pass: generate forms from macros
+    for (const macro of entry.macros) {
+      let generatedForms: string[] = [];
+
+      switch (macro.symbol) {
+        case MacroSymbol.Noun:
+          generatedForms = synthesizeRegularNounPlural(canonicalSrc);
+          break;
+        case MacroSymbol.NounS:
+          generatedForms = synthesizeNounPluralWithS(canonicalSrc);
+          break;
+        case MacroSymbol.NounX:
+          if (macro.argument) {
+            generatedForms = synthesizeIrregularNounPlural(
+              canonicalSrc,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.NounProper:
+          if (macro.argument) {
+            generatedForms = synthesizeProperNounDative(canonicalSrc);
+          }
+          break;
+        case MacroSymbol.NounDiminutive:
+          generatedForms = synthesizeDiminutive(canonicalSrc, macro.argument);
+          break;
+        case MacroSymbol.Verb:
+          generatedForms = synthesizeRegularVerb(canonicalSrc);
+          break;
+        case MacroSymbol.VerbT:
+          generatedForms = synthesizeVerbUnprefixedParticiple(canonicalSrc);
+          break;
+        case MacroSymbol.VerbB:
+          if (macro.argument) {
+            generatedForms = synthesizeVerbIrregularParticiple(
+              canonicalSrc,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.VerbComplement:
+          if (macro.argument) {
+            generatedForms = synthesizeVerbWithComplement(
+              canonicalSrc,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.Adjective:
+          generatedForms = synthesizeRegularAdjective(canonicalSrc);
+          break;
+        case MacroSymbol.AdjectiveK:
+          generatedForms = synthesizeGradableAdjective(
+            canonicalSrc,
+            macro.argument
+          );
+          break;
+        case MacroSymbol.AdjectiveI:
+          if (macro.argument) {
+            generatedForms = synthesizeAdjectiveFromSuffix(
+              canonicalSrc,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.Prefix:
+          if (macro.argument) {
+            generatedForms = synthesizeFormWithPrefix(
+              canonicalSrc,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.Suffix:
+          if (macro.argument) {
+            generatedForms = synthesizeFormWithSuffix(
+              canonicalSrc,
+              macro.argument
+            );
+          }
+          break;
+      }
+
+      // Filter out suppressed forms and add to builder
+      for (const form of generatedForms) {
+        if (!suppressedForms.has(form)) {
+          const yiddishForm = transcribeToYiddish(form);
+          // TODO: Determine Morphological Features for each generated form
+          // based on gloss in `wordlist.csv` (or alternatively keeping track),
+          // e.g., PLURAL, COMPARATIVE, PARTICIPLE, etc.
+          if (yiddishForm.ok) {
+            builder.addForm(yiddishForm.value /* Morphological Feature */);
+          }
+        }
+      }
+    }
+    // END IMPLICIT FORM SYNTHESIS
+    // =========================================================================
 
     // Transcribe forms
     const canonicalYiddish = transcribeToYiddish(canonicalSrc);
@@ -1023,9 +1359,45 @@ function convertEntryWithSubentries(
       }
     }
   } else {
-    // PLACEHOLDER: Should add as otherForm to parent
-    // TODO: Extract morphological features and add to parent's otherForms
-    // For now, skip - form generation will be implemented later
+    // =========================================================================
+    // SUBENTRY FORM SYNTHESIS
+    // =========================================================================
+    /**
+     * This subentry does not generate a new lexical entry because it lacks
+     * a unique headword. Instead, it represents an inflected or derived form
+     * that should be added to the parent entry's otherForms.
+     *
+     * Subentries can encode:
+     * 1. Explicit forms - directly specified in the subentry text
+     * 2. Forms derived via macros - generated using the parent's base
+     * 3. Forms with morphological features - gender, number, case, etc.
+     *
+     * Processing steps:
+     * 1. Extract any explicit forms from the subentry
+     * 2. Process macros to generate additional forms
+     * 3. Extract morphological features from bracketed data
+     * 4. Determine the appropriate FormType for each form
+     * 5. Add forms to parent entry with correct features
+     *
+     * Examples:
+     * - Parent: "man" [m]
+     *   Subentry: "\t/Xmener" → adds plural form "mener"
+     *
+     * - Parent: "sheyn" /K
+     *   Subentry: "\tshener" [comparative] → adds comparative form
+     *
+     * - Parent: "geyn" /V
+     *   Subentry: "\tgegangen" [past participle] → adds participle
+     *
+     * TODO: Implement comprehensive subentry processing:
+     * - Extract explicit forms from entry.forms
+     * - Process macros in entry.macros to generate forms
+     * - Parse bracketed data for morphological features
+     * - Map features to appropriate FormType values
+     * - Handle interaction with parent's macros (e.g., /- spurious)
+     * - Add forms to parent using builder methods
+     * - Properly transcribe transliterated forms to Yiddish script
+     */
 
     // Still process nested subentries
     if (entry.subEntries) {
