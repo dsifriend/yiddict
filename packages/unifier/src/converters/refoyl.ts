@@ -711,8 +711,7 @@ function generateSubentryHeadword(
         return `${parentForm}${arg}`;
 
       case MacroSymbol.NounDiminutive:
-        // Append -le if modified stem ends in -e
-        return `${arg}l${arg.match(/e$/) != null ? "e" : ""}`;
+        return synthesizeDiminutive(parentForm, arg)?.[0];
 
       // Other or Unknown macro type - don't generate derived forms
       default:
