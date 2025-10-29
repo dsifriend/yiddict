@@ -903,6 +903,122 @@ function writeMalformedEntries(
   console.log(`Wrote ${malformed.length} malformed entries to ${outputPath}`);
 }
 
+// ==================================================================
+//  Form synthesis lambda functions
+// ==================================================================
+const synthesizeRegularNounPlural = (base: string): string[] => {
+  return [`${base}${base.match(/[mn]$/) != null ? "e" : ""}n`];
+};
+
+const synthesizeNounPluralWithS = (base: string): string[] => {
+  return [`${base}s`];
+};
+
+const synthesizeIrregularNounPlural = (
+  base: string,
+  pluralForm: string
+): string[] => {
+  /**
+   * For irregular nouns (/X), the plural form is provided explicitly
+   * as an argument to the macro. We just use the provided form,
+   * no transformations needed.
+   */
+  return [pluralForm];
+};
+
+const synthesizeDiminutive = (
+  base: string,
+  stemOverride?: string
+): string[] => {
+  const stem = stemOverride ?? base;
+
+  // Append -le if modified stem ends in -e
+  const diminutive = `${stem}${stem.match(/e$/) != null ? "le" : "l"}`;
+
+  return [diminutive];
+};
+
+const synthesizeProperNounDative = (base: string): string[] => {
+  return [`${base}${base.match(/[mn]$/) != null ? "en" : "n"}`];
+};
+
+const synthesizeRegularVerb = (base: string): string[] => {
+  // prettier-ignore
+  return [
+        `${base}n`,  // infinitive and pres.1pl
+        `${base}st`, // pres.2sg
+        `${base}t`,  // pres.3sg
+        `ge${base}t`,   // participle
+      ];
+};
+
+const synthesizeVerbUnprefixedParticiple = (base: string): string[] => {
+  // prettier-ignore
+  return [
+        `${base}n`,  // infinitive and pres.1pl
+        `${base}st`, // pres.2sg
+        `${base}t`,  // pres.3sg and participle
+      ];
+};
+
+const synthesizeVerbIrregularParticiple = (
+  base: string,
+  participleForm: string
+): string[] => {
+  // prettier-ignore
+  return [
+        `${base}n`,  // infinitive and pres.1pl
+        `${base}st`, // pres.2sg
+        `${base}t`,  // pres.3sg
+        participleForm,
+      ];
+};
+
+const synthesizeVerbWithComplement = (
+  base: string,
+  complement: string
+): string[] => {
+  return [`${complement}${base}`];
+};
+
+const synthesizeRegularAdjective = (base: string): string[] => {
+  // Generates gendered female form if necessary.
+  return base.match(/e$/) != null ? [] : [`${base}e`];
+};
+
+const synthesizeGradableAdjective = (
+  base: string,
+  irregularForm?: string
+): string[] => {
+  const stem = irregularForm ?? base;
+  // Only generates comparative and superlative forms.
+  // prettier-ignore
+  return [
+        `${stem}${stem.match(/e$/) != null ? "er" : "r"}`,   // comparative m/n
+        `${stem}${stem.match(/e$/) != null ? "ere" : "re"}`, // comparative f
+        `${stem}${stem.match(/e$/) != null ? "est" : "st"}`,   // superlative m/n
+        `${stem}${stem.match(/e$/) != null ? "este" : "ste"}`, // superlative f
+      ];
+};
+
+const synthesizeAdjectiveFromSuffix = (
+  base: string,
+  suffix: string
+): string[] => {
+  // Generates base male/neutral and gendered female forms.
+  return suffix.match(/e$/) != null
+    ? [`${base}${suffix}`]
+    : [`${base}${suffix}`, `${base}${suffix}e`];
+};
+
+const synthesizeFormWithPrefix = (base: string, prefix: string): string[] => {
+  return [`${prefix}${base}`];
+};
+
+const synthesizeFormWithSuffix = (base: string, suffix: string): string[] => {
+  return [`${base}${suffix}`];
+};
+
 /**
  * Recursively converts parsed entries to OntoLex format
  * Handles both main entries and nested subentries
@@ -1051,131 +1167,6 @@ function convertEntryWithSubentries(
         suppressedForms.add(macro.argument);
       }
     }
-
-    /**
-     * Form synthesis lambda functions
-     *
-     * All return an array because some might generate multiple variants
-     */
-
-    const synthesizeRegularNounPlural = (base: string): string[] => {
-      return [`${base}${base.match(/[mn]$/) != null ? "e" : ""}n`];
-    };
-
-    const synthesizeNounPluralWithS = (base: string): string[] => {
-      return [`${base}s`];
-    };
-
-    const synthesizeIrregularNounPlural = (
-      base: string,
-      pluralForm: string
-    ): string[] => {
-      /**
-       * For irregular nouns (/X), the plural form is provided explicitly
-       * as an argument to the macro. We just use the provided form,
-       * no transformations needed.
-       */
-      return [pluralForm];
-    };
-
-    const synthesizeDiminutive = (
-      base: string,
-      stemOverride?: string
-    ): string[] => {
-      const stem = stemOverride ?? base;
-
-      // Append -le if modified stem ends in -e
-      const diminutive = `${stem}${stem.match(/e$/) != null ? "le" : "l"}`;
-
-      return [diminutive];
-    };
-
-    const synthesizeProperNounDative = (base: string): string[] => {
-      return [`${base}${base.match(/[mn]$/) != null ? "en" : "n"}`];
-    };
-
-    const synthesizeRegularVerb = (base: string): string[] => {
-      // prettier-ignore
-      return [
-        `${base}n`,  // infinitive and pres.1pl
-        `${base}st`, // pres.2sg
-        `${base}t`,  // pres.3sg
-        `ge${base}t`,   // participle
-      ];
-    };
-
-    const synthesizeVerbUnprefixedParticiple = (base: string): string[] => {
-      // prettier-ignore
-      return [
-        `${base}n`,  // infinitive and pres.1pl
-        `${base}st`, // pres.2sg
-        `${base}t`,  // pres.3sg and participle
-      ];
-    };
-
-    const synthesizeVerbIrregularParticiple = (
-      base: string,
-      participleForm: string
-    ): string[] => {
-      // prettier-ignore
-      return [
-        `${base}n`,  // infinitive and pres.1pl
-        `${base}st`, // pres.2sg
-        `${base}t`,  // pres.3sg
-        participleForm,
-      ];
-    };
-
-    const synthesizeVerbWithComplement = (
-      base: string,
-      complement: string
-    ): string[] => {
-      return [`${complement}${base}`];
-    };
-
-    const synthesizeRegularAdjective = (base: string): string[] => {
-      // Generates gendered female form if necessary.
-      return base.match(/e$/) != null ? [] : [`${base}e`];
-    };
-
-    const synthesizeGradableAdjective = (
-      base: string,
-      irregularForm?: string
-    ): string[] => {
-      const stem = irregularForm ?? base;
-      // Only generates comparative and superlative forms.
-      // prettier-ignore
-      return [
-        `${stem}${stem.match(/e$/) != null ? "er" : "r"}`,   // comparative m/n
-        `${stem}${stem.match(/e$/) != null ? "ere" : "re"}`, // comparative f
-        `${stem}${stem.match(/e$/) != null ? "est" : "st"}`,   // superlative m/n
-        `${stem}${stem.match(/e$/) != null ? "este" : "ste"}`, // superlative f
-      ];
-    };
-
-    const synthesizeAdjectiveFromSuffix = (
-      base: string,
-      suffix: string
-    ): string[] => {
-      // Generates base male/neutral and gendered female forms.
-      return suffix.match(/e$/) != null
-        ? [`${base}${suffix}`]
-        : [`${base}${suffix}`, `${base}${suffix}e`];
-    };
-
-    const synthesizeFormWithPrefix = (
-      base: string,
-      prefix: string
-    ): string[] => {
-      return [`${prefix}${base}`];
-    };
-
-    const synthesizeFormWithSuffix = (
-      base: string,
-      suffix: string
-    ): string[] => {
-      return [`${base}${suffix}`];
-    };
 
     // Second pass: generate forms from macros
     for (const macro of entry.macros) {
