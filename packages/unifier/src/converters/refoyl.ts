@@ -10,6 +10,7 @@ import {
   PartOfSpeech,
   FormType,
   Gender,
+  addFormToEntry,
 } from "@yiddict/lexicon";
 import {
   seq,
@@ -1384,16 +1385,195 @@ function convertEntryWithSubentries(
      *
      * - Parent: "geyn" /V
      *   Subentry: "\tgegangen" [past participle] → adds participle
-     *
-     * TODO: Implement comprehensive subentry processing:
-     * - Extract explicit forms from entry.forms
-     * - Process macros in entry.macros to generate forms
-     * - Parse bracketed data for morphological features
-     * - Map features to appropriate FormType values
-     * - Handle interaction with parent's macros (e.g., /- spurious)
-     * - Add forms to parent using builder methods
-     * - Properly transcribe transliterated forms to Yiddish script
      */
+
+    if (!parentEntry) {
+      // Should not happen - subentry without separate entry status must have parent
+      console.warn(
+        `Subentry at line ${entry.linenumber} has no parent entry, skipping form synthesis`
+      );
+      return results;
+    }
+
+    // Get parent's canonical form for base-relative generation
+    const parentCanonical = parentEntry.canonicalForm.writtenRep[0]?.value;
+
+    if (!parentCanonical) {
+      console.warn(
+        `Parent entry has no canonical form, skipping subentry at line ${entry.linenumber}`
+      );
+      return results;
+    }
+
+    // Collect forms to add to parent
+    const formsToAdd: Array<{
+      transliteration: string;
+      features?: { [key: string]: string[] };
+    }> = [];
+
+    // 1. Process explicit headword as a form (if present)
+    if (entry.headword) {
+      formsToAdd.push({
+        transliteration: entry.headword.text,
+      });
+    }
+
+    // 2. Process macros to generate forms
+    // Track spurious forms for this subentry
+    const subentrySpuriousForms = new Set<string>();
+
+    // First pass: collect spurious forms
+    for (const macro of entry.macros) {
+      if (macro.symbol === MacroSymbol.Spurious && macro.argument) {
+        subentrySpuriousForms.add(macro.argument);
+      }
+    }
+
+    // Second pass: generate forms from macros
+    for (const macro of entry.macros) {
+      let generatedForms: string[] = [];
+
+      // Most macros require the parent's base form as input
+      switch (macro.symbol) {
+        case MacroSymbol.Noun:
+          generatedForms = synthesizeRegularNounPlural(parentCanonical);
+          break;
+        case MacroSymbol.NounS:
+          generatedForms = synthesizeNounPluralWithS(parentCanonical);
+          break;
+        case MacroSymbol.NounX:
+          if (macro.argument) {
+            generatedForms = synthesizeIrregularNounPlural(
+              parentCanonical,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.NounProper:
+          generatedForms = synthesizeProperNounDative(parentCanonical);
+          break;
+        case MacroSymbol.NounDiminutive:
+          generatedForms = synthesizeDiminutive(
+            parentCanonical,
+            macro.argument
+          );
+          break;
+        case MacroSymbol.Verb:
+          generatedForms = synthesizeRegularVerb(parentCanonical);
+          break;
+        case MacroSymbol.VerbT:
+          generatedForms = synthesizeVerbUnprefixedParticiple(parentCanonical);
+          break;
+        case MacroSymbol.VerbB:
+          if (macro.argument) {
+            generatedForms = synthesizeVerbIrregularParticiple(
+              parentCanonical,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.VerbComplement:
+          if (macro.argument) {
+            generatedForms = synthesizeVerbWithComplement(
+              parentCanonical,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.Adjective:
+          generatedForms = synthesizeRegularAdjective(parentCanonical);
+          break;
+        case MacroSymbol.AdjectiveK:
+          generatedForms = synthesizeGradableAdjective(
+            parentCanonical,
+            macro.argument
+          );
+          break;
+        case MacroSymbol.AdjectiveI:
+          if (macro.argument) {
+            generatedForms = synthesizeAdjectiveFromSuffix(
+              parentCanonical,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.Prefix:
+          if (macro.argument) {
+            generatedForms = synthesizeFormWithPrefix(
+              parentCanonical,
+              macro.argument
+            );
+          }
+          break;
+        case MacroSymbol.Suffix:
+          if (macro.argument) {
+            generatedForms = synthesizeFormWithSuffix(
+              parentCanonical,
+              macro.argument
+            );
+          }
+          break;
+      }
+
+      // Add generated forms (excluding spurious ones)
+      for (const form of generatedForms) {
+        if (!subentrySpuriousForms.has(form)) {
+          formsToAdd.push({ transliteration: form });
+        }
+      }
+    }
+
+    // 3. Extract morphological features from bracketed data
+    // These features will apply to all forms generated by this subentry
+    const morphologicalFeatures: { [key: string]: string[] } = {};
+
+    for (const data of entry.bracketedData) {
+      switch (data.type) {
+        case BracketedDataType.GenderMarker:
+          // Parse gender from content like "m", "f", "n", "m/f", etc.
+          const genders: string[] = [];
+          if (data.content.includes("m")) genders.push(Gender.MASCULINE);
+          if (data.content.includes("f")) genders.push(Gender.FEMININE);
+          if (data.content.includes("n")) genders.push(Gender.NEUTER);
+          if (genders.length > 0) {
+            morphologicalFeatures.gender = genders;
+          }
+          break;
+
+        // TODO: other morphological features
+      }
+    }
+
+    // 4. Add forms to parent entry using the utility function
+    for (const formData of formsToAdd) {
+      // Transcribe to Yiddish
+      const yiddishResult = transcribeToYiddish(formData.transliteration);
+
+      if (yiddishResult.ok) {
+        // Merge morphological features from subentry and form-specific features
+        const mergedFeatures =
+          Object.keys(morphologicalFeatures).length > 0 ||
+          (formData.features && Object.keys(formData.features).length > 0)
+            ? {
+                ...morphologicalFeatures,
+                ...formData.features,
+              }
+            : undefined;
+
+        // Add the form to the parent entry
+        addFormToEntry(
+          parentEntry,
+          yiddishResult.value,
+          parentEntry.language,
+          FormType.INFLECTED,
+          mergedFeatures as any
+        );
+      } else {
+        console.warn(
+          `Failed to transcribe form "${formData.transliteration}" for subentry at line ${entry.linenumber}: ${yiddishResult.error}`
+        );
+      }
+    }
 
     // Still process nested subentries
     if (entry.subEntries) {
