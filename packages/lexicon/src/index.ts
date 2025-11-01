@@ -50,7 +50,11 @@ export {
 } from "./interfaces/ontolex";
 
 // Builder classes
-export { LexicalEntryBuilder, LexicalSenseBuilder } from "./builders/entry";
+export {
+  LexicalEntryBuilder,
+  LexicalSenseBuilder,
+  addFormToEntry,
+} from "./builders/entry";
 export { LexiconBuilder } from "./builders/lexicon";
 
 // Processing

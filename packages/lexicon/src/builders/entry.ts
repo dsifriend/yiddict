@@ -531,3 +531,44 @@ export class LexicalEntryBuilder {
     return this.entry as LexicalEntry;
   }
 }
+
+/**
+ * Adds a form to an already-built LexicalEntry
+ * This is useful for post-build modifications like adding derived forms from subentries
+ *
+ * @param entry - The lexical entry to add the form to
+ * @param writtenRep - The written representation of the form
+ * @param language - Language code for the form
+ * @param formType - Optional form type classification
+ * @param features - Optional morphological features
+ *
+ * @example
+ * ```typescript
+ * // Add a plural form to an existing entry
+ * addFormToEntry(
+ *   existingEntry,
+ *   'מענער',
+ *   'yi',
+ *   FormType.INFLECTED,
+ *   { number: [Number.PLURAL] }
+ * );
+ * ```
+ */
+export function addFormToEntry(
+  entry: LexicalEntry,
+  writtenRep: string,
+  language: LanguageTag,
+  formType?: FormType,
+  features?: MorphologicalFeatures
+): void {
+  const form: Form = {
+    id: `urn:uuid:${uuidv5(writtenRep + (formType || ""), entry.id)}`,
+    type: "ontolex:Form",
+    writtenRep: [{ value: writtenRep, lang: language }],
+    morphologicalFeatures: features,
+    formType,
+  };
+
+  if (!entry.otherForms) entry.otherForms = [];
+  entry.otherForms.push(form);
+}
