@@ -9,8 +9,15 @@ import {
   LexicalEntryBuilder,
   PartOfSpeech,
   FormType,
-  Gender,
   addFormToEntry,
+  MorphologicalFeatures,
+  Gender,
+  Number,
+  Case,
+  Tense,
+  Voice,
+  Mood,
+  Person,
 } from "@yiddict/lexicon";
 import {
   seq,
@@ -712,7 +719,7 @@ function generateSubentryHeadword(
         return `${parentForm}${arg}`;
 
       case MacroSymbol.NounDiminutive:
-        return synthesizeDiminutive(parentForm, arg)?.[0];
+        return synthesizeDiminutive(parentForm, arg)?.[0].form;
 
       // Other or Unknown macro type - don't generate derived forms
       default:
@@ -904,119 +911,506 @@ function writeMalformedEntries(
 }
 
 // ==================================================================
-//  Form synthesis lambda functions
+//  FORM SYNTHESIS AND FEATURE TAGGING
 // ==================================================================
-const synthesizeRegularNounPlural = (base: string): string[] => {
-  return [`${base}${base.match(/[mn]$/) != null ? "e" : ""}n`];
+/**
+ * Represents a synthesized form with its morphological features
+ */
+type FormWithFeatures = {
+  /** The written form (transliterated) */
+  form: string;
+  /** Optional morphological features describing this form */
+  features?: MorphologicalFeatures;
+  /** Optional label for the form (e.g., "infinitive", "participle") */
+  label?: string;
 };
 
-const synthesizeNounPluralWithS = (base: string): string[] => {
-  return [`${base}s`];
+// ==================================================================
+//  NOUN SYNTHESIS FUNCTIONS
+// ==================================================================
+
+/**
+ * Synthesizes regular noun plural form
+ * Adds -n suffix (with -e- if base ends in m or n)
+ */
+const synthesizeRegularNounPlural = (base: string): FormWithFeatures[] => {
+  return [
+    {
+      form: `${base}${base.match(/[mn]$/) != null ? "e" : ""}n`,
+      features: {
+        number: [Number.PLURAL],
+      },
+      label: "plural",
+    },
+  ];
 };
 
+/**
+ * Synthesizes noun plural with -s suffix
+ * Used for loanwords and certain noun classes
+ */
+const synthesizeNounPluralWithS = (base: string): FormWithFeatures[] => {
+  return [
+    {
+      form: `${base}s`,
+      features: {
+        number: [Number.PLURAL],
+      },
+      label: "plural",
+    },
+  ];
+};
+
+/**
+ * Synthesizes irregular noun plural
+ * Uses explicitly provided plural form
+ */
 const synthesizeIrregularNounPlural = (
   base: string,
   pluralForm: string
-): string[] => {
-  /**
-   * For irregular nouns (/X), the plural form is provided explicitly
-   * as an argument to the macro. We just use the provided form,
-   * no transformations needed.
-   */
-  return [pluralForm];
+): FormWithFeatures[] => {
+  return [
+    {
+      form: pluralForm,
+      features: {
+        number: [Number.PLURAL],
+      },
+      label: "plural (irregular)",
+    },
+  ];
 };
 
+/**
+ * Synthesizes diminutive form
+ * Adds -l or -le suffix depending on stem
+ */
 const synthesizeDiminutive = (
   base: string,
   stemOverride?: string
-): string[] => {
+): FormWithFeatures[] => {
   const stem = stemOverride ?? base;
-
-  // Append -le if modified stem ends in -e
   const diminutive = `${stem}${stem.match(/e$/) != null ? "le" : "l"}`;
 
-  return [diminutive];
-};
-
-const synthesizeProperNounDative = (base: string): string[] => {
-  return [`${base}${base.match(/[mn]$/) != null ? "en" : "n"}`];
-};
-
-const synthesizeRegularVerb = (base: string): string[] => {
-  // prettier-ignore
   return [
-        `${base}n`,  // infinitive and pres.1pl
-        `${base}st`, // pres.2sg
-        `${base}t`,  // pres.3sg
-        `ge${base}t`,   // participle
-      ];
+    {
+      form: diminutive,
+      features: {
+        // Diminutives are typically singular
+        number: [Number.SINGULAR],
+      },
+      label: "diminutive",
+    },
+  ];
 };
 
-const synthesizeVerbUnprefixedParticiple = (base: string): string[] => {
-  // prettier-ignore
+/**
+ * Synthesizes proper noun dative form
+ * Adds -n or -en suffix
+ */
+const synthesizeProperNounDative = (base: string): FormWithFeatures[] => {
   return [
-        `${base}n`,  // infinitive and pres.1pl
-        `${base}st`, // pres.2sg
-        `${base}t`,  // pres.3sg and participle
-      ];
+    {
+      form: `${base}${base.match(/[mn]$/) != null ? "en" : "n"}`,
+      features: {
+        case: [Case.DATIVE],
+      },
+      label: "dative",
+    },
+  ];
 };
 
+// ==================================================================
+//  VERB SYNTHESIS FUNCTIONS
+// ==================================================================
+
+/**
+ * Synthesizes regular verb forms
+ * Generates infinitive, present tense forms, and past participle
+ */
+const synthesizeRegularVerb = (base: string): FormWithFeatures[] => {
+  return [
+    {
+      form: `${base}n`,
+      features: {
+        // Infinitive (also 1st person plural present, but infinitive is primary)
+      },
+      label: "infinitive",
+    },
+    {
+      form: `${base}n`,
+      features: {
+        person: [Person.FIRST],
+        number: [Number.PLURAL],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 1pl",
+    },
+    {
+      form: `${base}st`,
+      features: {
+        person: [Person.SECOND],
+        number: [Number.SINGULAR],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 2sg",
+    },
+    {
+      form: `${base}t`,
+      features: {
+        person: [Person.THIRD],
+        number: [Number.SINGULAR],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 3sg",
+    },
+    {
+      form: `ge${base}t`,
+      features: {
+        tense: [Tense.PERFECT],
+      },
+      label: "past participle",
+    },
+  ];
+};
+
+/**
+ * Synthesizes verb forms for verbs with unprefixed participle
+ * Participle doesn't use ge- prefix (typically for verbs with inseparable prefixes)
+ */
+const synthesizeVerbUnprefixedParticiple = (
+  base: string
+): FormWithFeatures[] => {
+  return [
+    {
+      form: `${base}n`,
+      features: {},
+      label: "infinitive",
+    },
+    {
+      form: `${base}n`,
+      features: {
+        person: [Person.FIRST],
+        number: [Number.PLURAL],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 1pl",
+    },
+    {
+      form: `${base}st`,
+      features: {
+        person: [Person.SECOND],
+        number: [Number.SINGULAR],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 2sg",
+    },
+    {
+      form: `${base}t`,
+      features: {
+        person: [Person.THIRD],
+        number: [Number.SINGULAR],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 3sg",
+    },
+    {
+      form: `${base}t`,
+      features: {
+        tense: [Tense.PERFECT],
+      },
+      label: "past participle (unprefixed)",
+    },
+  ];
+};
+
+/**
+ * Synthesizes verb forms with irregular participle
+ * Uses explicitly provided participle form
+ */
 const synthesizeVerbIrregularParticiple = (
   base: string,
   participleForm: string
-): string[] => {
-  // prettier-ignore
+): FormWithFeatures[] => {
   return [
-        `${base}n`,  // infinitive and pres.1pl
-        `${base}st`, // pres.2sg
-        `${base}t`,  // pres.3sg
-        participleForm,
-      ];
+    {
+      form: `${base}n`,
+      features: {},
+      label: "infinitive",
+    },
+    {
+      form: `${base}n`,
+      features: {
+        person: [Person.FIRST],
+        number: [Number.PLURAL],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 1pl",
+    },
+    {
+      form: `${base}st`,
+      features: {
+        person: [Person.SECOND],
+        number: [Number.SINGULAR],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 2sg",
+    },
+    {
+      form: `${base}t`,
+      features: {
+        person: [Person.THIRD],
+        number: [Number.SINGULAR],
+        tense: [Tense.PRESENT],
+        mood: [Mood.INDICATIVE],
+      },
+      label: "present 3sg",
+    },
+    {
+      form: participleForm,
+      features: {
+        tense: [Tense.PERFECT],
+      },
+      label: "past participle (irregular)",
+    },
+  ];
 };
 
+/**
+ * Synthesizes verb with adverbial complement
+ * Creates form by prefixing the base with the complement
+ */
 const synthesizeVerbWithComplement = (
   base: string,
   complement: string
-): string[] => {
-  return [`${complement}${base}`];
+): FormWithFeatures[] => {
+  return [
+    {
+      form: `${complement}${base}`,
+      features: {},
+      label: "with complement",
+    },
+  ];
 };
 
-const synthesizeRegularAdjective = (base: string): string[] => {
-  // Generates gendered female form if necessary.
-  return base.match(/e$/) != null ? [] : [`${base}e`];
+// ==================================================================
+//  ADJECTIVE SYNTHESIS FUNCTIONS
+// ==================================================================
+
+/**
+ * Synthesizes regular adjective feminine form
+ * Adds -e suffix if not already present
+ */
+const synthesizeRegularAdjective = (base: string): FormWithFeatures[] => {
+  // Only generate if base doesn't already end in -e
+  if (base.match(/e$/) != null) {
+    return [];
+  }
+
+  return [
+    {
+      form: `${base}e`,
+      features: {
+        gender: [Gender.FEMININE],
+      },
+      label: "feminine",
+    },
+  ];
 };
 
+/**
+ * Synthesizes gradable adjective forms (comparative and superlative)
+ * Generates both masculine/neuter and feminine forms for each degree
+ */
 const synthesizeGradableAdjective = (
   base: string,
-  irregularForm?: string
-): string[] => {
-  const stem = irregularForm ?? base;
-  // Only generates comparative and superlative forms.
-  // prettier-ignore
+  irregularStem?: string
+): FormWithFeatures[] => {
+  const stem = irregularStem ?? base;
+  const endsInE = stem.match(/e$/) != null;
+
   return [
-        `${stem}${stem.match(/e$/) != null ? "er" : "r"}`,   // comparative m/n
-        `${stem}${stem.match(/e$/) != null ? "ere" : "re"}`, // comparative f
-        `${stem}${stem.match(/e$/) != null ? "est" : "st"}`,   // superlative m/n
-        `${stem}${stem.match(/e$/) != null ? "este" : "ste"}`, // superlative f
-      ];
+    {
+      form: `${stem}${endsInE ? "er" : "r"}`,
+      features: {
+        gender: [Gender.MASCULINE, Gender.NEUTER],
+      },
+      label: "comparative m/n",
+    },
+    {
+      form: `${stem}${endsInE ? "ere" : "re"}`,
+      features: {
+        gender: [Gender.FEMININE],
+      },
+      label: "comparative f",
+    },
+    {
+      form: `${stem}${endsInE ? "est" : "st"}`,
+      features: {
+        gender: [Gender.MASCULINE, Gender.NEUTER],
+      },
+      label: "superlative m/n",
+    },
+    {
+      form: `${stem}${endsInE ? "este" : "ste"}`,
+      features: {
+        gender: [Gender.FEMININE],
+      },
+      label: "superlative f",
+    },
+  ];
 };
 
+/**
+ * Synthesizes adjective from suffix
+ * Generates base form and optional feminine form
+ */
 const synthesizeAdjectiveFromSuffix = (
   base: string,
   suffix: string
-): string[] => {
-  // Generates base male/neutral and gendered female forms.
-  return suffix.match(/e$/) != null
-    ? [`${base}${suffix}`]
-    : [`${base}${suffix}`, `${base}${suffix}e`];
+): FormWithFeatures[] => {
+  const fullForm = `${base}${suffix}`;
+  const endsInE = suffix.match(/e$/) != null;
+
+  if (endsInE) {
+    // Suffix already ends in -e, so this is the base form
+    return [
+      {
+        form: fullForm,
+        features: {},
+        label: "adjective",
+      },
+    ];
+  } else {
+    // Generate both masculine/neuter and feminine forms
+    return [
+      {
+        form: fullForm,
+        features: {
+          gender: [Gender.MASCULINE, Gender.NEUTER],
+        },
+        label: "adjective m/n",
+      },
+      {
+        form: `${fullForm}e`,
+        features: {
+          gender: [Gender.FEMININE],
+        },
+        label: "adjective f",
+      },
+    ];
+  }
 };
 
-const synthesizeFormWithPrefix = (base: string, prefix: string): string[] => {
-  return [`${prefix}${base}`];
+// ==================================================================
+//  GENERIC AFFIX FUNCTIONS
+// ==================================================================
+
+/**
+ * Synthesizes form with prefix
+ * Simply prepends prefix to base
+ */
+const synthesizeFormWithPrefix = (
+  base: string,
+  prefix: string
+): FormWithFeatures[] => {
+  return [
+    {
+      form: `${prefix}${base}`,
+      features: {},
+      label: "with prefix",
+    },
+  ];
 };
 
-const synthesizeFormWithSuffix = (base: string, suffix: string): string[] => {
-  return [`${base}${suffix}`];
+/**
+ * Synthesizes form with suffix
+ * Simply appends suffix to base
+ */
+const synthesizeFormWithSuffix = (
+  base: string,
+  suffix: string
+): FormWithFeatures[] => {
+  return [
+    {
+      form: `${base}${suffix}`,
+      features: {},
+      label: "with suffix",
+    },
+  ];
+};
+
+// ==================================================================
+//  UTILITY FUNCTIONS
+// ==================================================================
+
+/**
+ * Converts an array of FormWithFeatures to just the form strings
+ * Useful for backward compatibility with existing code
+ */
+const extractForms = (formsWithFeatures: FormWithFeatures[]): string[] => {
+  return formsWithFeatures.map((fwf) => fwf.form);
+};
+
+/**
+ * Merges morphological features from multiple sources
+ * Later features override earlier ones for the same property
+ */
+const mergeFeatures = (
+  ...featureSets: (MorphologicalFeatures | undefined)[]
+): MorphologicalFeatures | undefined => {
+  const result: MorphologicalFeatures = {};
+  let hasFeatures = false;
+
+  for (const features of featureSets) {
+    if (!features) continue;
+
+    if (features.gender) {
+      result.gender = features.gender;
+      hasFeatures = true;
+    }
+    if (features.number) {
+      result.number = features.number;
+      hasFeatures = true;
+    }
+    if (features.case) {
+      result.case = features.case;
+      hasFeatures = true;
+    }
+    if (features.tense) {
+      result.tense = features.tense;
+      hasFeatures = true;
+    }
+    if (features.voice) {
+      result.voice = features.voice;
+      hasFeatures = true;
+    }
+    if (features.mood) {
+      result.mood = features.mood;
+      hasFeatures = true;
+    }
+    if (features.person) {
+      result.person = features.person;
+      hasFeatures = true;
+    }
+    if (features.degree) {
+      result.degree = features.degree;
+      hasFeatures = true;
+    }
+    if (features.additionalFeatures) {
+      result.additionalFeatures = features.additionalFeatures;
+      hasFeatures = true;
+    }
+  }
+
+  return hasFeatures ? result : undefined;
 };
 
 /**
@@ -1170,7 +1564,7 @@ function convertEntryWithSubentries(
 
     // Second pass: generate forms from macros
     for (const macro of entry.macros) {
-      let generatedForms: string[] = [];
+      let generatedForms: FormWithFeatures[] = [];
 
       switch (macro.symbol) {
         case MacroSymbol.Noun:
@@ -1253,14 +1647,14 @@ function convertEntryWithSubentries(
       }
 
       // Filter out suppressed forms and add to builder
-      for (const form of generatedForms) {
-        if (!suppressedForms.has(form)) {
-          const yiddishForm = transcribeToYiddish(form);
+      for (const formWithFeatures of generatedForms) {
+        if (!suppressedForms.has(formWithFeatures.form)) {
+          const yiddishForm = transcribeToYiddish(formWithFeatures.form);
           // TODO: Determine Morphological Features for each generated form
           // based on gloss in `wordlist.csv` (or alternatively keeping track),
           // e.g., PLURAL, COMPARATIVE, PARTICIPLE, etc.
           if (yiddishForm.ok) {
-            builder.addForm(yiddishForm.value /* Morphological Feature */);
+            builder.addForm(yiddishForm.value, formWithFeatures.features);
           }
         }
       }
@@ -1431,7 +1825,7 @@ function convertEntryWithSubentries(
 
     // Second pass: generate forms from macros
     for (const macro of entry.macros) {
-      let generatedForms: string[] = [];
+      let generatedForms: FormWithFeatures[] = [];
 
       // Most macros require the parent's base form as input
       switch (macro.symbol) {
@@ -1516,9 +1910,9 @@ function convertEntryWithSubentries(
       }
 
       // Add generated forms (excluding spurious ones)
-      for (const form of generatedForms) {
-        if (!subentrySpuriousForms.has(form)) {
-          formsToAdd.push({ transliteration: form });
+      for (const formWithFeatures of generatedForms) {
+        if (!subentrySpuriousForms.has(formWithFeatures.form)) {
+          formsToAdd.push({ transliteration: formWithFeatures.form });
         }
       }
     }
