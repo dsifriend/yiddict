@@ -1,0 +1,17 @@
+{
+  "name": "yiddict",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "app": "bun --cwd apps/app",
+    "data": "bun --cwd packages/data",
+    "typecheck": "bun run --filter '*' typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.0",
+    "@biomejs/biome": "^2.5.5"
+  }
+}
