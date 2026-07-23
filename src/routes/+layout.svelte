@@ -1,9 +1,10 @@
 <script lang="ts">
 	import '@picocss/pico';
 	import Search from '$lib/Search.svelte';
+
+	let { children } = $props();
 </script>
 
-<body class="container" dir="rtl">
 	<header>
 		<nav>
 			<ul>
@@ -26,8 +27,7 @@
 		</nav>
 		<Search></Search>
 	</header>
-	<slot />
-</body>
+	{@render children()}
 
 <style lang="scss">
 	@import '@picocss/pico/scss/colors' ;

@@ -34,3 +34,11 @@
 		</select>
 	</details>
 </form>
+
+<style>
+    #searchbox {
+        display: block;
+        width: 100%;
+        max-width: none;
+    }
+</style>
