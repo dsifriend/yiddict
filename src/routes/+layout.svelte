@@ -30,7 +30,7 @@
 </body>
 
 <style lang="scss">
-	@use '@picocss/pico/scss/colors' as *;
+	@import '@picocss/pico/scss/colors' ;
 
 	* {
 		font-family: Arial, sans-serif;
