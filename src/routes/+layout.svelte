@@ -34,11 +34,15 @@
 
 	* {
 		font-family: Arial, sans-serif;
-		max-width: 48em;
 	}
 
 	body {
 		padding: 3mm;
+		max-width: 48em;
+
+		* {
+            max-width: unset;
+		}
 	}
 
 	#home {
