@@ -1,0 +1,16 @@
+{
+  "name": "@yiddict/data",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "fetch": "bun scripts/fetch.ts",
+    "build:artifacts": "bun scripts/build-source-artifacts.ts",
+    "build:database": "bun scripts/build-database.ts",
+    "validate": "bun scripts/validate-release.ts",
+    "publish": "bun scripts/publish.ts"
+  },
+  "dependencies": {
+    "@etrog/core": "^1.0.0"
+  }
+}
