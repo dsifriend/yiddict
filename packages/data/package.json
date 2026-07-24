@@ -11,6 +11,11 @@
     "publish": "bun scripts/publish.ts"
   },
   "dependencies": {
-    "@etrog/core": "^1.0.0"
+    "@etrog/core": "^1.0.0",
+    "ohm-js": "^17.5.0"
+  },
+  "devDependencies": {
+    "@ohm-js/cli": "^2.0.1",
+    "install": "^0.13.0"
   }
 }
