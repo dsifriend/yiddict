@@ -1,0 +1,51 @@
+FinkelBracket {
+  Content
+    = Article
+    | Adjective
+    | Adverb
+    | Conjunction
+    | Interjection
+    | Numeral
+    | Participle
+    | Preposition
+    | Pronoun
+    | Verb
+    | GenderMarker
+    | Prefix
+    | Pronunciation
+    | Definition
+    | Clause
+    | Connotations
+    | GrammarNote
+    | Idiom
+    | Origin
+    | UsageNote
+
+  WS = (" " | "\t")+
+
+  Article = "article"
+  Adjective = "adj" BracketRest*
+  Adverb = "adv" BracketRest*
+  Conjunction = "conj" BracketRest*
+  Interjection = "interj"
+  Numeral = "d"
+  Participle = "participle"
+  Preposition = "prep"
+  Pronoun = "pronoun" BracketRest*
+  Verb = "verb"
+  GenderMarker = GenderHead GenderTail*
+  GenderHead = "m" | "f" | "n" | "?"
+  GenderTail = "m" | "f" | "n" | "?" | "|" | "/"
+  Prefix = "prefix"
+  Pronunciation = "pronunciation:" WS* BracketText
+  Definition = "def:" WS* BracketText
+  Clause = "clause"
+  Connotations = "connotations:" WS* BracketText
+  GrammarNote = "grammar:" WS* BracketText
+  Idiom = "idiom:" WS* BracketText
+  Origin = "origin:" WS* BracketText
+  UsageNote = ("usage:" | "note:") WS* BracketText
+
+  BracketText = any+
+  BracketRest = any
+}

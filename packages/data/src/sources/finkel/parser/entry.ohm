@@ -1,0 +1,33 @@
+FinkelEntry {
+  EntryLine = Delim? Sequence Delim? TrailingComment?
+  Sequence = Component (Delim+ Component)*
+
+  Component = Form
+            | Macro
+            | BracketedData
+
+  Delim = (" " | "\t" | ",")+
+  WS = (" " | "\t")+
+
+  Form = FormBase FormSpelling?
+  FormSpelling = WS* "{" FormBase "}"
+  FormBase = FormChar+
+  FormChar = alnum
+           | "_"
+           | "'"
+           | "|"
+           | "#"
+           | "-"
+           | "″"
+           | "ʼ"
+
+  Macro = "/" MacroSymbolChars MacroArgument?
+  MacroArgument = WS* Form
+  MacroSymbolChars = MacroSymbolChar+
+  MacroSymbolChar = "A" | "B" | "C" | "D" | "E" | "G" | "H" | "I" | "J" | "K" | "L" | "N" | "P" | "S" | "T" | "V" | "X" | "-"
+
+  BracketedData = "[" BracketInner "]"
+  BracketInner = (~("]" | "[") any)+
+
+  TrailingComment = Delim? "%" (~"\n" any)*
+}
