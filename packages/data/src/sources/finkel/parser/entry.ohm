@@ -13,8 +13,12 @@ FinkelEntry {
   delim = (" " | "\t" | ",")+
   ws = (" " | "\t")+
 
-  form = formBase formSpelling?
-  formSpelling = ws* "{" formBase "}"
+  form = formChunk+
+  formChunk = formBase formSpelling?
+  formSpelling = ws* "{" spellingBase "}"
+  spellingBase = spellingChar+
+  spellingChar = formChar
+              | "~"
   formBase = formChar+
   formChar = alnum
            | "_"
