@@ -12,46 +12,22 @@ import {
 } from 'ohm-js';
 
 export interface FinkelEntryActionDict<T> extends BaseActionDict<T> {
-  EntryLine?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode) => T;
-  Sequence?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
-  Component?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Delim?: (this: NonterminalNode, arg0: IterationNode) => T;
-  WS?: (this: NonterminalNode, arg0: IterationNode) => T;
-  Form?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  FormSpelling?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
-  FormBase?: (this: NonterminalNode, arg0: IterationNode) => T;
-  FormChar?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
-  Macro?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: IterationNode) => T;
-  MacroArgument?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode) => T;
-  MacroSymbolChars?: (this: NonterminalNode, arg0: IterationNode) => T;
-  MacroSymbolChar?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  BracketedData?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
-  BracketedContent?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  Article?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Adjective?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
-  Adverb?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
-  Conjunction?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
-  Interjection?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Numeral?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Participle?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Preposition?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Pronoun?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
-  Verb?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  GenderMarker?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
-  GenderHead?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  GenderTail?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Prefix?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Pronunciation?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  Definition?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  Clause?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  Connotations?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  GrammarNote?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  Idiom?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  Origin?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  UsageNote?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
-  BracketText?: (this: NonterminalNode, arg0: IterationNode) => T;
-  BracketRest?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  TrailingComment?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: IterationNode) => T;
+  entryLine?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode) => T;
+  sequence?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
+  component?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  delim?: (this: NonterminalNode, arg0: IterationNode) => T;
+  ws?: (this: NonterminalNode, arg0: IterationNode) => T;
+  form?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  formSpelling?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+  formBase?: (this: NonterminalNode, arg0: IterationNode) => T;
+  formChar?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
+  macro?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: IterationNode) => T;
+  macroArgument?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode) => T;
+  macroSymbolChars?: (this: NonterminalNode, arg0: IterationNode) => T;
+  macroSymbolChar?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  bracketedData?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  bracketInner?: (this: NonterminalNode, arg0: IterationNode) => T;
+  trailingComment?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: IterationNode) => T;
 }
 
 export interface FinkelEntrySemantics extends Semantics {

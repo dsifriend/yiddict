@@ -1,18 +1,18 @@
 FinkelEntry {
-  EntryLine = Delim? Sequence Delim? TrailingComment?
-  Sequence = Component (Delim+ Component)*
+  entryLine = delim? sequence delim? trailingComment?
+  sequence = component (delim+ component)*
 
-  Component = Form
-            | Macro
-            | BracketedData
+  component = form
+            | macro
+            | bracketedData
 
-  Delim = (" " | "\t" | ",")+
-  WS = (" " | "\t")+
+  delim = (" " | "\t" | ",")+
+  ws = (" " | "\t")+
 
-  Form = FormBase FormSpelling?
-  FormSpelling = WS* "{" FormBase "}"
-  FormBase = FormChar+
-  FormChar = alnum
+  form = formBase formSpelling?
+  formSpelling = ws* "{" formBase "}"
+  formBase = formChar+
+  formChar = alnum
            | "_"
            | "'"
            | "|"
@@ -21,13 +21,13 @@ FinkelEntry {
            | "″"
            | "ʼ"
 
-  Macro = "/" MacroSymbolChars MacroArgument?
-  MacroArgument = WS* Form
-  MacroSymbolChars = MacroSymbolChar+
-  MacroSymbolChar = "A" | "B" | "C" | "D" | "E" | "G" | "H" | "I" | "J" | "K" | "L" | "N" | "P" | "S" | "T" | "V" | "X" | "-"
+  macro = "/" macroSymbolChars macroArgument?
+  macroArgument = ws* form
+  macroSymbolChars = macroSymbolChar+
+  macroSymbolChar = "A" | "B" | "C" | "D" | "E" | "G" | "H" | "I" | "J" | "K" | "L" | "N" | "P" | "S" | "T" | "V" | "X" | "-"
 
-  BracketedData = "[" BracketInner "]"
-  BracketInner = (~("]" | "[") any)+
+  bracketedData = "[" bracketInner "]"
+  bracketInner = (~("]" | "[") any)+
 
-  TrailingComment = Delim? "%" (~"\n" any)*
+  trailingComment = delim? "%" (~"\n" any)*
 }

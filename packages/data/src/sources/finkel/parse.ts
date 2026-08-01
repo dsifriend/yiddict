@@ -176,13 +176,13 @@ function parseBracketData(innerText: string): ParsedBracketedData {
 }
 
 const entryAstActions: FinkelEntryActionDict<unknown> = {
-  EntryLine(_d1, sequence, _d2, trailingComment) {
+  entryLine(_d1, sequence, _d2, trailingComment) {
     const components = asAstNode<EntryComponent[]>(sequence).ast();
     const comment = optionalChildAst<string>(trailingComment);
     return { components, trailingComment: comment } satisfies EntryAst;
   },
 
-  Sequence(first, _delims, rest) {
+  sequence(first, _delims, rest) {
     const firstNode = first as unknown as { ast: () => EntryComponent };
     const restNode = rest as unknown as { children: Array<{ ast: () => EntryComponent }> };
 
@@ -193,11 +193,11 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     return components;
   },
 
-  Component(component) {
+  component(component) {
     return asAstNode<EntryComponent>(component).ast();
   },
 
-  Form(formBase, formSpelling) {
+  form(formBase, formSpelling) {
     const spelling = optionalChildAst<string>(formSpelling);
     return {
       type: "form",
@@ -208,11 +208,11 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     } satisfies EntryComponent;
   },
 
-  FormSpelling(_ws, _open, base, _close) {
+  formSpelling(_ws, _open, base, _close) {
     return nodeText(base);
   },
 
-  Macro(_slash, symbols, macroArgument) {
+  macro(_slash, symbols, macroArgument) {
     const argument = optionalChildAst<ParsedForm>(macroArgument);
     return {
       type: "macro",
@@ -223,7 +223,7 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     } satisfies EntryComponent;
   },
 
-  MacroArgument(_ws, form) {
+  macroArgument(_ws, form) {
     const component = asAstNode<EntryComponent>(form).ast();
     if (component.type !== "form") {
       throw new Error("Internal parse error: macro argument was not parsed as a form");
@@ -231,7 +231,7 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     return component.form;
   },
 
-  BracketedData(_open, inner, _close) {
+  bracketedData(_open, inner, _close) {
     const thisNode = this as unknown as { source: { startIdx: number } };
 
     try {
@@ -248,7 +248,7 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     }
   },
 
-  TrailingComment(_delim, _percent, text) {
+  trailingComment(_delim, _percent, text) {
     return nodeText(text);
   },
 };
@@ -385,7 +385,7 @@ function parseEntryContent(
   lineNumber: number,
   sourcePath: string,
 ): EntryAst {
-  const match = ENTRY_GRAMMAR.match(lineText, "EntryLine");
+  const match = ENTRY_GRAMMAR.match(lineText, "entryLine");
 
   if (match.failed()) {
     const position = match.getRightmostFailurePosition();
