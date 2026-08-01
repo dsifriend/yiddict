@@ -153,6 +153,14 @@ function textValue(textNode: unknown): string {
   return nodeText(textNode).trim();
 }
 
+function optionalChildAst<T>(node: unknown): T | undefined {
+  if (!hasChildren(node) || node.children.length === 0) {
+    return undefined;
+  }
+
+  return asAstNode<T>(node.children[0]).ast();
+}
+
 const entrySemantics: FinkelEntrySemantics = ENTRY_GRAMMAR.createSemantics();
 const bracketSemantics: FinkelBracketSemantics = BRACKET_GRAMMAR.createSemantics();
 
@@ -170,9 +178,7 @@ function parseBracketData(innerText: string): ParsedBracketedData {
 const entryAstActions: FinkelEntryActionDict<unknown> = {
   EntryLine(_d1, sequence, _d2, trailingComment) {
     const components = asAstNode<EntryComponent[]>(sequence).ast();
-    const comment = hasChildren(trailingComment) && trailingComment.children.length > 0
-      ? asAstNode<string>(trailingComment).ast()
-      : undefined;
+    const comment = optionalChildAst<string>(trailingComment);
     return { components, trailingComment: comment } satisfies EntryAst;
   },
 
@@ -192,9 +198,7 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
   },
 
   Form(formBase, formSpelling) {
-    const spelling = hasChildren(formSpelling) && formSpelling.children.length > 0
-      ? asAstNode<string>(formSpelling).ast()
-      : undefined;
+    const spelling = optionalChildAst<string>(formSpelling);
     return {
       type: "form",
       form: {
@@ -209,9 +213,7 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
   },
 
   Macro(_slash, symbols, macroArgument) {
-    const argument = hasChildren(macroArgument) && macroArgument.children.length > 0
-      ? asAstNode<ParsedForm>(macroArgument).ast()
-      : undefined;
+    const argument = optionalChildAst<ParsedForm>(macroArgument);
     return {
       type: "macro",
       macro: {
@@ -271,7 +273,7 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
   Interjection(_keyword) {
     return { kind: "interjection", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Numeral(_keyword) {
+  Numeral(_keyword, _end) {
     return { kind: "numeral", raw: this.sourceString } satisfies ParsedBracketedData;
   },
   Participle(_keyword) {
@@ -286,7 +288,7 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
   Verb(_keyword) {
     return { kind: "verb", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  GenderMarker(_head, _tail) {
+  GenderMarker(_head, _tail, _end) {
     return {
       kind: "gender-marker",
       raw: this.sourceString,
