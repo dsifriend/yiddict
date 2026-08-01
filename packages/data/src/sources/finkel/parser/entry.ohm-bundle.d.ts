@@ -15,10 +15,15 @@ export interface FinkelEntryActionDict<T> extends BaseActionDict<T> {
   entryLine?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode) => T;
   sequence?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
   component?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  componentJoin?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
+  macroJoin?: (this: NonterminalNode, arg0: TerminalNode) => T;
   delim?: (this: NonterminalNode, arg0: IterationNode) => T;
   ws?: (this: NonterminalNode, arg0: IterationNode) => T;
-  form?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  form?: (this: NonterminalNode, arg0: IterationNode) => T;
+  formChunk?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
   formSpelling?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode) => T;
+  spellingBase?: (this: NonterminalNode, arg0: IterationNode) => T;
+  spellingChar?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
   formBase?: (this: NonterminalNode, arg0: IterationNode) => T;
   formChar?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
   macro?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: IterationNode) => T;
