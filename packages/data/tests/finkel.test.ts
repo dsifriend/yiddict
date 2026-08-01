@@ -20,13 +20,17 @@ import ENTRY_GRAMMAR from "../src/sources/finkel/parser/entry.ohm-bundle";
 import BRACKET_GRAMMAR from "../src/sources/finkel/parser/bracket.ohm-bundle";
 import { parseFinkelText } from "../src/sources/finkel/parse";
 
-test("finkel entry grammar: allows components after form with space delimiters", () => {
+test("finkel entry grammar: allows components after form with and without delimiters", () => {
   const samples = [
     "foo /A",
     "foo [article]",
     "foo /A [def: gloss text]",
     "foo bar",
     "foo,bar",
+    "abort/N [m] [def: abortion]",
+    "aboni'r/V/Baboni'rt [def: subscribe]",
+    "a/P [article] [def: a]",
+    "a/Een [m] [def: the letter A]",
   ];
 
   for (const line of samples) {
