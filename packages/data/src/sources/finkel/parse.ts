@@ -176,13 +176,12 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     return { components, trailingComment: comment } satisfies EntryAst;
   },
 
-  Sequence(first, rest) {
+  Sequence(first, _delims, rest) {
     const firstNode = first as unknown as { ast: () => EntryComponent };
-    const restNode = rest as unknown as { children: Array<{ child: (index: number) => { ast: () => EntryComponent } }> };
+    const restNode = rest as unknown as { children: Array<{ ast: () => EntryComponent }> };
 
     const components: EntryComponent[] = [firstNode.ast()];
-    for (const pair of restNode.children) {
-      const componentNode = pair.child(1);
+    for (const componentNode of restNode.children) {
       components.push(componentNode.ast());
     }
     return components;
@@ -257,44 +256,44 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
     return asAstNode<ParsedBracketedData>(value).ast();
   },
 
-  Article() {
+  Article(_keyword) {
     return { kind: "article", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Adjective() {
+  Adjective(_keyword, _rest) {
     return { kind: "adjective", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Adverb() {
+  Adverb(_keyword, _rest) {
     return { kind: "adverb", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Conjunction() {
+  Conjunction(_keyword, _rest) {
     return { kind: "conjunction", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Interjection() {
+  Interjection(_keyword) {
     return { kind: "interjection", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Numeral() {
+  Numeral(_keyword) {
     return { kind: "numeral", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Participle() {
+  Participle(_keyword) {
     return { kind: "participle", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Preposition() {
+  Preposition(_keyword) {
     return { kind: "preposition", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Pronoun() {
+  Pronoun(_keyword, _rest) {
     return { kind: "pronoun", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  Verb() {
+  Verb(_keyword) {
     return { kind: "verb", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-  GenderMarker() {
+  GenderMarker(_head, _tail) {
     return {
       kind: "gender-marker",
       raw: this.sourceString,
       value: this.sourceString,
     } satisfies ParsedBracketedData;
   },
-  Prefix() {
+  Prefix(_keyword) {
     return { kind: "prefix", raw: this.sourceString } satisfies ParsedBracketedData;
   },
   Pronunciation(_prefix, _ws, text) {
@@ -311,7 +310,7 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
       value: textValue(text),
     } satisfies ParsedBracketedData;
   },
-  Clause() {
+  Clause(_keyword) {
     return { kind: "clause", raw: this.sourceString } satisfies ParsedBracketedData;
   },
   Connotations(_prefix, _ws, text) {
