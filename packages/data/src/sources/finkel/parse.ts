@@ -601,3 +601,24 @@ export async function parseFinkelSourceFromFile(
   await writeParseErrorLog(result);
   return result;
 }
+
+async function main() {
+  const result = await parseFinkelSourceFromFile();
+  const { stats, errors } = result;
+  console.log(`Parsed ${stats.blockCount} blocks from ${stats.lineCount} lines.`);
+  console.log(`
+    Entries: ${stats.entryLineCount},
+    Subentries: ${stats.subentryLineCount},
+    Comments: ${stats.commentLineCount},
+    Empty: ${stats.emptyLineCount}`);
+  if (errors.length > 0) {
+    console.error(`\n${errors.length} parse error(s) found. See parse-errors.log for details.`);
+    process.exit(1);
+  } else {
+    console.log("No parse errors found.");
+  }
+}
+
+if (import.meta.main) {
+  await main();
+}
