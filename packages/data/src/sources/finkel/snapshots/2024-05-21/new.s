@@ -25304,6 +25304,3 @@ hantgelt [def: monetary advance?]
 troy/V/T /Gon [def: trust with; entrust to]
 lezelke/S [f] [def: some sort of fruit]
 neyterke/S [f] [def: wife of some occupation]
-
-% See ~/.vim/syntax/words.vim for details.
- vim: filetype=words:nospell:textwidth=200
