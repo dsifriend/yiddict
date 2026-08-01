@@ -1,10 +1,14 @@
 FinkelEntry {
   entryLine = delim? sequence delim? trailingComment?
-  sequence = component (delim+ component)*
+  sequence = component (componentJoin component)*
 
   component = form
             | macro
             | bracketedData
+
+  componentJoin = delim+
+                | macroJoin
+  macroJoin = &"/"
 
   delim = (" " | "\t" | ",")+
   ws = (" " | "\t")+
