@@ -28,12 +28,12 @@ FinkelBracket {
   Adverb = "adv" BracketRest*
   Conjunction = "conj" BracketRest*
   Interjection = "interj"
-  Numeral = "d"
+  Numeral = "d" &end
   Participle = "participle"
   Preposition = "prep"
   Pronoun = "pronoun" BracketRest*
   Verb = "verb"
-  GenderMarker = GenderHead GenderTail*
+  GenderMarker = GenderHead GenderTail* &end
   GenderHead = "m" | "f" | "n" | "?"
   GenderTail = "m" | "f" | "n" | "?" | "|" | "/"
   Prefix = "prefix"
