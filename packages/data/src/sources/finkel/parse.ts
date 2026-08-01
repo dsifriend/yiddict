@@ -92,6 +92,7 @@ export interface ParsedFinkelSource {
   sourcePath: string;
   stats: ParseStats;
   blocks: ParsedBlock[];
+  errors: FinkelParseError[];
 }
 
 export class FinkelParseError extends Error {
@@ -419,10 +420,15 @@ function parseEntryContent(
 /**
  * Build blocks as: one top-level entry (indent 0) plus subsequent subentries.
  * Every parsed item is normalized to the same ParsedEntry shape.
+ * Errors are collected and returned rather than thrown; problematic lines are skipped.
  */
-function groupBlocks(lines: SourceLine[], sourcePath: string): ParsedBlock[] {
+function groupBlocks(
+  lines: SourceLine[],
+  sourcePath: string,
+): { blocks: ParsedBlock[]; errors: FinkelParseError[] } {
   const blocks: ParsedBlock[] = [];
-  let currentBlock: ParsedBlock | null = null;
+  const errors: FinkelParseError[] = [];
+  let currentBlock: ParsedBlock | "failed" | undefined;
 
   for (const line of lines) {
     if (line.category === "empty" || line.category === "comment") {
@@ -430,7 +436,18 @@ function groupBlocks(lines: SourceLine[], sourcePath: string): ParsedBlock[] {
     }
 
     if (line.category === "entry") {
-      const ast = parseEntryContent(line.text, line.lineNumber, sourcePath);
+      let ast: EntryAst;
+      try {
+        ast = parseEntryContent(line.text, line.lineNumber, sourcePath);
+      } catch (error) {
+        if (error instanceof FinkelParseError) {
+          errors.push(error);
+          currentBlock = "failed";
+          continue;
+        }
+        throw error;
+      }
+
       const mainEntry: ParsedEntry = {
         lineNumber: line.lineNumber,
         indentLevel: 0,
@@ -444,18 +461,36 @@ function groupBlocks(lines: SourceLine[], sourcePath: string): ParsedBlock[] {
       continue;
     }
 
-    if (!currentBlock) {
-      throw new FinkelParseError(
-        "Subentry encountered before any entry block",
-        sourcePath,
-        line.lineNumber,
-        1,
-        line.text,
+    // Subentry handling
+    if (currentBlock === undefined) {
+      errors.push(
+        new FinkelParseError(
+          "Subentry encountered before any entry block",
+          sourcePath,
+          line.lineNumber,
+          1,
+          line.text,
+        ),
       );
+      continue;
+    }
+
+    if (currentBlock === "failed") {
+      // Silently skip subentries belonging to a failed entry block.
+      continue;
     }
 
     const contentWithoutIndent = line.text.slice(line.indentLevel);
-    const ast = parseEntryContent(contentWithoutIndent, line.lineNumber, sourcePath);
+    let ast: EntryAst;
+    try {
+      ast = parseEntryContent(contentWithoutIndent, line.lineNumber, sourcePath);
+    } catch (error) {
+      if (error instanceof FinkelParseError) {
+        errors.push(error);
+        continue;
+      }
+      throw error;
+    }
 
     // Subentries can carry their own trailing comments; we preserve them here.
     const subentry: ParsedEntry = {
@@ -469,7 +504,7 @@ function groupBlocks(lines: SourceLine[], sourcePath: string): ParsedBlock[] {
     currentBlock.entries.push(subentry);
   }
 
-  return blocks;
+  return { blocks, errors };
 }
 
 /**
@@ -480,12 +515,13 @@ function groupBlocks(lines: SourceLine[], sourcePath: string): ParsedBlock[] {
  */
 export function parseFinkelText(text: string, sourcePath = "<inline>"): ParsedFinkelSource {
   const rawLines = text.split(/\r?\n/);
-  const lines: SourceLine[] = rawLines.map((line, index) => {
+
+  const lineResults: (SourceLine | FinkelParseError)[] = rawLines.map((line, index) => {
     const lineNumber = index + 1;
     const classification = classifyLine(line);
 
     if (!classification) {
-      throw new FinkelParseError(
+      return new FinkelParseError(
         "Line does not match any valid DSL line category",
         sourcePath,
         lineNumber,
@@ -502,6 +538,9 @@ export function parseFinkelText(text: string, sourcePath = "<inline>"): ParsedFi
     };
   });
 
+  const classifyErrors = lineResults.filter((r): r is FinkelParseError => r instanceof FinkelParseError);
+  const lines = lineResults.filter((r): r is SourceLine => !(r instanceof FinkelParseError));
+
   const stats: ParseStats = {
     lineCount: lines.length,
     emptyLineCount: lines.filter((line) => line.category === "empty").length,
@@ -511,14 +550,41 @@ export function parseFinkelText(text: string, sourcePath = "<inline>"): ParsedFi
     blockCount: 0,
   };
 
-  const blocks = groupBlocks(lines, sourcePath);
+  const { blocks, errors: blockErrors } = groupBlocks(lines, sourcePath);
   stats.blockCount = blocks.length;
+
+  const errors = [...classifyErrors, ...blockErrors].sort((a, b) => a.line - b.line);
+
+  for (const error of errors) {
+    console.error(error.message);
+  }
 
   return {
     sourcePath,
     stats,
     blocks,
+    errors,
   };
+}
+
+const PARSE_ERROR_LOG_PATH = new URL("./parse-errors.log", import.meta.url);
+
+export async function writeParseErrorLog(
+  result: ParsedFinkelSource,
+  logPath: URL = PARSE_ERROR_LOG_PATH,
+): Promise<void> {
+  if (result.errors.length === 0) {
+    return;
+  }
+
+  const lines = [
+    `Parse errors for: ${result.sourcePath}`,
+    `${result.errors.length} error(s) on ${new Date().toISOString()}`,
+    "",
+    ...result.errors.map((e) => e.message),
+  ];
+
+  await Bun.write(logPath, lines.join("\n") + "\n");
 }
 
 export async function parseFinkelSourceFromFile(
@@ -531,5 +597,7 @@ export async function parseFinkelSourceFromFile(
   }
 
   const text = await file.text();
-  return parseFinkelText(text, sourceUrl.pathname);
+  const result = parseFinkelText(text, sourceUrl.pathname);
+  await writeParseErrorLog(result);
+  return result;
 }
