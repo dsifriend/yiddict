@@ -132,6 +132,7 @@ class BracketDataNodeError extends Error {
 }
 
 type EntryAst = { components: EntryComponent[]; trailingComment?: string };
+type FormChunkAst = { base: string; spellingAnnotation?: string };
 
 type NodeWithAst<T> = { ast: () => T };
 type NodeWithText = { sourceString: string };
@@ -197,15 +198,25 @@ const entryAstActions: FinkelEntryActionDict<unknown> = {
     return asAstNode<EntryComponent>(component).ast();
   },
 
-  form(formBase, formSpelling) {
-    const spelling = optionalChildAst<string>(formSpelling);
+  form(chunks) {
+    const chunkNodes = (chunks as NodeWithChildren).children ?? [];
+    const chunkAsts = chunkNodes.map((node) => asAstNode<FormChunkAst>(node).ast());
+
     return {
       type: "form",
       form: {
-        romanized: nodeText(formBase),
-        spellingAnnotation: spelling,
+        romanized: chunkAsts.map((chunk) => chunk.base).join(""),
+        spellingAnnotation: chunkAsts.find((chunk) => chunk.spellingAnnotation !== undefined)
+          ?.spellingAnnotation,
       },
     } satisfies EntryComponent;
+  },
+
+  formChunk(base, formSpelling) {
+    return {
+      base: nodeText(base),
+      spellingAnnotation: optionalChildAst<string>(formSpelling),
+    } satisfies FormChunkAst;
   },
 
   formSpelling(_ws, _open, base, _close) {
@@ -273,6 +284,7 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
   Interjection(_keyword) {
     return { kind: "interjection", raw: this.sourceString } satisfies ParsedBracketedData;
   },
+
   Numeral(_keyword, _end) {
     return { kind: "numeral", raw: this.sourceString } satisfies ParsedBracketedData;
   },
