@@ -1495,7 +1495,7 @@ biter/K [def: bitter] biterlekh/A
 bitsikli'r/V/Bbitsikli'rt [def: ride a bicycle]
 	bitsikle't/N [def: bicycle]
 bivua'k/N [m] [def: bivouac, improvised shelter]
-biye{by#h}/ [f] [def: sexual intercourse]
+biye{by#h}/H [f] [def: sexual intercourse]
 biyesh{bywS}/H [def: embarrassment]
 	mevayesh{mBAS}/H [verb] [def: embarrass (with "zayn")]
 	bushe{bwSh}/Xbushes{bwSwT}/H [def: embarrassment, shame]
