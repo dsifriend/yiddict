@@ -14968,7 +14968,7 @@ prost/A [def: simple, unrefined, crude; ordinary; tacky, vulgar] /Ilekh
 	prosta'k/Ees prostnya'k/N [m] [def: simple person; boor]
 	prostkayt/N [f] [def: vulgarity]
 	farprosteve/V/Bfarprostevet [def: degrade]
-prosta't/ [m] [def: prostate gland (anatomy)] % Michael Wex
+prosta'te/S [f] [def: prostate gland (anatomy)] % also [m] per Michael Wex
 	prostati't [m?] [def: prostatitis] % B. Sandler: Karolina-Bugaz
 prostitutke/S [f] [def: prostitute]
 protaktinyum [m] [def: protactinium (Pa)]
