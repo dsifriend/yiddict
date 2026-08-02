@@ -7866,7 +7866,7 @@ keler/S [m] [def: cellar]
 	vaynkeler/S [m] [def: wine cellar; tavern]
 kelishik/Xkelishkes /D keleshek/Xkeleshkes [m] [def: small drinking glass]
 	/Dkelishk
-kelnish [m] [def: cologne (fragrance)
+kelnish [m] [def: cologne (fragrance)]
 	[idiom: kelnish vaser = eau de Cologne]
 kelnye/S [f] [def: coach-box]
 kemat{Kmet}/H [def: almost]
@@ -9006,7 +9006,7 @@ kokh/V/T [def: cook, bake] /Gop/Goys/Gon/Gayn
 	tsekokh/V/Btsekokht [def: boil; become furious/enamored (with "zikh")]
 	farkokh/V/Bfarkokht [def: be enamored of (with "zikh in"); overcook]
 		farkokhtkayt/N [f] [def: heat; fever]
-		farko'khenish/N [n] [def: beguilement
+		farko'khenish/N [n] [def: beguilement]
 	kikh/N [f] [def: kitchen; stove]
 		gorkikh/N [f] [def: workers' kitchen]
 	kekhne [f] kekhin/S [f] ke'kherin/S [def: (female) cook]
@@ -12607,7 +12607,7 @@ muter/S/D [f] [def: mother] /Ilekh
 	heybmuter/S [f] [def: uterus]
 	klo'gmuter/S [f] [def: professional mourner; crybaby]
 	pe'rlmuter [f] [def: mother-of-pearl] /In
-	toy'fmuter/S [f] [def: Godmother (Christian)
+	toy'fmuter/S [f] [def: Godmother (Christian)]
 	[idiom: matke boske = mother of God, Virgin Mary (Polish Matka Boska)]
 muterl [f] mu'terke/S [f] ma'terke/S [f] shroyfmuter/S [f] [def: nut (hardware)] /D
 mutne/A [def: cloudy, turbid; sad]
@@ -14183,7 +14183,7 @@ pil/N [f] [def: pill]
 	baruik-pil/N [f] [def: tranquilizer] [note: V]
 	shlofpil/N [f] [def: sleeping pill]
 pilder/V/T [def: be loud (with "zikh")]
-	tsepilder/V/Btsepildert [def: be loud (with "zikh")
+	tsepilder/V/Btsepildert [def: be loud (with "zikh")]
 	gepilder/N [n] [def: clamor, noise]
 pilegesh{plgS}/Xpilgoshem{plgSym} [m?] [def: concubine]
 	veg-pilegesh{veg-plgS}/Xveg-pilgoshem{veg-plgSym} [m?] [def: traveler's concubine] % Bergelson
@@ -14465,7 +14465,7 @@ pohibel [m] [def: destruction, ruination (Ukrainian погибель)]
 pok/N [f] [def: pock] % katshkes hobn moyre far pokn
 -/Xpokn [def: (chicken) pox (disease)]
 	pok/V/T [def: have (chicken) pox]
-	-/Xvintpokn [def: chicken pox (disease)
+	-/Xvintpokn [def: chicken pox (disease)]
 	[idiom: shteln pokn = vaccinate]
 	[idiom: pokn un mozlen = go through childhood diseases]
 poked{pqyd}/Xpkidem{pqydym} [m] [def: official; superintendant]
@@ -15371,7 +15371,7 @@ razi'r/V/Brazi'rt [def: shave] /Gop
 	razirer/S [m] [def: razor]
 	razure/S [f] [def: barber shop]
 razmakh [m] [def: haste; impulse] [usage: not recommended]
-razvedke/S [f] [def: reconnaissance (Russian разведка)
+razvedke/S [f] [def: reconnaissance (Russian разведка)]
 reagi'r/V/Breagi'rt [def: react]
 	reaktsye/S [f] [def: reaction]
 		farbindung-reaktsye/S [f] [def: addition reaction (chemistry)] % Shmuel Broches
@@ -16316,7 +16316,7 @@ seyder{sdr}/Xsedorem{sdrym}/H [m] [def: order; Passover meal]
 	keseyder{Ksdr}/H [adv] [def: continually; in a row] /Idik [def: continual]
 	sedre{sdrh}/Xsedres{sdrwT}H [def: portion of the Torah; series of events]
 	seyder{sdr}/V/T [def: place in order] /Goys/Gayn
-	mesader{msdr} [verb] [def: officiate at a cermony (with "zayn")
+	mesader{msdr} [verb] [def: officiate at a cermony (with "zayn")]
 	[idiom: der ershter shpil-seyder{shpil-sdr} = starting lineup (sports)]
 	[idiom: mesader{msdr} kedushen{kydwSyn} zayn = officiate at a wedding]
 seyfer{sfr}/Xsforem{sfrym}/H [m] [def: religious book]
@@ -17023,7 +17023,7 @@ shlof/V/Bgeshlofn [def: sleep] /Gayn/Giber/Gop/Goys/Gdurkh
 	antshlof/V/Bantshlofn [def: fall asleep]
 	dershlof/V/Bdershlofn [def: sleep soundly]
 	shlof/N [m] [def: sleep] shlofloz/A [def: sleepless]
-	shlefer/V/T [def: be sleepy
+	shlefer/V/T [def: be sleepy]
 		/Gayn [def: make sleepy]
 	shlefer/X/S [m] shle'ferin/S [f] [def: loafer, layabout]
 		mi'tshlefer/X/S [m] mitshle'ferin/S [f] [def: spouse; housemate]
@@ -17878,7 +17878,7 @@ shtaltik/A shtaltne [def: handsome, shapely; stately, presentable]
 	shtalt/N [m] /Dshtelt geshta'lt/N [m] [def: appearance; shape, form; personage]
 		/Iik [def: of imposing appearance]
 shtam/N [m] [def: stem; trunk (of a plant); race, tribe]
-	boymshtam/N [m] [def: tree trunk
+	boymshtam/N [m] [def: tree trunk]
 shtam/V/T [def: originate] /Gop
 	opshtam/N [m] [def: origin] /Iik opshtamung/N [f] [def: origin]
 		opshtamling/N [m] [def: descendent]
@@ -19062,7 +19062,7 @@ spodik/Ees [m] spodek/Ees [def: hat (high fur cap trimmed in plush or fur) (clot
 spo'dnitse/S [f] [def: petticoat] spu'dnitse/S [f]
 spokoyne/A [def: calm; self-assured (Russian спокойна)]
 spoloshe/V/T [def: make (horse for instance) wild with fright (Belarusian  спалох)]
-	raspoloshe/V/Braspoloshet [def: take fright (horse) (with "zikh")
+	raspoloshe/V/Braspoloshet [def: take fright (horse) (with "zikh")]
 sponsor/S [m] [def: sponsor] [usage: American Yiddish]
 sponta'n/A [def: spontaneous]
 	sponta'neve/V/T [def: improvize, jam (music)] [note: V]
@@ -19758,7 +19758,7 @@ tif/K [def: deep]
 		fartifung/N [f] [def: depression, dip, recess]
 	fartifer/V/Bfartifert [def: deepen]
 		fartiferung/N [f] [def: deepening]
-	tif/V/T /Garayn [def: be involved in (with "zikh")
+	tif/V/T /Garayn [def: be involved in (with "zikh")]
 tiferes{WfrT}/H [def: beauty]
 tifus [m] [def: typhus (disease)]
 	boykh-tifus [m] [def: typhoid (disease)]
@@ -19829,7 +19829,7 @@ tish/N/D [m] [def: table]
 	tishleray'/N [f] [def: table-making business]
 	[idiom: tokhes{WHwT} oyfn tish = getting down to business (vulgar)]
 tishboyres{WSbwrT}/H [n/f] [def: fractions (mathematics)]
-tishe/V/T /Gon [def: enjoy (with "in" or "mit")
+tishe/V/T /Gon [def: enjoy (with "in" or "mit")]
 tishebov{WiSeh-boB}/H [m] [def: commemorative day of the Ninth of Av]
 tishri{WSry}/H [m] [def: Hebrew month of Tishri]
 tishtshe [f?] [def: thousand (Russian тысяча)]
@@ -22032,7 +22032,7 @@ vig/V/T [def: rock; swing] /Giber/Gfunander/Gunter
 	gevi'g/N [m] [def: rocking]
 	vig/N /D [f] [def: cradle]
 vigode/S [f] [def: comfort; benefit] vigodne/A [def: beneficial]
-vi'grishne/A [def: lottery (with "bilet")
+vi'grishne/A [def: lottery (with "bilet")]
 vike [f?] [def: Vicia, genus of Fabaceae] % Forwards: Hershl Glaser
 vikher/S [m] [def: whirlwind]
 	vikher/V/T [def: whirl, rush] /Garop/Garum
@@ -22762,7 +22762,7 @@ yuri' [m] [def: jurisprudence, law (subject of study)] /Idish
 	yurisprude'nts [f] [def: jurisprudence]
 	yusti'ts [f] [def: (administration of) justice]
 yushe/V/T [def: be agitated (liquid); spurt (blood)]
-	tse|yushe/V/Btse|yushet [def: anger; wound; be infuriated (with "zikh")
+	tse|yushe/V/Btse|yushet [def: anger; wound; be infuriated (with "zikh")]
 yust/A [def: solid, upright, well-respected] /Gunter
 yutshe/V/T [def: grunt] % Harduf
 yuveli'r/N [m] yuvelirer/S [def: jeweler (occupation)]
@@ -24070,7 +24070,7 @@ antalept [def: Antalieptė (Lithuanian)] [note: Y]
 anu'shishok hanu'shishok [def: Onuškis, Oniškis Lithuania] [note: Y]
 avante [def: Alanta, Alunta (Lithuanian)] [note: Y]
 balbi'irishok [def: Balbieriškis (Lithuanian)] [note: Y]
-baltrema'nts bu'trimants [def: Butrimonys (Lithuanian)
+baltrema'nts bu'trimants [def: Butrimonys (Lithuanian)]
 bazilya'n [def: Bazilionai (Lithuanian)] [note: Y]
 betigole [def: Betygala (Lithuanian)] [note: Y]
 beysegole [def: Baisogala (Lithuanian)] [note: Y]
@@ -24083,7 +24083,7 @@ darshu'nishok [def: Darsūniškis (Lithuanian)] [note: Y]
 da'tneve [def: Dotnuva, Dotnava (Lithuanian)] [note: Y]
 dauge'l [def: Daugailiai (Lithuanian)?] [note: Y]
 deve'nishok [def: Devieniškės (Lithuanian)] [note: Y]
-dorbya'n drobya'n [def: Darbėnai? (Lithuanian)
+dorbya'n drobya'n [def: Darbėnai? (Lithuanian)]
 doyg [def: Daugai (Lithuanian)] [note: Y]
 dru'zgenik [def: Druskininkai (Lithuanian)] [note: Y]
 dubinik [def: Dubingai (Lithuanian)] [note: Y]
