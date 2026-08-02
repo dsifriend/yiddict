@@ -20,6 +20,7 @@ FinkelBracket {
     | Connotations
     | GrammarNote
     | Idiom
+    | Morphology
     | Origin
     | UsageNote
 
@@ -47,6 +48,7 @@ FinkelBracket {
   Connotations = "connotations:" WS* BracketText
   GrammarNote = "grammar:" WS* BracketText
   Idiom = "idiom:" WS* BracketText
+  Morphology = "morphology:" WS* BracketText
   Origin = "origin:" WS* BracketText
   UsageNote = ("usage:" | "note:") WS* BracketText
 

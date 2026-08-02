@@ -50,6 +50,7 @@ export type BracketedDataKind =
   | "clause"
   | "connotations"
   | "grammar-note"
+  | "morphology"
   | "idiom"
   | "origin"
   | "usage-note";
@@ -351,6 +352,13 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
   Idiom(_prefix, _ws, text) {
     return {
       kind: "idiom",
+      raw: this.sourceString,
+      value: textValue(text),
+    } satisfies ParsedBracketedData;
+  },
+  Morphology(_prefix, _ws, text) {
+    return {
+      kind: "morphology",
       raw: this.sourceString,
       value: textValue(text),
     } satisfies ParsedBracketedData;

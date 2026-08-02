@@ -36,6 +36,7 @@ export interface FinkelBracketActionDict<T> extends BaseActionDict<T> {
   Connotations?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   GrammarNote?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   Idiom?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
+  Morphology?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   Origin?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   UsageNote?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   BracketText?: (this: NonterminalNode, arg0: IterationNode) => T;
