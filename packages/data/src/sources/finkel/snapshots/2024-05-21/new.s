@@ -16973,7 +16973,7 @@ shlimoy'z [m?] [def: ace of spades (playing cards)]
 shling/V/Bgeshlungen [def: swallow, guzzle]
 	/Garayn/Garop/Garunter/Gayn/Gmit/Gon
 	farshling/V/Bfarshlungen [def: swallow up]
-	bulke-shlinger/S [m] [def: glutton]374456
+	bulke-shlinger/S [m] [def: glutton]
 	fayer-shlinger/S [m] [def: fire swallower]
 	shverdshlinger/S [m] [def: sword swallower]
 	shlung/N [m] [def: esophagus (anatomy); swallow]
