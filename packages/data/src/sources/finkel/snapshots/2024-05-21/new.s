@@ -892,7 +892,7 @@ ban/N [f] [def: train]
 	ayznban/N [f] [def: train]
 	shlogban/N [f] [def: military train (??)] % Y. Y. Singer
 	unterban/N [f] [def: subway]
-bana'l/A [def: [banal, trite]
+bana'l/A [def: banal, trite]
 	banalite't/N [f] banalkayt/N [f] [def: banality; triteness]
 banane/S [f] banan/N [m] [def: banana]
 	kokh-banane/S [f] kokh-banan/N [m] [def: plaintain (fruit)]
