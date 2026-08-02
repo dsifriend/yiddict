@@ -18104,7 +18104,7 @@ shtey/Vshteyn/Bgeshtanen [def: stand] /Garum/Gant/Gon/Gfor/Gavek
 		umfarshtendlekh/A [def: unintelligible]
 		zelbstfarshtendlekh/A [def: self-evident]
 		[idiom: es farshteyt zikh (aleyn) = of course, obviously]
-		[idiom: vifl ikh farshtey = as much as I like
+		[idiom: vifl ikh farshtey = as much as I like]
 	aynfarshtey/Vaynfarshteyn/Baynfarshtanen [def: agree]
 		aynfarshtey'enish/N [n] aynfarshte'ndenish [n] [def: agreement]
 	bashtey/Vbashteyn/Bbashtanen [def: consist of; consent]
