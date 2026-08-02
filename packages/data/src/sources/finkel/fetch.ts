@@ -7,7 +7,7 @@
 
 const SNAPSHOT_PATH = new URL("./snapshots/2024-05-21/new.s", import.meta.url);
 const SNAPSHOT_OUTPUT_PATH = new URL("./upstream/refoyl.txt", import.meta.url);
- 
+
 const WORDLIST_FILENAME = "wordlist.csv";
 const WORDLIST_UPSTREAM_URL = `https://www.cs.uky.edu/~raphael/yiddish/${WORDLIST_FILENAME}`;
 const WORDLIST_OUTPUT_PATH = new URL(`./upstream/${WORDLIST_FILENAME}`, import.meta.url);
@@ -42,7 +42,7 @@ async function stageSnapshot() {
 
 async function main() {
   await stageSnapshot();
-  await fetchWordlist();
+  // await fetchWordlist();
 }
 
 await main();

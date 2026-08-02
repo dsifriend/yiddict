@@ -24047,7 +24047,7 @@ yisroel{yQr#l}/H [def: Israel] /Idik /Iish [def: Israeli] yisroel|dikayt/N
 	oykher_yisroel{ewxr-yQr#l} [def: a Jew who disgraces or brings calamity upon the Jewish people]
 	yisroele{yQr#ly}/Xyisroelem{yQr#lym} [m] [def: Israeli citizen]
 yivo [def: YIVO]
-yovn{yvn} [def: old Greece, Byzantium] yevonish[yvnish}/A
+yovn{yvn} [def: old Greece, Byzantium] yevonish{yvnish}/A
 yugoslavye [def: Yugoslavia] yugoslavish/A
 zaksenhauzn [def: Sachsenhausen]
 zamet [def: Zamet (Romania)]
