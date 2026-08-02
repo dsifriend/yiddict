@@ -9,6 +9,7 @@ FinkelBracket {
     | Participle
     | Preposition
     | Pronoun
+    | Noun
     | Verb
     | GenderMarker
     | Prefix
@@ -33,6 +34,7 @@ FinkelBracket {
   Preposition = "prep"
   Pronoun = "pronoun" BracketRest*
   Verb = "verb"
+  Noun = "noun" BracketRest*
   GenderMarker = GenderHead GenderTail* &end
   GenderHead = "m" | "f" | "n" | "?"
   GenderTail = "m" | "f" | "n" | "?" | "|" | "/"

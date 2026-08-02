@@ -24,6 +24,7 @@ export interface FinkelBracketActionDict<T> extends BaseActionDict<T> {
   Preposition?: (this: NonterminalNode, arg0: TerminalNode) => T;
   Pronoun?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
   Verb?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  Noun?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
   GenderMarker?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: NonterminalNode) => T;
   GenderHead?: (this: NonterminalNode, arg0: TerminalNode) => T;
   GenderTail?: (this: NonterminalNode, arg0: TerminalNode) => T;

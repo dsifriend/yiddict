@@ -41,6 +41,7 @@ export type BracketedDataKind =
   | "preposition"
   | "pronoun"
   | "verb"
+  | "noun"
   | "gender-marker"
   | "prefix"
   | "pronunciation"
@@ -284,7 +285,9 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
   Interjection(_keyword) {
     return { kind: "interjection", raw: this.sourceString } satisfies ParsedBracketedData;
   },
-
+  Noun(_keyword, _rest) {
+    return { kind: "noun", raw: this.sourceString } satisfies ParsedBracketedData;
+  },
   Numeral(_keyword, _end) {
     return { kind: "numeral", raw: this.sourceString } satisfies ParsedBracketedData;
   },
