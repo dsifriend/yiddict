@@ -2304,7 +2304,7 @@ burya'n/X [m] [def: weed]
 burzhua'/Een [m] [def: bourgeois] /Iz /Izn
 	burzhuy/N/Ees [m] burzhuyke/S [f] [def: bourgeois] [usage: contemptuous]
 	burzhuazye/S [f] [def: bourgeoisie]
-	burzhuk/Ees [m] [def: bourgeois person (pejorative)
+	burzhuk/Ees [m] [def: bourgeois person (pejorative)]
 bus/N [m] [def: bus] % Stutchkoff
 	shulbus/N [m] [def: school bus] [note: V]
 busol/N [m] busole/S [f] [def: compass (magnetic)]
