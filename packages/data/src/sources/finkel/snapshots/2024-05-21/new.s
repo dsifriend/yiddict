@@ -787,7 +787,7 @@ baal{bel}/H [m] [def: master]
 babke/S [def: butter cake]
 	babkele/Ekh [def: money (thieves' argot)]
 bader/V/T [def: bother, annoy (American)]
-badke{bdke}/Vbadkenen{bkdenen}/T [def:
+badke{bdke}/Vbadkenen{bkdenen}/T [def: act as wedding jester]
 badkhn{bdHn}/Xbadkhonem{bdHnym}/H [m] [def: jester (wedding)]
 	badkhones{badHnwT}/H [f] [def: art of wedding jesters]
 bafel/V/Bbafoyln [def: order, command]
