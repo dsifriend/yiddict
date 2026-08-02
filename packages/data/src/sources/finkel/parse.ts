@@ -38,6 +38,7 @@ export type BracketedDataKind =
   | "interjection"
   | "numeral"
   | "participle"
+  | "particle"
   | "preposition"
   | "pronoun"
   | "verb"
@@ -293,6 +294,9 @@ const bracketAstActions: FinkelBracketActionDict<unknown> = {
   },
   Participle(_keyword) {
     return { kind: "participle", raw: this.sourceString } satisfies ParsedBracketedData;
+  },
+  Particle(_keyword) {
+    return { kind: "particle", raw: this.sourceString } satisfies ParsedBracketedData;
   },
   Preposition(_keyword) {
     return { kind: "preposition", raw: this.sourceString } satisfies ParsedBracketedData;

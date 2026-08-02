@@ -21,6 +21,7 @@ export interface FinkelBracketActionDict<T> extends BaseActionDict<T> {
   Interjection?: (this: NonterminalNode, arg0: TerminalNode) => T;
   Numeral?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode) => T;
   Participle?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  Particle?: (this: NonterminalNode, arg0: TerminalNode) => T;
   Preposition?: (this: NonterminalNode, arg0: TerminalNode) => T;
   Pronoun?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode) => T;
   Verb?: (this: NonterminalNode, arg0: TerminalNode) => T;

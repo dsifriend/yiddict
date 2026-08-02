@@ -19,6 +19,7 @@ FinkelEntry {
   spellingBase = spellingChar+
   spellingChar = formChar
               | "~"
+              | " " // non-breaking space
   formBase = formChar+
   formChar = alnum
            | "_"
