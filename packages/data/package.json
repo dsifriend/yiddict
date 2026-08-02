@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ohm:gen": "bunx @ohm-js/cli generateBundles --withTypes packages/data/src/sources/*/parser/*.ohm",
+    "ohm:gen": "bunx @ohm-js/cli generateBundles --withTypes src/sources/*/parser/*.ohm",
     "typecheck": "bun run ohm:gen && tsc --noEmit",
     "fetch": "bun scripts/fetch.ts",
     "build:artifacts": "bun run ohm:gen && bun scripts/build-source-artifacts.ts",
