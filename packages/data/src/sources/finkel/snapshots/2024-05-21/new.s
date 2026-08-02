@@ -21050,7 +21050,7 @@ tsuker [m] [def: sugar] /Idik /D [def: candy]
 	fartsuker/V/Bfartsukert [def: sweeten; crystalize]
 	batsuker/V/Bbatsukert [def: with added sugar]
 	getsukert/A [def: sugary] % Sholem Aleykhem
-	tsukrovnye/S [f] [def: sugar factory (Polish cukrownia]] % Opatoshu: Polishe Velder
+	tsukrovnye/S [f] [def: sugar factory (Polish cukrownia)] % Opatoshu: Polishe Velder
 	tsukernye/S [f] [def: sugar store; sugar factory]
 tsukht/N [f] [def: tidy woman; slob (ironic)]
 tsung/N/Xtsinger/Xtsingen [f] /Dtsing [def: tongue]
