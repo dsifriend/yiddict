@@ -16965,7 +16965,7 @@ shleyf/N [m] [def: loop, bow] /D
 -/Xshleykes -/Xshelkes [def: suspenders (clothing)]
 shleyme{Slymh}/H [def: complete (with "refue -" or "geule{g#wlh) -"]
 	shleymes{SlmwT}/H [def: completeness; perfection] /Idik [def: faultless, perfect]
-		beshleymes{bSlymwT} [adv] [def: completely, perfectly] /Idik [intact, entire[
+		beshleymes{bSlymwT} [adv] [def: completely, perfectly] /Idik [def: intact, entire]
 	mashlem{mSlym}/H [verb] [def: complete (with "zayn")]
 shlider/S [m] [def: blinker (for horse)]
 shlima'k/Ees [m?] [def: snail (animal, Gastropoda)] [usage: not recommended]
