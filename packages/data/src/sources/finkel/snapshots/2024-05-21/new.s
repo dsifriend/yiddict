@@ -9031,7 +9031,7 @@ koks [noun] [def: chignon]
 kol{Kl}/H [def: all] /Lmi{m} [def: from all]  /Lle{l} [def: to all]
 	ko'lerle'y{Klerley} [adj] [def: all kinds of] [grammar: indeclinable]
 	kule{Kwlw} [adv] [def: all sorts of]
-		kule_hay{Kwlw hay} [m?] [def: know-it-all] % Vilne
+		kule_hay{Kwlw~hay} [m?] [def: know-it-all] % Vilne
 	kolboynik{Kl-bwnik}/Ees [m] kolboy'nitse{Kl-bwnitse}/S [f] [def: jack of all trades; scoundrel]
 kol_{kwl}/Xkeler_{kwler} [n] [def: voice; cry] /Dkelekh{kwlx}
 	-/Xkoyles{kwlwT}/H [def: commotion, racket]
