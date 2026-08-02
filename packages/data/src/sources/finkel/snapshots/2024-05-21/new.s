@@ -16963,7 +16963,7 @@ shleyf/N [f] [def: temple (part of the head)]
 shleyf/N [m] [def: loop, bow] /D
 	shleyfer/X [def: polisher (diamond)]
 -/Xshleykes -/Xshelkes [def: suspenders (clothing)]
-shleyme{Slymh}/H [def: complete (with "refue -" or "geule{g#wlh) -"]
+shleyme{Slymh}/H [def: complete (with "refue -" or "geule{g#wlh} -")]
 	shleymes{SlmwT}/H [def: completeness; perfection] /Idik [def: faultless, perfect]
 		beshleymes{bSlymwT} [adv] [def: completely, perfectly] /Idik [def: intact, entire]
 	mashlem{mSlym}/H [verb] [def: complete (with "zayn")]
