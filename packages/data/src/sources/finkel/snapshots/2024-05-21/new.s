@@ -5976,7 +5976,7 @@ groz/N/Xgrezer [n] [def: grass] /Iik /Dgrez
 	lonkegroz/N/Xlonkegrezer [n] [def: meadow grass]
 	vildgroz/N/Xvildgrezer [n] [def: weed]
 	groz/V/T /Garoys [def: sprout forth]
-	grezl//V/T [def: become grassy (with "zikh")] % Opatoshu: Polishe Velder
+	grezl/V/T [def: become grassy (with "zikh")] % Opatoshu: Polishe Velder
 grozhe/V/T [def: threaten (with "mit a finger")]
 grub/N [f] grubn/S [def: mine]
 	goldgrub/N [m/f] [def: gold mine]
