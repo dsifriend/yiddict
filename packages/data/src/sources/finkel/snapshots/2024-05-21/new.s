@@ -19008,7 +19008,7 @@ sosulke/S [f] [def: icicle]
 sot/Ees [m] [def: honeycomb]
 sotske/S [m] [def: rural police commissioner (Russian?)]
 sotsya'l/A [def: social] /Iish
-	sotsyali'zm [m] def: socialism]
+	sotsyali'zm [m] [def: socialism]
 		sotsyali'st/N [m] sotsyalistke/S [f] tsitsili'st/N [m] [def: socialist]
 		sotsyalistish/A [def: socialist]
 	sotsyologye/S [f] [def: sociology] sotsyologish/A [def: socialogical]
