@@ -1715,7 +1715,7 @@ bob/Ees [m] [def: broad bean, fava bean, Vicia_faba (food)] /Dbeb
 	[idiom: shvartser bob = common vetch]
 	[idiom: himl un erd un strutshkebob = everything but the kitchen sink]
 bobe/S/C/J [f] [def: grandmother] bobish/A
-	bobenyu [f] [def: dear grandmother]]
+	bobenyu [f] [def: dear grandmother]
 	bobele [f] [def: little grandmother, baby]
 	elter-bobe/S [f] [def: great-grandmother]
 	zeyde-bobe [def: grandparents] % plural
