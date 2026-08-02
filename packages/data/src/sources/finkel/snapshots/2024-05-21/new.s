@@ -9036,7 +9036,7 @@ kol{Kl}/H [def: all] /Lmi{m} [def: from all]  /Lle{l} [def: to all]
 	kolboynik{Kl-bwnik}/Ees [m] kolboy'nitse{Kl-bwnitse}/S [f] [def: jack of all trades; scoundrel]
 kol_{kwl}/Xkeler_{kwler} [n] [def: voice; cry] /Dkelekh{kwlx}
 	-/Xkoyles{kwlwT}/H [def: commotion, racket]
-	kelekhl{kwlxl}/Eekh [def:
+	kelekhl{kwlxl}/Eekh [def: soft voice]
 	koyleynu{kwlnw}/H [def: voice]
 	kol_koyre{kwl-kwr#} [def: lonely voice]
 	bal_koyre{bel-kwr#} [def: Torah reader]
