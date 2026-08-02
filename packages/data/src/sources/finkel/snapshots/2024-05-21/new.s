@@ -13584,7 +13584,7 @@ oyg/N /Deyg /Doyg [n] [def: eye (anatomy)] /Iik
 	moyznoyg{moyzn#oyg}/N [n] /Dmoyzneyg{moyzn#eyg} [def: mousy eye] % Sholem Aleykhem
 	hinteroygik{hinter#oygik}/A [def: secret]
 	-/Xoy'genes -/Xoy'ganes [def: beautiful eyes]
-	[idiom: khaneles eygelekh{Hnlhs eygelekh} = wild pansy (flower; Viola tricolor)]
+	[idiom: khaneles eygelekh{Hnlhs~eygelekh} = wild pansy (flower; Viola tricolor)]
 	[idiom: blut-farlofene oygn = bloodshot eyes] % I. J. Singer
 	[idiom: fardreyen di oygn = roll one's eyes] [note: V]
 	[idiom: fargleyzn di oygn oyf = stare at]
@@ -14491,7 +14491,7 @@ polemik/Ees [f] [def: polemics] polemish/A [def: polemic]
 	pole'miker/S [m] [def: debater]
 polet{plyt}/Xpleytem{plytym}/H [m] [def: refugee]
 	pleyte{plyth}/Xpleytes{plytwT}/H [def: escape] /Lha{h} [noun] [m] [def: the escape]
-	-/Xsheyres_hapleyte{S#ryT hplyth} [def: Holocaust survivors]
+	-/Xsheyres_hapleyte{S#ryT~hplyth} [def: Holocaust survivors]
 	[idiom: makhn pleyte = run away]
 	[idiom: moyekh{mwH}- pleyte = brain drain] [note: V]
 poligamye/S [f] [def: poligamy]
@@ -15203,7 +15203,7 @@ rakhmone{rHmn#}/Xrakhmones{rHmnwT}/H [f] [def: mercy, pity, compassion]
 	umberakhmonesdik{umbrHmnwTdik}/A [def: unmerciful]
 	merakhem{mrHm}/H [verb] [def: show mercy (with "zayn")]
 	-/Xbney_rakhmonem{bny-rHmnym} [def: merciful people]
-	rakhmone_letslan{rHmn# lycln}/H [def: God defend us] [connotations: out, demons!; tsk-tsk]
+	rakhmone_letslan{rHmn#~lycln}/H [def: God defend us] [connotations: out, demons!; tsk-tsk]
 	hashem_yerokhem{hSm~yrHm} [interj] [def: may God show mercy]
 	[idiom: mir iz a rakhmones{rHmnwT} oyf = my heart goes out to]
 rakhves{rHBwT}/N/H [f] [def: breadth; luxury] /Idik [def: broad, spacious]
@@ -23000,7 +23000,7 @@ zeks [d] [def: 6]
 	zekserl/Xzekserlekh [def: six-unit] % Perets: zekserlekh protsent
 	[idiom: zeks un zekhtsik = Paderbörnern (card game)]
 	[idiom: an ofener zeks un zekhtsik = an open book (from the card game)]
-	[idiom: zeks un zekhtsik = hernia (ailment)] % kile{Ky lw} in gematria
+	[idiom: zeks un zekhtsik = hernia (ailment)] % kile{Ky~lw} in gematria
 zel zele/N [f] [def: soul] zelish/A [def: spiritual]
 	laytzelik/V/T [def: grace, favor]
 		glikzelikayt/N [f] [def: happiness, bliss] % Esther Kraytman: Briliantn
