@@ -4162,7 +4162,7 @@ finf/N [d] finft/A [def: 5] finftns [adv] finftl [n] [def: 1/5]
 	finfer/S /D [def: five-unit money (copper)]
 	fuftsn [d] fuftsnt/A [def: 15] fuftsntl [n] [def: 1/15]
 	fuftsik [d] /A fuftsikst/A [def: 50] fuftsikstl [n] [def: 1/50]
-		fuftsiker/S [m] [def: 50-ruble note (money)
+		fuftsiker/S [m] [def: 50-ruble note (money)]
 	finfuntsvantsiker{finf#untsvantsiker} [def: 25-ruble note (money)]
 	finfthalbn [def: 4.5]
 finger/X/D [m] [def: finger]
