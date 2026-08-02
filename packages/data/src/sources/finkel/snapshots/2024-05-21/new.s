@@ -4252,7 +4252,7 @@ fishu' [m?] [def: fichu, kerchief]
 fistl/N [f] [def: falsetto]
 fiter/V/T [def: feed (an animal)] /Gunter
 	fiterer/X [def: shepherd] % Kadye Molodovsky
-	futer [m] fiter [m?] gefiter [m?] [def: feed (for animals)]]
+	futer [m] fiter [m?] gefiter [m?] [def: feed (for animals)]
 fitsh [adv] [def: soaking wet, wringing wet (with "nas") (German pitschnass)]
 fitske/V/T [def: thrash, whip] /Gon/Garayn
 fizik [f] [def: physics (subject)] fizish/A fizikalish/A [def: physical]
