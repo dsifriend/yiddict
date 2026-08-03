@@ -29,6 +29,8 @@ FinkelEntry {
            | "-"
            | "″"
            | "ʼ"
+           | "("
+           | ")"
 
   macro = "/" macroSymbolChars macroArgument?
   macroArgument = ws* form
