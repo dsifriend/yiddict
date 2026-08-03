@@ -17,6 +17,7 @@ export interface FinkelEntryActionDict<T> extends BaseActionDict<T> {
   component?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   componentJoin?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
   macroJoin?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  bracketJoin?: (this: NonterminalNode, arg0: TerminalNode) => T;
   delim?: (this: NonterminalNode, arg0: IterationNode) => T;
   ws?: (this: NonterminalNode, arg0: IterationNode) => T;
   form?: (this: NonterminalNode, arg0: IterationNode) => T;
