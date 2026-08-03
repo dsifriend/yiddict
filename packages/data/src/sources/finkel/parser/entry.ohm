@@ -19,7 +19,6 @@ FinkelEntry {
   spellingBase = spellingChar+
   spellingChar = formChar
               | "~"
-              | " " // non-breaking space
   formBase = formChar+
   formChar = alnum
            | "_"
@@ -31,6 +30,7 @@ FinkelEntry {
            | "ʼ"
            | "("
            | ")"
+           | " " // non-breaking space
 
   macro = "/" macroSymbolChars macroArgument?
   macroArgument = ws* form
