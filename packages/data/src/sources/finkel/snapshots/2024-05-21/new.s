@@ -22921,7 +22921,7 @@ ze/V [def: see] /Gon/Gayn/Gdurkh
 	/Gnokh [def: verify, investigate]
 	zeen gezen gezeen/A % irregular third plural
 	% limitation: irregularity can't be captured, so we list forms
-	derze/V/ [def: catch sight of]
+	derze/V/Bderzen [def: catch sight of]
 		derzen derzeen/A
 	farze/V/Bfarzen [def: overlook]
 		farze'enish/N [n] [def: monster; apparition]
