@@ -20370,7 +20370,7 @@ trombe/S [f] [def: nose (humorous), trunk (elephant), horn (music)]
 trombelik/Ees [m] [def: tram, trolley] % slang, SY
 trombo'n/N [m] [def: trombone (music)]
 	tro'mbeniker/S [m] [def: itinerant musician; glutton; loafer; braggart]
-tron/N [m] [def: throne; toilet] : penmanship]
+tron/N [m] [def: throne; toilet]
 tron/N [m] [def: blubber; fish oil]
 tronik/Ees [m] [def: shaft, handle]
 tronts/N [m] [def: tantrum]
