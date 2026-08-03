@@ -180,7 +180,7 @@ function parseBracketData(innerText: string): ParsedBracketedData {
 }
 
 const entryAstActions: FinkelEntryActionDict<unknown> = {
-  entryLine(_d1, sequence, _d2, trailingComment) {
+  entryLine(_d, sequence, trailingComment) {
     const components = asAstNode<EntryComponent[]>(sequence).ast();
     const comment = optionalChildAst<string>(trailingComment);
     return { components, trailingComment: comment } satisfies EntryAst;

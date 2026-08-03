@@ -1,5 +1,5 @@
 FinkelEntry {
-  entryLine = delim? sequence delim? trailingComment?
+  entryLine = delim? sequence trailingComment?
   sequence = component (componentJoin component)*
 
   component = form
@@ -7,10 +7,8 @@ FinkelEntry {
             | bracketedData
 
   componentJoin = delim+
-                | macroJoin
-                | bracketJoin
-  macroJoin = &"/"
-  bracketJoin = &"["
+                | selfDelimiting
+  selfDelimiting = &("/" | "[" | "%")
 
   delim = (" " | "\t" | ",")+
   ws = (" " | "\t")+

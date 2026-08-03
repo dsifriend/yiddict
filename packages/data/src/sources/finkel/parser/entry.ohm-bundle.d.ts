@@ -12,12 +12,11 @@ import {
 } from 'ohm-js';
 
 export interface FinkelEntryActionDict<T> extends BaseActionDict<T> {
-  entryLine?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode, arg2: IterationNode, arg3: IterationNode) => T;
+  entryLine?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode, arg2: IterationNode) => T;
   sequence?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: IterationNode) => T;
   component?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   componentJoin?: (this: NonterminalNode, arg0: IterationNode | NonterminalNode) => T;
-  macroJoin?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  bracketJoin?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  selfDelimiting?: (this: NonterminalNode, arg0: TerminalNode) => T;
   delim?: (this: NonterminalNode, arg0: IterationNode) => T;
   ws?: (this: NonterminalNode, arg0: IterationNode) => T;
   form?: (this: NonterminalNode, arg0: IterationNode) => T;
